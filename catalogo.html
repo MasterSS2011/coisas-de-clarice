@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO -->
+  <title>Catálogo Completo — Coisas de Clarice | Papelaria Personalizada</title>
+  <meta name="description" content="Conheça nosso catálogo completo de papelaria personalizada: convites, lembrancinhas, topo de bolo, itens para festas e kits sob medida." />
+  <meta name="author" content="Coisas de Clarice" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Catálogo Completo — Coisas de Clarice" />
+  <meta property="og:description" content="Convites, lembrancinhas, topos de bolo, itens para festas e kits personalizados." />
+  <meta property="og:type" content="website" />
+  <!-- TROCAR: imagem de divulgação -->
+  <meta property="og:image" content="https://picsum.photos/1200/630?random=21" />
+
+  <!-- Favicon placeholder -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🦋%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'rosa': '#F472B6',
+            'rosa-claro': '#FDE8F0',
+            'marinho': '#3B3F8C',
+            'cinza-texto': '#6B7280',
+            'cinza-escuro': '#374151',
+            'whats': '#25D366',
+          },
+          fontFamily: {
+            'display': ['"Playfair Display"', 'serif'],
+            'sans': ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #374151;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .dotted-line { stroke-dasharray: 3 5; }
+
+    .menu-blur {
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+    }
+
+    /* Pulse no botão flutuante */
+    .pulse-ring::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 9999px;
+      background: rgba(37, 211, 102, 0.4);
+      animation: pulseRing 2s ease-out infinite;
+      z-index: -1;
+    }
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    /* Menu mobile */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 400ms ease;
+    }
+    .mobile-menu.open { max-height: 500px; }
+    .hamburger span { transition: all 300ms ease; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Animação suave de entrada/saída de produtos no filtro */
+    .produto {
+      transition: opacity 350ms ease, transform 350ms ease;
+    }
+    .produto.escondido {
+      display: none;
+    }
+
+    /* Card produto hover */
+    .card-produto img {
+      transition: transform 600ms ease;
+    }
+    .card-produto:hover img { transform: scale(1.06); }
+  </style>
+</head>
+
+<body class="bg-white">
+
+  <!-- =========================================================
+       MENU FIXO (igual à home)
+       ========================================================= -->
+  <header class="fixed top-0 left-0 right-0 z-50 menu-blur bg-white/75 border-b border-rosa-claro">
+    <nav class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
+
+      <a href="index.html" class="flex items-center gap-2 group" aria-label="Coisas de Clarice — Início">
+        <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="transition-transform group-hover:rotate-6">
+          <path d="M32 32 C 22 18, 8 16, 8 28 C 8 38, 18 42, 32 32 Z" fill="#F472B6" opacity="0.9"/>
+          <path d="M32 32 C 42 18, 56 16, 56 28 C 56 38, 46 42, 32 32 Z" fill="#F472B6" opacity="0.9"/>
+          <path d="M32 32 C 24 38, 14 44, 14 50 C 14 56, 24 54, 32 44 Z" fill="#FDE8F0"/>
+          <path d="M32 32 C 40 38, 50 44, 50 50 C 50 56, 40 54, 32 44 Z" fill="#FDE8F0"/>
+          <line x1="32" y1="14" x2="32" y2="48" stroke="#3B3F8C" stroke-width="1.5" class="dotted-line"/>
+        </svg>
+        <span class="font-display text-2xl font-bold text-marinho leading-none">
+          Coisas de <span class="italic text-rosa">Clarice</span>
+        </span>
+      </a>
+
+      <ul class="hidden lg:flex items-center gap-8">
+        <li><a href="index.html#hero" class="text-marinho text-sm font-medium hover:text-rosa transition-colors">Início</a></li>
+        <li><a href="index.html#sobre" class="text-marinho text-sm font-medium hover:text-rosa transition-colors">Sobre</a></li>
+        <li><a href="index.html#categorias" class="text-marinho text-sm font-medium hover:text-rosa transition-colors">Categorias</a></li>
+        <li><a href="index.html#galeria" class="text-marinho text-sm font-medium hover:text-rosa transition-colors">Galeria</a></li>
+        <li><a href="index.html#contato" class="text-marinho text-sm font-medium hover:text-rosa transition-colors">Contato</a></li>
+        <li><a href="catalogo.html" class="text-rosa text-sm font-semibold border-b-2 border-rosa">Catálogo Completo</a></li>
+      </ul>
+
+      <a
+        href="https://wa.me/5548996065926?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
+        target="_blank"
+        rel="noopener"
+        class="hidden lg:inline-flex items-center gap-2 bg-rosa hover:bg-pink-500 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
+      >
+        <i data-lucide="message-circle" class="w-4 h-4"></i>
+        WhatsApp
+      </a>
+
+      <button id="hamburger" class="lg:hidden hamburger flex flex-col justify-center items-center w-10 h-10 gap-1.5" aria-label="Abrir menu">
+        <span class="w-6 h-0.5 bg-marinho"></span>
+        <span class="w-6 h-0.5 bg-marinho"></span>
+        <span class="w-6 h-0.5 bg-marinho"></span>
+      </button>
+    </nav>
+
+    <div id="mobileMenu" class="mobile-menu lg:hidden bg-white border-t border-rosa-claro">
+      <ul class="flex flex-col px-6 py-4 gap-1">
+        <li><a href="index.html#hero" class="block py-3 text-marinho font-medium border-b border-rosa-claro/60">Início</a></li>
+        <li><a href="index.html#sobre" class="block py-3 text-marinho font-medium border-b border-rosa-claro/60">Sobre</a></li>
+        <li><a href="index.html#categorias" class="block py-3 text-marinho font-medium border-b border-rosa-claro/60">Categorias</a></li>
+        <li><a href="index.html#galeria" class="block py-3 text-marinho font-medium border-b border-rosa-claro/60">Galeria</a></li>
+        <li><a href="index.html#contato" class="block py-3 text-marinho font-medium border-b border-rosa-claro/60">Contato</a></li>
+        <li><a href="catalogo.html" class="block py-3 text-rosa font-semibold border-b border-rosa-claro/60">Catálogo Completo</a></li>
+        <li class="pt-3">
+          <a
+            href="https://wa.me/5548996065926?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
+            target="_blank"
+            rel="noopener"
+            class="flex items-center justify-center gap-2 bg-rosa text-white font-semibold px-5 py-3 rounded-full"
+          >
+            <i data-lucide="message-circle" class="w-4 h-4"></i> Falar no WhatsApp
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       HERO COMPACTO DO CATÁLOGO
+       ========================================================= -->
+  <section class="pt-32 pb-12 md:pt-40 md:pb-16 bg-gradient-to-br from-rosa-claro via-white to-white relative overflow-hidden">
+    <div class="absolute top-10 right-10 w-64 h-64 bg-rosa/10 rounded-full blur-3xl"></div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center relative z-10 reveal">
+      <!-- Breadcrumb -->
+      <nav class="text-sm text-cinza-texto mb-6" aria-label="Você está em">
+        <a href="index.html" class="hover:text-rosa transition-colors">Início</a>
+        <span class="mx-2">/</span>
+        <span class="text-marinho font-semibold">Catálogo</span>
+      </nav>
+
+      <span class="inline-flex items-center gap-2 text-rosa text-xs font-semibold tracking-[0.25em] uppercase mb-4">
+        <span class="w-8 h-px bg-rosa"></span> Coleção <span class="w-8 h-px bg-rosa"></span>
+      </span>
+      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-marinho leading-tight mb-4">
+        Nosso <em class="italic text-rosa">Catálogo</em> Completo
+      </h1>
+      <p class="text-cinza-escuro text-base md:text-lg max-w-2xl mx-auto">
+        Explore todas as nossas categorias e encontre a peça certa para a sua celebração.
+        Tudo é personalizável — clique em qualquer produto para pedir um orçamento sob medida.
+      </p>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       FILTROS DE CATEGORIA
+       ========================================================= -->
+  <section class="py-8 bg-white sticky top-20 z-30 border-b border-rosa-claro/60 menu-blur bg-white/85">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex flex-wrap items-center justify-center gap-2 md:gap-3" role="tablist" aria-label="Filtros de categoria">
+        <button data-filtro="todos" class="filtro-btn active px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
+          Todos
+        </button>
+        <button data-filtro="convites" class="filtro-btn px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
+          Convites
+        </button>
+        <button data-filtro="lembrancinhas" class="filtro-btn px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
+          Lembrancinhas
+        </button>
+        <button data-filtro="topo-de-bolo" class="filtro-btn px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
+          Topo de Bolo
+        </button>
+        <button data-filtro="itens-para-festas" class="filtro-btn px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
+          Itens para Festas
+        </button>
+        <button data-filtro="kits" class="filtro-btn px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
+          Kits
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Estilos pontuais dos botões de filtro -->
+  <style>
+    .filtro-btn {
+      color: #3B3F8C;
+      border-color: #FDE8F0;
+      background: #FFFFFF;
+    }
+    .filtro-btn:hover {
+      border-color: #F472B6;
+      color: #F472B6;
+    }
+    .filtro-btn.active {
+      background: #F472B6;
+      color: #FFFFFF;
+      border-color: #F472B6;
+      box-shadow: 0 8px 20px -8px rgba(244, 114, 182, 0.6);
+    }
+  </style>
+
+  <!-- =========================================================
+       GRID DE PRODUTOS
+       ========================================================= -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+      <!-- ===== CONVITES ===== -->
+      <div id="convites" class="mb-20 categoria-bloco" data-categoria="convites">
+        <div class="flex items-center gap-3 mb-8 reveal">
+          <i data-lucide="mail" class="w-6 h-6 text-rosa"></i>
+          <h2 class="font-display text-2xl md:text-3xl font-semibold text-marinho">Convites</h2>
+          <span class="flex-1 h-px bg-rosa-claro ml-4"></span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
+          <!-- Card produto -->
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="convites">
+            <div class="aspect-[4/3] overflow-hidden">
+              <!-- TROCAR: imagem real do produto -->
+              <img src="https://picsum.photos/600/450?random=101" alt="Convite Floral Aquarela" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Convites</span>
+              <!-- TROCAR: nome real do produto -->
+              <h3 class="font-display text-xl text-marinho mb-2">Convite Floral Aquarela</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 8,90</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Floral%20Aquarela.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="convites">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=102" alt="Convite Casamento Clássico" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Convites</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Convite Casamento Clássico</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 12,50</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Casamento%20Cl%C3%A1ssico.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="convites">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=103" alt="Convite Infantil Temático" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Convites</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Convite Infantil Temático</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 6,90</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Infantil%20Tem%C3%A1tico.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="convites">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=104" alt="Convite Chá de Bebê Delicado" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Convites</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Convite Chá de Bebê Delicado</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 7,50</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Ch%C3%A1%20de%20Beb%C3%AA%20Delicado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- ===== LEMBRANCINHAS ===== -->
+      <div id="lembrancinhas" class="mb-20 categoria-bloco" data-categoria="lembrancinhas">
+        <div class="flex items-center gap-3 mb-8 reveal">
+          <i data-lucide="gift" class="w-6 h-6 text-rosa"></i>
+          <h2 class="font-display text-2xl md:text-3xl font-semibold text-marinho">Lembrancinhas</h2>
+          <span class="flex-1 h-px bg-rosa-claro ml-4"></span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="lembrancinhas">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=201" alt="Tag Personalizada com Fita" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Lembrancinhas</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Tag Personalizada com Fita</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 1,90</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Tag%20Personalizada%20com%20Fita.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="lembrancinhas">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=202" alt="Caixa Lembrancinha Aniversário" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Lembrancinhas</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Caixa Lembrancinha Aniversário</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 4,50</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Caixa%20Lembrancinha%20Anivers%C3%A1rio.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="lembrancinhas">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=203" alt="Saquinho Surpresa Personalizado" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Lembrancinhas</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Saquinho Surpresa Personalizado</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 3,20</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Saquinho%20Surpresa%20Personalizado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="lembrancinhas">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=204" alt="Marcador de Página Encantador" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Lembrancinhas</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Marcador de Página Encantador</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 2,50</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Marcador%20de%20P%C3%A1gina%20Encantador.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- ===== TOPO DE BOLO ===== -->
+      <div id="topo-de-bolo" class="mb-20 categoria-bloco" data-categoria="topo-de-bolo">
+        <div class="flex items-center gap-3 mb-8 reveal">
+          <i data-lucide="cake" class="w-6 h-6 text-rosa"></i>
+          <h2 class="font-display text-2xl md:text-3xl font-semibold text-marinho">Topo de Bolo</h2>
+          <span class="flex-1 h-px bg-rosa-claro ml-4"></span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="topo-de-bolo">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=301" alt="Topo de Bolo Nome Personalizado" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Topo de Bolo</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Nome Personalizado</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 25,00</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Nome%20Personalizado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="topo-de-bolo">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=302" alt="Topo de Bolo Idade Dourado" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Topo de Bolo</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Idade Dourado</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 22,00</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Idade%20Dourado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="topo-de-bolo">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=303" alt="Topo de Bolo Casamento Mr & Mrs" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Topo de Bolo</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Casamento Mr &amp; Mrs</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 38,00</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Casamento%20Mr%20%26%20Mrs.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="topo-de-bolo">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=304" alt="Topo de Bolo Tema Floral" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Topo de Bolo</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Tema Floral</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 28,00</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Tema%20Floral.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- ===== ITENS PARA FESTAS ===== -->
+      <div id="itens-para-festas" class="mb-20 categoria-bloco" data-categoria="itens-para-festas">
+        <div class="flex items-center gap-3 mb-8 reveal">
+          <i data-lucide="party-popper" class="w-6 h-6 text-rosa"></i>
+          <h2 class="font-display text-2xl md:text-3xl font-semibold text-marinho">Itens para Festas</h2>
+          <span class="flex-1 h-px bg-rosa-claro ml-4"></span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="itens-para-festas">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=401" alt="Plaquinha para Doces" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Itens para Festas</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Plaquinha para Doces</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 4,90</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Plaquinha%20para%20Doces.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="itens-para-festas">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=402" alt="Topper para Cupcake" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Itens para Festas</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Topper para Cupcake</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 1,50</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topper%20para%20Cupcake.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="itens-para-festas">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=403" alt="Faixa de Parabéns Personalizada" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Itens para Festas</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Faixa de Parabéns Personalizada</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 18,00</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Faixa%20de%20Parab%C3%A9ns%20Personalizada.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="itens-para-festas">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=404" alt="Caixinha Porta-Bem-Casado" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Itens para Festas</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Caixinha Porta-Bem-Casado</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 3,50</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Caixinha%20Porta-Bem-Casado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- ===== KITS PERSONALIZADOS ===== -->
+      <div id="kits" class="mb-12 categoria-bloco" data-categoria="kits">
+        <div class="flex items-center gap-3 mb-8 reveal">
+          <i data-lucide="package" class="w-6 h-6 text-rosa"></i>
+          <h2 class="font-display text-2xl md:text-3xl font-semibold text-marinho">Kits Personalizados</h2>
+          <span class="flex-1 h-px bg-rosa-claro ml-4"></span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="kits">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=501" alt="Kit Festa Aniversário Completo" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Kits</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Kit Festa Aniversário Completo</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 120,00</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Kit%20Festa%20Anivers%C3%A1rio%20Completo.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="kits">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=502" alt="Kit Casamento Coordenado" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Kits</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Kit Casamento Coordenado</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 280,00</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Kit%20Casamento%20Coordenado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="kits">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=503" alt="Kit Chá de Bebê Encantador" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Kits</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Kit Chá de Bebê Encantador</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 95,00</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Kit%20Ch%C3%A1%20de%20Beb%C3%AA%20Encantador.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="kits">
+            <div class="aspect-[4/3] overflow-hidden">
+              <img src="https://picsum.photos/600/450?random=504" alt="Kit Festa Infantil Premium" class="w-full h-full object-cover" loading="lazy"/>
+            </div>
+            <div class="p-6">
+              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Kits</span>
+              <h3 class="font-display text-xl text-marinho mb-2">Kit Festa Infantil Premium</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 150,00</strong></p>
+              <a
+                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Kit%20Festa%20Infantil%20Premium.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+              >
+                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- Mensagem quando filtro não retorna nada (oculto por padrão) -->
+      <div id="semResultados" class="hidden text-center py-16">
+        <i data-lucide="search-x" class="w-12 h-12 text-rosa mx-auto mb-4"></i>
+        <p class="font-display text-xl text-marinho">Nenhum produto encontrado nesta categoria.</p>
+      </div>
+
+      <!-- CTA final -->
+      <div class="mt-20 bg-gradient-to-r from-rosa-claro to-white rounded-3xl p-8 md:p-12 text-center reveal">
+        <h3 class="font-display text-2xl md:text-3xl text-marinho mb-4">
+          Não encontrou o que procurava?
+        </h3>
+        <p class="text-cinza-escuro text-base md:text-lg mb-6 max-w-2xl mx-auto">
+          Trabalhamos sob medida! Conta sua ideia para a gente e criamos algo único e especial para o seu evento.
+        </p>
+        <a
+          href="https://wa.me/5548996065926?text=Olá!%20Gostaria%20de%20um%20projeto%20personalizado%20fora%20do%20catálogo."
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 bg-rosa hover:bg-pink-500 text-white font-semibold px-8 py-4 rounded-full shadow-lg shadow-rosa/30 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+        >
+          <i data-lucide="message-circle" class="w-5 h-5"></i>
+          Solicitar Projeto Personalizado
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       RODAPÉ (igual à home)
+       ========================================================= -->
+  <footer class="bg-marinho text-white py-16">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid md:grid-cols-3 gap-10 mb-10">
+
+        <div>
+          <div class="flex items-center gap-2 mb-4">
+            <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M32 32 C 22 18, 8 16, 8 28 C 8 38, 18 42, 32 32 Z" fill="#F472B6"/>
+              <path d="M32 32 C 42 18, 56 16, 56 28 C 56 38, 46 42, 32 32 Z" fill="#F472B6"/>
+              <path d="M32 32 C 24 38, 14 44, 14 50 C 14 56, 24 54, 32 44 Z" fill="#FDE8F0"/>
+              <path d="M32 32 C 40 38, 50 44, 50 50 C 50 56, 40 54, 32 44 Z" fill="#FDE8F0"/>
+              <line x1="32" y1="14" x2="32" y2="48" stroke="#FFFFFF" stroke-width="1.5" class="dotted-line"/>
+            </svg>
+            <span class="font-display text-xl font-bold">
+              Coisas de <span class="italic text-rosa">Clarice</span>
+            </span>
+          </div>
+          <p class="text-white/70 text-sm leading-relaxed">
+            Papelaria personalizada feita com amor, atenção aos detalhes e muito carinho. Para celebrar suas histórias mais especiais.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-display text-lg mb-4">Links Rápidos</h4>
+          <ul class="space-y-2 text-sm text-white/70">
+            <li><a href="index.html#hero" class="hover:text-rosa transition-colors">Início</a></li>
+            <li><a href="index.html#sobre" class="hover:text-rosa transition-colors">Sobre</a></li>
+            <li><a href="index.html#categorias" class="hover:text-rosa transition-colors">Categorias</a></li>
+            <li><a href="index.html#galeria" class="hover:text-rosa transition-colors">Galeria</a></li>
+            <li><a href="catalogo.html" class="hover:text-rosa transition-colors">Catálogo Completo</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-display text-lg mb-4">Contato</h4>
+          <ul class="space-y-3 text-sm text-white/70">
+            <li class="flex items-center gap-2">
+              <i data-lucide="phone" class="w-4 h-4 text-rosa"></i>
+              <a href="https://wa.me/5548996065926" target="_blank" rel="noopener" class="hover:text-rosa transition-colors">(48) 99606-5926</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-rosa"></i>
+              Enviamos para todo o Brasil
+            </li>
+          </ul>
+          <div class="flex gap-3 mt-5">
+            <!-- TROCAR: link real do Instagram -->
+            <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
+              <i data-lucide="instagram" class="w-4 h-4"></i>
+            </a>
+            <!-- TROCAR: link real do TikTok -->
+            <a href="#" aria-label="TikTok" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
+              <i data-lucide="music-2" class="w-4 h-4"></i>
+            </a>
+            <a href="https://wa.me/5548996065926" target="_blank" rel="noopener" aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 pt-6 text-center text-sm text-white/60">
+        © 2026 Coisas de Clarice. Feito com 💕
+      </div>
+    </div>
+  </footer>
+
+  <!-- BOTÃO FLUTUANTE WHATSAPP -->
+  <a
+    href="https://wa.me/5548996065926?text=Olá!%20Vim%20pelo%20site"
+    target="_blank"
+    rel="noopener"
+    aria-label="Falar no WhatsApp"
+    class="pulse-ring fixed bottom-6 right-6 z-40 w-14 h-14 md:w-16 md:h-16 bg-whats hover:bg-green-600 text-white rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110"
+  >
+    <i data-lucide="message-circle" class="w-6 h-6 md:w-7 md:h-7"></i>
+  </a>
+
+  <!-- =========================================================
+       SCRIPTS
+       ========================================================= -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+
+    // ==== Menu mobile ====
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    // ==== Filtros de categoria ====
+    const filtroBtns = document.querySelectorAll('.filtro-btn');
+    const produtos = document.querySelectorAll('.produto');
+    const blocosCategoria = document.querySelectorAll('.categoria-bloco');
+    const semResultados = document.getElementById('semResultados');
+
+    function aplicarFiltro(filtro) {
+      // Atualiza estado dos botões
+      filtroBtns.forEach(b => {
+        b.classList.toggle('active', b.dataset.filtro === filtro);
+      });
+
+      let totalVisivel = 0;
+
+      if (filtro === 'todos') {
+        // Mostra todos os produtos e todos os blocos
+        produtos.forEach(p => p.classList.remove('escondido'));
+        blocosCategoria.forEach(b => b.style.display = '');
+        totalVisivel = produtos.length;
+      } else {
+        // Mostra apenas o bloco da categoria selecionada
+        blocosCategoria.forEach(b => {
+          b.style.display = b.dataset.categoria === filtro ? '' : 'none';
+        });
+        produtos.forEach(p => {
+          const visivel = p.dataset.cat === filtro;
+          p.classList.toggle('escondido', !visivel);
+          if (visivel) totalVisivel++;
+        });
+      }
+
+      semResultados.classList.toggle('hidden', totalVisivel > 0);
+    }
+
+    filtroBtns.forEach(btn => {
+      btn.addEventListener('click', () => aplicarFiltro(btn.dataset.filtro));
+    });
+
+    // ==== Filtragem inicial via hash da URL (#convites, #kits, etc.) ====
+    const hashInicial = window.location.hash.replace('#', '');
+    const filtrosValidos = ['convites','lembrancinhas','topo-de-bolo','itens-para-festas','kits'];
+    if (filtrosValidos.includes(hashInicial)) {
+      aplicarFiltro(hashInicial);
+      // Pequeno delay para garantir o scroll após renderização
+      setTimeout(() => {
+        const alvo = document.getElementById(hashInicial);
+        if (alvo) alvo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+
+    // ==== Animação fade-in ====
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

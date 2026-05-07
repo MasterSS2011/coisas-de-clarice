@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- =========================================================
+       SEO META TAGS
+       Edite os textos abaixo conforme necessário.
+       ========================================================= -->
+  <title>Coisas de Clarice — Papelaria Personalizada | Convites, Lembrancinhas e Festas</title>
+  <meta name="description" content="Papelaria personalizada feita com amor. Convites, lembrancinhas, topos de bolo e itens para festas. Enviamos para todo o Brasil." />
+  <meta name="keywords" content="papelaria personalizada, convites, lembrancinhas, topo de bolo, festas, plotter de recorte" />
+  <meta name="author" content="Coisas de Clarice" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Coisas de Clarice — Papelaria Personalizada" />
+  <meta property="og:description" content="Convites, lembrancinhas e detalhes feitos com amor — enviamos para todo o Brasil." />
+  <meta property="og:type" content="website" />
+  <!-- TROCAR: imagem de divulgação (1200x630px ideal) -->
+  <meta property="og:image" content="https://picsum.photos/1200/630?random=20" />
+
+  <!-- Favicon placeholder (substituir por favicon real) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🦋%3C/text%3E%3C/svg%3E" />
+
+  <!-- =========================================================
+       FONTES — Playfair Display (títulos) + Inter (corpo)
+       ========================================================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Configuração Tailwind: paleta da marca + fontes -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'rosa': '#F472B6',
+            'rosa-claro': '#FDE8F0',
+            'marinho': '#3B3F8C',
+            'cinza-texto': '#6B7280',
+            'cinza-escuro': '#374151',
+            'whats': '#25D366',
+          },
+          fontFamily: {
+            'display': ['"Playfair Display"', 'serif'],
+            'sans': ['Inter', 'sans-serif'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'fade-up': 'fadeUp 0.8s ease-out forwards',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-12px)' },
+            },
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(30px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- =========================================================
+       Estilos pontuais (apenas o estritamente necessário)
+       ========================================================= -->
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #374151;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+    /* Estado inicial dos elementos com fade-in via IntersectionObserver */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Linha decorativa pontilhada (estilo da borboleta) */
+    .dotted-line {
+      stroke-dasharray: 3 5;
+    }
+
+    /* Glassmorphism do menu */
+    .menu-blur {
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+    }
+
+    /* Hover overlay da galeria */
+    .gallery-item .overlay {
+      opacity: 0;
+      transition: opacity 300ms ease;
+    }
+    .gallery-item:hover .overlay { opacity: 1; }
+    .gallery-item img { transition: transform 600ms ease; }
+    .gallery-item:hover img { transform: scale(1.08); }
+
+    /* Pulse customizado para botão flutuante */
+    .pulse-ring::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 9999px;
+      background: rgba(37, 211, 102, 0.4);
+      animation: pulseRing 2s ease-out infinite;
+      z-index: -1;
+    }
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    /* Menu mobile animado */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 400ms ease;
+    }
+    .mobile-menu.open { max-height: 500px; }
+
+    /* Hambúrguer animado */
+    .hamburger span {
+      transition: all 300ms ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  </style>
+</head>
+
+<body class="bg-white">
+
+  <!-- =========================================================
+       MENU FIXO (Sticky com blur)
+       ========================================================= -->
+  <header class="fixed top-0 left-0 right-0 z-50 menu-blur bg-white/75 border-b border-rosa-claro">
+    <nav class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
+
+      <!-- Logo (texto estilizado) -->
+      <a href="#hero" class="flex items-center gap-2 group" aria-label="Coisas de Clarice — Início">
+        <!-- Borboleta SVG inline -->
+        <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="transition-transform group-hover:rotate-6">
+          <path d="M32 32 C 22 18, 8 16, 8 28 C 8 38, 18 42, 32 32 Z" fill="#F472B6" opacity="0.9"/>
+          <path d="M32 32 C 42 18, 56 16, 56 28 C 56 38, 46 42, 32 32 Z" fill="#F472B6" opacity="0.9"/>
+          <path d="M32 32 C 24 38, 14 44, 14 50 C 14 56, 24 54, 32 44 Z" fill="#FDE8F0"/>
+          <path d="M32 32 C 40 38, 50 44, 50 50 C 50 56, 40 54, 32 44 Z" fill="#FDE8F0"/>
+          <line x1="32" y1="14" x2="32" y2="48" stroke="#3B3F8C" stroke-width="1.5" class="dotted-line"/>
+        </svg>
+        <span class="font-display text-2xl font-bold text-marinho leading-none">
+          Coisas de <span class="italic text-rosa">Clarice</span>
+        </span>
+      </a>
+
+      <!-- Links desktop -->
+      <ul class="hidden lg:flex items-center gap-8">
+        <li><a href="#hero" class="text-marinho text-sm font-medium hover:text-rosa transition-colors">Início</a></li>
+        <li><a href="#sobre" class="text-marinho text-sm font-medium hover:text-rosa transition-colors">Sobre</a></li>
+        <li><a href="#categorias" class="text-marinho text-sm font-medium hover:text-rosa transition-colors">Categorias</a></li>
+        <li><a href="#galeria" class="text-marinho text-sm font-medium hover:text-rosa transition-colors">Galeria</a></li>
+        <li><a href="#contato" class="text-marinho text-sm font-medium hover:text-rosa transition-colors">Contato</a></li>
+        <li><a href="catalogo.html" class="text-marinho text-sm font-medium hover:text-rosa transition-colors">Catálogo Completo</a></li>
+      </ul>
+
+      <!-- CTA WhatsApp desktop -->
+      <a
+        href="https://wa.me/5548996065926?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
+        target="_blank"
+        rel="noopener"
+        class="hidden lg:inline-flex items-center gap-2 bg-rosa hover:bg-pink-500 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
+      >
+        <i data-lucide="message-circle" class="w-4 h-4"></i>
+        WhatsApp
+      </a>
+
+      <!-- Hambúrguer mobile -->
+      <button id="hamburger" class="lg:hidden hamburger flex flex-col justify-center items-center w-10 h-10 gap-1.5" aria-label="Abrir menu">
+        <span class="w-6 h-0.5 bg-marinho"></span>
+        <span class="w-6 h-0.5 bg-marinho"></span>
+        <span class="w-6 h-0.5 bg-marinho"></span>
+      </button>
+    </nav>
+
+    <!-- Menu mobile -->
+    <div id="mobileMenu" class="mobile-menu lg:hidden bg-white border-t border-rosa-claro">
+      <ul class="flex flex-col px-6 py-4 gap-1">
+        <li><a href="#hero" class="block py-3 text-marinho font-medium border-b border-rosa-claro/60">Início</a></li>
+        <li><a href="#sobre" class="block py-3 text-marinho font-medium border-b border-rosa-claro/60">Sobre</a></li>
+        <li><a href="#categorias" class="block py-3 text-marinho font-medium border-b border-rosa-claro/60">Categorias</a></li>
+        <li><a href="#galeria" class="block py-3 text-marinho font-medium border-b border-rosa-claro/60">Galeria</a></li>
+        <li><a href="#contato" class="block py-3 text-marinho font-medium border-b border-rosa-claro/60">Contato</a></li>
+        <li><a href="catalogo.html" class="block py-3 text-marinho font-medium border-b border-rosa-claro/60">Catálogo Completo</a></li>
+        <li class="pt-3">
+          <a
+            href="https://wa.me/5548996065926?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
+            target="_blank"
+            rel="noopener"
+            class="flex items-center justify-center gap-2 bg-rosa text-white font-semibold px-5 py-3 rounded-full"
+          >
+            <i data-lucide="message-circle" class="w-4 h-4"></i> Falar no WhatsApp
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       SEÇÃO 1 — HERO (100vh)
+       ========================================================= -->
+  <section id="hero" class="min-h-screen pt-20 flex items-center bg-gradient-to-br from-rosa-claro via-white to-white relative overflow-hidden">
+
+    <!-- Detalhes decorativos de fundo -->
+    <div class="absolute top-32 right-10 w-64 h-64 bg-rosa-claro rounded-full blur-3xl opacity-60 -z-0"></div>
+    <div class="absolute bottom-20 left-10 w-72 h-72 bg-rosa/10 rounded-full blur-3xl opacity-60 -z-0"></div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center relative z-10 py-12">
+
+      <!-- Coluna texto -->
+      <div class="reveal">
+        <span class="inline-flex items-center gap-2 text-rosa text-xs font-semibold tracking-[0.25em] uppercase mb-6">
+          <span class="w-8 h-px bg-rosa"></span> Papelaria Boutique
+        </span>
+        <h1 class="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-marinho leading-[1.05] mb-6">
+          Papelaria que <em class="italic text-rosa font-medium">conta</em> a sua história
+        </h1>
+        <p class="text-lg md:text-xl text-cinza-escuro mb-10 max-w-xl">
+          Convites, lembrancinhas e detalhes feitos com amor — enviamos para todo o Brasil.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a
+            href="catalogo.html"
+            class="inline-flex items-center justify-center gap-2 bg-rosa hover:bg-pink-500 text-white font-semibold px-8 py-4 rounded-full shadow-lg shadow-rosa/30 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+          >
+            Ver Catálogo
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+          <a
+            href="https://wa.me/5548996065926?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center justify-center gap-2 border-2 border-marinho text-marinho hover:bg-marinho hover:text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
+          >
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            Falar no WhatsApp
+          </a>
+        </div>
+
+        <!-- Selos / pequenos diferenciais -->
+        <div class="mt-12 flex flex-wrap gap-6 text-sm text-cinza-texto">
+          <span class="flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4 text-rosa"></i> Feito à mão</span>
+          <span class="flex items-center gap-2"><i data-lucide="heart" class="w-4 h-4 text-rosa"></i> Personalização total</span>
+          <span class="flex items-center gap-2"><i data-lucide="truck" class="w-4 h-4 text-rosa"></i> Envio para todo Brasil</span>
+        </div>
+      </div>
+
+      <!-- Coluna ilustração: borboleta grande + composição -->
+      <div class="relative reveal flex items-center justify-center">
+        <!-- Círculo decorativo -->
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="w-80 h-80 md:w-96 md:h-96 rounded-full bg-gradient-to-br from-rosa-claro to-white shadow-inner"></div>
+        </div>
+
+        <!-- TROCAR: substituir esta SVG por uma imagem do logo (PNG/SVG real)
+             Exemplo: <img src="logo.png" alt="Logo Coisas de Clarice" class="relative z-10 w-72 md:w-96"/>
+        -->
+        <svg viewBox="0 0 400 400" class="relative z-10 w-72 md:w-96 animate-float" xmlns="http://www.w3.org/2000/svg" aria-label="Borboleta Coisas de Clarice">
+          <!-- Asas superiores -->
+          <path d="M200 200 C 140 100, 40 80, 40 160 C 40 220, 110 240, 200 200 Z" fill="#F472B6" opacity="0.85"/>
+          <path d="M200 200 C 260 100, 360 80, 360 160 C 360 220, 290 240, 200 200 Z" fill="#F472B6" opacity="0.85"/>
+          <!-- Asas inferiores -->
+          <path d="M200 200 C 150 240, 90 290, 100 330 C 110 360, 170 350, 200 280 Z" fill="#FDE8F0"/>
+          <path d="M200 200 C 250 240, 310 290, 300 330 C 290 360, 230 350, 200 280 Z" fill="#FDE8F0"/>
+          <!-- Detalhes nas asas -->
+          <circle cx="100" cy="160" r="8" fill="#FDE8F0"/>
+          <circle cx="300" cy="160" r="8" fill="#FDE8F0"/>
+          <circle cx="140" cy="290" r="5" fill="#F472B6" opacity="0.6"/>
+          <circle cx="260" cy="290" r="5" fill="#F472B6" opacity="0.6"/>
+          <!-- Corpo da borboleta + linha pontilhada característica -->
+          <line x1="200" y1="80" x2="200" y2="340" stroke="#3B3F8C" stroke-width="2.5" stroke-linecap="round" class="dotted-line"/>
+          <!-- Antenas -->
+          <path d="M200 90 Q 185 70, 175 60" stroke="#3B3F8C" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M200 90 Q 215 70, 225 60" stroke="#3B3F8C" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="175" cy="58" r="3" fill="#F472B6"/>
+          <circle cx="225" cy="58" r="3" fill="#F472B6"/>
+        </svg>
+
+        <!-- Detalhes flutuantes -->
+        <div class="absolute top-8 right-4 bg-white shadow-xl rounded-2xl p-3 animate-float" style="animation-delay: 1s;">
+          <i data-lucide="heart" class="w-6 h-6 text-rosa fill-rosa"></i>
+        </div>
+        <div class="absolute bottom-12 left-2 bg-white shadow-xl rounded-2xl p-3 animate-float" style="animation-delay: 2s;">
+          <i data-lucide="sparkles" class="w-6 h-6 text-rosa"></i>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Indicador de scroll -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-marinho/60 text-xs tracking-[0.3em] uppercase">
+      <span>Role para descobrir</span>
+      <i data-lucide="chevron-down" class="w-4 h-4 animate-bounce"></i>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SEÇÃO 2 — SOBRE (100vh)
+       ========================================================= -->
+  <section id="sobre" class="min-h-screen flex items-center bg-white py-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 w-full">
+
+      <div class="text-center mb-16 reveal">
+        <span class="inline-flex items-center gap-2 text-rosa text-xs font-semibold tracking-[0.25em] uppercase mb-4">
+          <span class="w-8 h-px bg-rosa"></span> Sobre Nós <span class="w-8 h-px bg-rosa"></span>
+        </span>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-marinho leading-tight">
+          Feito com <em class="italic text-rosa">Amor</em>,<br/>Pensado em Você
+        </h2>
+      </div>
+
+      <!-- 2 colunas de texto -->
+      <div class="grid md:grid-cols-2 gap-10 lg:gap-16 mb-16 max-w-5xl mx-auto reveal">
+        <div>
+          <h3 class="font-display text-2xl text-marinho mb-4">Nossa história</h3>
+          <p class="text-cinza-escuro text-base md:text-lg">
+            A <strong class="text-marinho">Coisas de Clarice</strong> nasceu do encantamento por pequenos detalhes —
+            aqueles que transformam um momento comum em uma lembrança que dura para sempre.
+            Cada peça é desenhada, recortada e finalizada artesanalmente, com cuidado de quem
+            entende que papelaria também é afeto em forma de papel.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-display text-2xl text-marinho mb-4">Por que escolher a gente</h3>
+          <p class="text-cinza-escuro text-base md:text-lg">
+            Trabalhamos com plotter de recorte de alta precisão, papéis especiais e um olhar
+            apurado para tipografia e composição. Aqui, nada é genérico: cada projeto começa
+            com uma conversa e termina com algo único, feito sob medida para a sua festa,
+            o seu casamento, o seu pequeno grande dia.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3 cards de diferenciais -->
+      <div class="grid md:grid-cols-3 gap-6 lg:gap-8 reveal">
+        <article class="group bg-rosa-claro/40 hover:bg-rosa-claro/80 border border-rosa-claro rounded-3xl p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+          <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-white shadow-md flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <i data-lucide="heart" class="w-8 h-8 text-rosa"></i>
+          </div>
+          <h4 class="font-display text-xl text-marinho mb-2">Personalização Total</h4>
+          <p class="text-cinza-texto text-sm leading-relaxed">
+            Cada projeto é desenhado do zero conforme o tema, as cores e a história que você quer contar.
+          </p>
+        </article>
+
+        <article class="group bg-rosa-claro/40 hover:bg-rosa-claro/80 border border-rosa-claro rounded-3xl p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+          <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-white shadow-md flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <i data-lucide="scissors" class="w-8 h-8 text-rosa"></i>
+          </div>
+          <h4 class="font-display text-xl text-marinho mb-2">Recortes Precisos em Plotter</h4>
+          <p class="text-cinza-texto text-sm leading-relaxed">
+            Equipamento profissional que entrega acabamento impecável em cada detalhe.
+          </p>
+        </article>
+
+        <article class="group bg-rosa-claro/40 hover:bg-rosa-claro/80 border border-rosa-claro rounded-3xl p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+          <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-white shadow-md flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <i data-lucide="truck" class="w-8 h-8 text-rosa"></i>
+          </div>
+          <h4 class="font-display text-xl text-marinho mb-2">Enviamos para Todo o Brasil</h4>
+          <p class="text-cinza-texto text-sm leading-relaxed">
+            Embalagem caprichada e envio seguro para que sua encomenda chegue perfeita à sua porta.
+          </p>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SEÇÃO 3 — CATEGORIAS (altura natural)
+       ========================================================= -->
+  <section id="categorias" class="bg-rosa-claro/30 py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+      <div class="text-center mb-16 reveal">
+        <span class="inline-flex items-center gap-2 text-rosa text-xs font-semibold tracking-[0.25em] uppercase mb-4">
+          <span class="w-8 h-px bg-rosa"></span> O que fazemos <span class="w-8 h-px bg-rosa"></span>
+        </span>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-marinho leading-tight">
+          Nossas <em class="italic text-rosa">Especialidades</em>
+        </h2>
+        <p class="text-cinza-texto text-base md:text-lg mt-5 max-w-2xl mx-auto">
+          Cinco especialidades pensadas para celebrar cada momento marcante.
+        </p>
+      </div>
+
+      <!-- Grid 3 cols desktop, 2 tablet, 1 mobile -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+
+        <!-- Convites -->
+        <a href="catalogo.html#convites" class="group bg-white rounded-3xl p-8 border border-rosa-claro hover:border-rosa transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl reveal">
+          <div class="w-14 h-14 rounded-2xl bg-rosa-claro flex items-center justify-center mb-5 group-hover:bg-rosa transition-colors duration-300">
+            <i data-lucide="mail" class="w-7 h-7 text-rosa group-hover:text-white transition-colors duration-300"></i>
+          </div>
+          <h3 class="font-display text-2xl text-marinho mb-3">Convites</h3>
+          <p class="text-cinza-texto text-sm mb-6 leading-relaxed">
+            Convites elegantes para casamentos, aniversários e eventos especiais — em papéis nobres e acabamentos únicos.
+          </p>
+          <span class="inline-flex items-center gap-2 text-rosa text-sm font-semibold group-hover:gap-3 transition-all">
+            Ver produtos <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </span>
+        </a>
+
+        <!-- Lembrancinhas -->
+        <a href="catalogo.html#lembrancinhas" class="group bg-white rounded-3xl p-8 border border-rosa-claro hover:border-rosa transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl reveal">
+          <div class="w-14 h-14 rounded-2xl bg-rosa-claro flex items-center justify-center mb-5 group-hover:bg-rosa transition-colors duration-300">
+            <i data-lucide="gift" class="w-7 h-7 text-rosa group-hover:text-white transition-colors duration-300"></i>
+          </div>
+          <h3 class="font-display text-2xl text-marinho mb-3">Lembrancinhas</h3>
+          <p class="text-cinza-texto text-sm mb-6 leading-relaxed">
+            Mimos personalizados que encantam seus convidados e prolongam a memória do evento.
+          </p>
+          <span class="inline-flex items-center gap-2 text-rosa text-sm font-semibold group-hover:gap-3 transition-all">
+            Ver produtos <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </span>
+        </a>
+
+        <!-- Topo de Bolo -->
+        <a href="catalogo.html#topo-de-bolo" class="group bg-white rounded-3xl p-8 border border-rosa-claro hover:border-rosa transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl reveal">
+          <div class="w-14 h-14 rounded-2xl bg-rosa-claro flex items-center justify-center mb-5 group-hover:bg-rosa transition-colors duration-300">
+            <i data-lucide="cake" class="w-7 h-7 text-rosa group-hover:text-white transition-colors duration-300"></i>
+          </div>
+          <h3 class="font-display text-2xl text-marinho mb-3">Topo de Bolo</h3>
+          <p class="text-cinza-texto text-sm mb-6 leading-relaxed">
+            Topos personalizados que coroam o bolo com elegância e personalidade.
+          </p>
+          <span class="inline-flex items-center gap-2 text-rosa text-sm font-semibold group-hover:gap-3 transition-all">
+            Ver produtos <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </span>
+        </a>
+
+        <!-- Itens para Festas -->
+        <a href="catalogo.html#itens-para-festas" class="group bg-white rounded-3xl p-8 border border-rosa-claro hover:border-rosa transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl reveal">
+          <div class="w-14 h-14 rounded-2xl bg-rosa-claro flex items-center justify-center mb-5 group-hover:bg-rosa transition-colors duration-300">
+            <i data-lucide="party-popper" class="w-7 h-7 text-rosa group-hover:text-white transition-colors duration-300"></i>
+          </div>
+          <h3 class="font-display text-2xl text-marinho mb-3">Itens para Festas</h3>
+          <p class="text-cinza-texto text-sm mb-6 leading-relaxed">
+            Toppers, plaquinhas, faixas e tags que dão identidade e charme à decoração.
+          </p>
+          <span class="inline-flex items-center gap-2 text-rosa text-sm font-semibold group-hover:gap-3 transition-all">
+            Ver produtos <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </span>
+        </a>
+
+        <!-- Kits Personalizados -->
+        <a href="catalogo.html#kits" class="group bg-white rounded-3xl p-8 border border-rosa-claro hover:border-rosa transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl reveal sm:col-span-2 lg:col-span-1">
+          <div class="w-14 h-14 rounded-2xl bg-rosa-claro flex items-center justify-center mb-5 group-hover:bg-rosa transition-colors duration-300">
+            <i data-lucide="package" class="w-7 h-7 text-rosa group-hover:text-white transition-colors duration-300"></i>
+          </div>
+          <h3 class="font-display text-2xl text-marinho mb-3">Kits Personalizados</h3>
+          <p class="text-cinza-texto text-sm mb-6 leading-relaxed">
+            Combos completos de papelaria coordenada para o seu evento ficar perfeito do começo ao fim.
+          </p>
+          <span class="inline-flex items-center gap-2 text-rosa text-sm font-semibold group-hover:gap-3 transition-all">
+            Ver produtos <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </span>
+        </a>
+
+      </div>
+
+      <!-- CTA centralizado abaixo -->
+      <div class="text-center mt-14 reveal">
+        <a
+          href="catalogo.html"
+          class="inline-flex items-center gap-2 bg-marinho hover:bg-marinho/90 text-white font-semibold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+        >
+          Ver catálogo completo
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SEÇÃO 4 — GALERIA (altura natural)
+       ========================================================= -->
+  <section id="galeria" class="bg-white py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+      <div class="text-center mb-14 reveal">
+        <span class="inline-flex items-center gap-2 text-rosa text-xs font-semibold tracking-[0.25em] uppercase mb-4">
+          <span class="w-8 h-px bg-rosa"></span> Portfólio <span class="w-8 h-px bg-rosa"></span>
+        </span>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-marinho leading-tight">
+          Trabalhos que <em class="italic text-rosa">Encantam</em>
+        </h2>
+      </div>
+
+      <!--
+        TROCAR: substituir as imagens picsum.photos pelas fotos reais dos trabalhos.
+        Use proporções variadas (quadradas, retrato, paisagem) para o efeito masonry.
+      -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 reveal">
+
+        <div class="gallery-item relative overflow-hidden rounded-2xl aspect-square">
+          <img src="https://picsum.photos/600/600?random=1" alt="Trabalho 1 - Convite personalizado" class="w-full h-full object-cover" loading="lazy"/>
+          <div class="overlay absolute inset-0 bg-rosa/40 flex items-center justify-center">
+            <i data-lucide="zoom-in" class="w-8 h-8 text-white"></i>
+          </div>
+        </div>
+
+        <div class="gallery-item relative overflow-hidden rounded-2xl aspect-[3/4] row-span-2">
+          <img src="https://picsum.photos/600/800?random=2" alt="Trabalho 2 - Lembrancinha de festa" class="w-full h-full object-cover" loading="lazy"/>
+          <div class="overlay absolute inset-0 bg-rosa/40 flex items-center justify-center">
+            <i data-lucide="zoom-in" class="w-8 h-8 text-white"></i>
+          </div>
+        </div>
+
+        <div class="gallery-item relative overflow-hidden rounded-2xl aspect-square">
+          <img src="https://picsum.photos/600/600?random=3" alt="Trabalho 3 - Topo de bolo" class="w-full h-full object-cover" loading="lazy"/>
+          <div class="overlay absolute inset-0 bg-rosa/40 flex items-center justify-center">
+            <i data-lucide="zoom-in" class="w-8 h-8 text-white"></i>
+          </div>
+        </div>
+
+        <div class="gallery-item relative overflow-hidden rounded-2xl aspect-square">
+          <img src="https://picsum.photos/600/600?random=4" alt="Trabalho 4 - Itens para festa" class="w-full h-full object-cover" loading="lazy"/>
+          <div class="overlay absolute inset-0 bg-rosa/40 flex items-center justify-center">
+            <i data-lucide="zoom-in" class="w-8 h-8 text-white"></i>
+          </div>
+        </div>
+
+        <div class="gallery-item relative overflow-hidden rounded-2xl aspect-square">
+          <img src="https://picsum.photos/600/600?random=5" alt="Trabalho 5 - Convite casamento" class="w-full h-full object-cover" loading="lazy"/>
+          <div class="overlay absolute inset-0 bg-rosa/40 flex items-center justify-center">
+            <i data-lucide="zoom-in" class="w-8 h-8 text-white"></i>
+          </div>
+        </div>
+
+        <div class="gallery-item relative overflow-hidden rounded-2xl aspect-[4/3] md:col-span-2">
+          <img src="https://picsum.photos/900/600?random=6" alt="Trabalho 6 - Kit completo" class="w-full h-full object-cover" loading="lazy"/>
+          <div class="overlay absolute inset-0 bg-rosa/40 flex items-center justify-center">
+            <i data-lucide="zoom-in" class="w-8 h-8 text-white"></i>
+          </div>
+        </div>
+
+        <div class="gallery-item relative overflow-hidden rounded-2xl aspect-square">
+          <img src="https://picsum.photos/600/600?random=7" alt="Trabalho 7 - Lembrancinha" class="w-full h-full object-cover" loading="lazy"/>
+          <div class="overlay absolute inset-0 bg-rosa/40 flex items-center justify-center">
+            <i data-lucide="zoom-in" class="w-8 h-8 text-white"></i>
+          </div>
+        </div>
+
+        <div class="gallery-item relative overflow-hidden rounded-2xl aspect-square">
+          <img src="https://picsum.photos/600/600?random=8" alt="Trabalho 8 - Plaquinhas" class="w-full h-full object-cover" loading="lazy"/>
+          <div class="overlay absolute inset-0 bg-rosa/40 flex items-center justify-center">
+            <i data-lucide="zoom-in" class="w-8 h-8 text-white"></i>
+          </div>
+        </div>
+
+        <div class="gallery-item relative overflow-hidden rounded-2xl aspect-square">
+          <img src="https://picsum.photos/600/600?random=9" alt="Trabalho 9 - Detalhes" class="w-full h-full object-cover" loading="lazy"/>
+          <div class="overlay absolute inset-0 bg-rosa/40 flex items-center justify-center">
+            <i data-lucide="zoom-in" class="w-8 h-8 text-white"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TROCAR: link do Instagram real -->
+      <div class="text-center mt-10 reveal">
+        <a href="#" class="inline-flex items-center gap-2 text-marinho hover:text-rosa font-semibold transition-colors group">
+          <i data-lucide="instagram" class="w-5 h-5"></i>
+          Veja mais no nosso Instagram
+          <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SEÇÃO 5 — CONTATO (100vh)
+       ========================================================= -->
+  <section id="contato" class="min-h-screen flex items-center bg-rosa-claro py-20 relative overflow-hidden">
+
+    <!-- Detalhes decorativos -->
+    <div class="absolute top-10 left-10 w-72 h-72 bg-white/40 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-10 right-10 w-96 h-96 bg-rosa/20 rounded-full blur-3xl"></div>
+
+    <div class="max-w-5xl mx-auto px-6 lg:px-8 w-full relative z-10">
+
+      <div class="text-center mb-12 reveal">
+        <span class="inline-flex items-center gap-2 text-rosa text-xs font-semibold tracking-[0.25em] uppercase mb-4">
+          <span class="w-8 h-px bg-rosa"></span> Vamos conversar <span class="w-8 h-px bg-rosa"></span>
+        </span>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-marinho leading-tight">
+          Vamos Criar Algo<br/><em class="italic text-rosa">Especial</em> Juntos?
+        </h2>
+        <p class="text-cinza-escuro text-base md:text-lg mt-5 max-w-2xl mx-auto">
+          Conta para nós sua ideia, tema ou ocasião. Respondemos rapidinho e desenhamos uma proposta sob medida para você.
+        </p>
+      </div>
+
+      <!-- Card central -->
+      <div class="bg-white rounded-3xl shadow-2xl shadow-rosa/20 p-8 md:p-12 text-center max-w-2xl mx-auto reveal">
+
+        <!-- Ícone WhatsApp grande -->
+        <div class="w-20 h-20 mx-auto mb-6 rounded-3xl bg-whats flex items-center justify-center shadow-lg shadow-whats/40">
+          <i data-lucide="message-circle" class="w-10 h-10 text-white"></i>
+        </div>
+
+        <p class="text-cinza-texto text-sm uppercase tracking-[0.25em] mb-2 font-semibold">Fale conosco</p>
+        <p class="font-display text-3xl md:text-4xl text-marinho mb-8 font-semibold">
+          (48) 99606-5926
+        </p>
+
+        <a
+          href="https://wa.me/5548996065926?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center justify-center gap-3 bg-rosa hover:bg-pink-500 text-white font-semibold text-base md:text-lg px-10 py-5 rounded-full shadow-xl shadow-rosa/30 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto"
+        >
+          <i data-lucide="message-circle" class="w-5 h-5"></i>
+          Iniciar Conversa no WhatsApp
+        </a>
+
+        <!-- Redes sociais -->
+        <div class="mt-10 pt-8 border-t border-rosa-claro">
+          <p class="text-cinza-texto text-xs uppercase tracking-[0.25em] mb-4 font-semibold">Siga nas redes</p>
+          <div class="flex items-center justify-center gap-4">
+            <!-- TROCAR: link real do Instagram -->
+            <a href="#" aria-label="Instagram da Coisas de Clarice" class="w-12 h-12 rounded-full bg-marinho hover:bg-rosa text-white flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5">
+              <i data-lucide="instagram" class="w-5 h-5"></i>
+            </a>
+            <!-- TROCAR: link real do TikTok -->
+            <a href="#" aria-label="TikTok da Coisas de Clarice" class="w-12 h-12 rounded-full bg-marinho hover:bg-rosa text-white flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5">
+              <i data-lucide="music-2" class="w-5 h-5"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       RODAPÉ
+       ========================================================= -->
+  <footer class="bg-marinho text-white py-16">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid md:grid-cols-3 gap-10 mb-10">
+
+        <!-- Coluna 1 — Sobre -->
+        <div>
+          <div class="flex items-center gap-2 mb-4">
+            <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M32 32 C 22 18, 8 16, 8 28 C 8 38, 18 42, 32 32 Z" fill="#F472B6"/>
+              <path d="M32 32 C 42 18, 56 16, 56 28 C 56 38, 46 42, 32 32 Z" fill="#F472B6"/>
+              <path d="M32 32 C 24 38, 14 44, 14 50 C 14 56, 24 54, 32 44 Z" fill="#FDE8F0"/>
+              <path d="M32 32 C 40 38, 50 44, 50 50 C 50 56, 40 54, 32 44 Z" fill="#FDE8F0"/>
+              <line x1="32" y1="14" x2="32" y2="48" stroke="#FFFFFF" stroke-width="1.5" class="dotted-line"/>
+            </svg>
+            <span class="font-display text-xl font-bold">
+              Coisas de <span class="italic text-rosa">Clarice</span>
+            </span>
+          </div>
+          <p class="text-white/70 text-sm leading-relaxed">
+            Papelaria personalizada feita com amor, atenção aos detalhes e muito carinho. Para celebrar suas histórias mais especiais.
+          </p>
+        </div>
+
+        <!-- Coluna 2 — Links rápidos -->
+        <div>
+          <h4 class="font-display text-lg mb-4">Links Rápidos</h4>
+          <ul class="space-y-2 text-sm text-white/70">
+            <li><a href="#hero" class="hover:text-rosa transition-colors">Início</a></li>
+            <li><a href="#sobre" class="hover:text-rosa transition-colors">Sobre</a></li>
+            <li><a href="#categorias" class="hover:text-rosa transition-colors">Categorias</a></li>
+            <li><a href="#galeria" class="hover:text-rosa transition-colors">Galeria</a></li>
+            <li><a href="catalogo.html" class="hover:text-rosa transition-colors">Catálogo Completo</a></li>
+          </ul>
+        </div>
+
+        <!-- Coluna 3 — Contato -->
+        <div>
+          <h4 class="font-display text-lg mb-4">Contato</h4>
+          <ul class="space-y-3 text-sm text-white/70">
+            <li class="flex items-center gap-2">
+              <i data-lucide="phone" class="w-4 h-4 text-rosa"></i>
+              <a href="https://wa.me/5548996065926" target="_blank" rel="noopener" class="hover:text-rosa transition-colors">(48) 99606-5926</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-rosa"></i>
+              Enviamos para todo o Brasil
+            </li>
+          </ul>
+          <div class="flex gap-3 mt-5">
+            <!-- TROCAR: link real do Instagram -->
+            <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
+              <i data-lucide="instagram" class="w-4 h-4"></i>
+            </a>
+            <!-- TROCAR: link real do TikTok -->
+            <a href="#" aria-label="TikTok" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
+              <i data-lucide="music-2" class="w-4 h-4"></i>
+            </a>
+            <a href="https://wa.me/5548996065926" target="_blank" rel="noopener" aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 pt-6 text-center text-sm text-white/60">
+        © 2026 Coisas de Clarice. Feito com 💕
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       BOTÃO FLUTUANTE WHATSAPP
+       ========================================================= -->
+  <a
+    href="https://wa.me/5548996065926?text=Olá!%20Vim%20pelo%20site"
+    target="_blank"
+    rel="noopener"
+    aria-label="Falar no WhatsApp"
+    class="pulse-ring fixed bottom-6 right-6 z-40 w-14 h-14 md:w-16 md:h-16 bg-whats hover:bg-green-600 text-white rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110"
+  >
+    <i data-lucide="message-circle" class="w-6 h-6 md:w-7 md:h-7"></i>
+  </a>
+
+  <!-- =========================================================
+       SCRIPTS
+       ========================================================= -->
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    // Inicializa ícones Lucide
+    lucide.createIcons();
+
+    // ==== Menu mobile ====
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    // Fechar menu ao clicar em link
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    // ==== Animação fade-in com IntersectionObserver ====
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
