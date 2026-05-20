@@ -6,12 +6,12 @@
 
   <!-- SEO -->
   <title>Catálogo Completo — Coisas de Clarice | Papelaria Personalizada</title>
-  <meta name="description" content="Conheça nosso catálogo completo de papelaria personalizada: convites, lembrancinhas, topo de bolo, itens para festas e kits sob medida." />
+  <meta name="description" content="Conheça nosso catálogo completo de papelaria personalizada: convites, lembrancinhas, topo de bolo e itens para festas sob medida." />
   <meta name="author" content="Coisas de Clarice" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Catálogo Completo — Coisas de Clarice" />
-  <meta property="og:description" content="Convites, lembrancinhas, topos de bolo, itens para festas e kits personalizados." />
+  <meta property="og:description" content="Convites, lembrancinhas, topos de bolo e itens para festas." />
   <meta property="og:type" content="website" />
   <!-- TROCAR: imagem de divulgação -->
   <meta property="og:image" content="https://picsum.photos/1200/630?random=21" />
@@ -110,7 +110,128 @@
     .card-produto img {
       transition: transform 600ms ease;
     }
-    .card-produto:hover img { transform: scale(1.06); }
+    .card-produto:hover img:not(.carousel-img) { transform: scale(1.06); }
+
+    /* ===== Carrossel de imagens do produto ===== */
+    .carousel {
+      background: #FDE8F0;
+      cursor: zoom-in;
+    }
+    .carousel-track {
+      position: relative;
+    }
+    .carousel-img {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 600ms ease;
+    }
+    .carousel-img.active {
+      opacity: 1;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.85);
+      color: #3B3F8C;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px -2px rgba(0,0,0,0.15);
+      opacity: 0;
+      transition: opacity 300ms ease, background 200ms ease, transform 200ms ease;
+      z-index: 3;
+    }
+    .carousel:hover .carousel-btn { opacity: 1; }
+    .carousel-btn:hover {
+      background: #F472B6;
+      color: #fff;
+      transform: translateY(-50%) scale(1.1);
+    }
+    .carousel-prev { left: 10px; }
+    .carousel-next { right: 10px; }
+    /* Em telas touch (sem hover real), mantém botões sempre visíveis */
+    @media (hover: none) {
+      .carousel-btn { opacity: 0.9; }
+    }
+    .carousel-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 3;
+    }
+    .carousel-dots button {
+      width: 7px;
+      height: 7px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.7);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: background 200ms ease, width 200ms ease;
+    }
+    .carousel-dots button.active {
+      background: #F472B6;
+      width: 18px;
+    }
+
+    /* ===== Lightbox ===== */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 17, 40, 0.92);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1rem;
+      opacity: 0;
+      transition: opacity 300ms ease;
+    }
+    .lightbox.open { display: flex; opacity: 1; }
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 25px 60px -10px rgba(0,0,0,0.6);
+      animation: zoomIn 350ms ease;
+    }
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 200ms ease, transform 200ms ease;
+    }
+    .lightbox-close:hover {
+      background: #F472B6;
+      transform: scale(1.08);
+    }
   </style>
 </head>
 
@@ -155,7 +276,7 @@
       </ul>
 
       <a
-        href="https://wa.me/5548996065926?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
+        href="https://wa.me/5548991218191?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
         target="_blank"
         rel="noopener"
         class="hidden lg:inline-flex items-center gap-2 bg-rosa hover:bg-pink-500 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
@@ -181,7 +302,7 @@
         <li><a href="catalogo.html" class="block py-3 text-rosa font-semibold border-b border-rosa-claro/60">Catálogo Completo</a></li>
         <li class="pt-3">
           <a
-            href="https://wa.me/5548996065926?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
+            href="https://wa.me/5548991218191?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
             target="_blank"
             rel="noopener"
             class="flex items-center justify-center gap-2 bg-rosa text-white font-semibold px-5 py-3 rounded-full"
@@ -241,9 +362,6 @@
         <button data-filtro="itens-para-festas" class="filtro-btn px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
           Itens para Festas
         </button>
-        <button data-filtro="kits" class="filtro-btn px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
-          Kits
-        </button>
       </div>
     </div>
   </section>
@@ -285,17 +403,34 @@
 
           <!-- Card produto -->
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="convites">
-            <div class="aspect-[4/3] overflow-hidden">
-              <!-- TROCAR: imagem real do produto -->
-              <img src="https://picsum.photos/600/450?random=101" alt="Convite Floral Aquarela" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/convites/datasespeciais/1cd_charevelacao%20(1).webp" alt="Convite Datas Especiais — Chá Revelação" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/datasespeciais/1cd_charevelacao%20(2).webp" alt="Convite Datas Especiais — Chá Revelação" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/datasespeciais/2cd_batizado%20(1).webp" alt="Convite Datas Especiais — Batizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/datasespeciais/2cd_batizado%20(2).webp" alt="Convite Datas Especiais — Batizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/datasespeciais/3cd_crisma%20(1).webp" alt="Convite Datas Especiais — Crisma" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/datasespeciais/3cd_crisma%20(2).webp" alt="Convite Datas Especiais — Crisma" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/datasespeciais/3cd_crisma%20(3).webp" alt="Convite Datas Especiais — Crisma" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Convites</span>
-              <!-- TROCAR: nome real do produto -->
-              <h3 class="font-display text-xl text-marinho mb-2">Convite Floral Aquarela</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 8,90</strong></p>
+              <h3 class="font-display text-xl text-marinho mb-2">Convite Datas Especiais</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 14,99</strong></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Floral%20Aquarela.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Datas%20Especiais.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -306,15 +441,31 @@
           </article>
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="convites">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=102" alt="Convite Aniversário" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/convites/aniversario/2ca_adulto%20(1).webp" alt="Convite Aniversário Adulto" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/aniversario/2ca_adulto%20(2).webp" alt="Convite Aniversário Adulto" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/aniversario/2ca_adulto%20(4).webp" alt="Convite Aniversário Adulto" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/aniversario/2ca_adulto%20(5).webp" alt="Convite Aniversário Adulto" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Convites</span>
               <h3 class="font-display text-xl text-marinho mb-2">Convite Aniversário</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 12,50</strong></p>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 9,99</strong></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Aniversário.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Aniversário.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -325,34 +476,32 @@
           </article>
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="convites">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=103" alt="Convite Infantil Temático" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/convites/aniversario/1ca_infantil%20(1).webp" alt="Convite Infantil Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/aniversario/1ca_infantil%20(2).webp" alt="Convite Infantil Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/aniversario/1ca_infantil%20(3).webp" alt="Convite Infantil Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/aniversario/1ca_infantil%20(4).webp" alt="Convite Infantil Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/convites/aniversario/1ca_infantil%20(5).webp" alt="Convite Infantil Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Convites</span>
               <h3 class="font-display text-xl text-marinho mb-2">Convite Infantil Temático</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 6,90</strong></p>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 14,99</strong></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Infantil%20Tem%C3%A1tico.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="convites">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=104" alt="Convite Chá de Bebê Delicado" class="w-full h-full object-cover" loading="lazy"/>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Convites</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Convite Chá de Bebê Delicado</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 7,50</strong></p>
-              <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Ch%C3%A1%20de%20Beb%C3%AA%20Delicado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Infantil%20Tem%C3%A1tico.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -375,15 +524,30 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="lembrancinhas">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=201" alt="Tag Personalizada com Fita" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/lembrancinhas/lembrancinhas/3ll_tubinhos%20(1).webp" alt="Tubetes Personalizados" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/lembrancinhas/3ll_tubinhos%20(2).webp" alt="Tubetes Personalizados" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/lembrancinhas/3ll_tubinhos%20(3).webp" alt="Tubetes Personalizados" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Lembrancinhas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Tag Personalizada com Fita</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 1,90</strong></p>
+              <h3 class="font-display text-xl text-marinho mb-2">Tubetes Personalizados</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 2,99</strong> <span class="block text-xs text-cinza-texto/90 mt-1">(quantidade mínima de 10 unidades)</span></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Tag%20Personalizada%20com%20Fita.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Tubetes%20Personalizados.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -394,15 +558,32 @@
           </article>
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="lembrancinhas">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=202" alt="Caixa Lembrancinha Aniversário" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas%20(6).webp" alt="Caixa Lembrancinha Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/lembrancinhas/2ll_caixinhas%20(1).webp" alt="Caixa Lembrancinha Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/lembrancinhas/2ll_caixinhas%20(3).webp" alt="Caixa Lembrancinha Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/lembrancinhas/2ll_caixinhas%20(2).webp" alt="Caixa Lembrancinha Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/lembrancinhas/2ll_caixinhas%20(4).webp" alt="Caixa Lembrancinha Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Lembrancinhas</span>
               <h3 class="font-display text-xl text-marinho mb-2">Caixa Lembrancinha Aniversário</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 4,50</strong></p>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 2,99</strong> <span class="block text-xs text-cinza-texto/90 mt-1">(quantidade mínima de 10 unidades)</span></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Caixa%20Lembrancinha%20Aniversário.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Caixa%20Lembrancinha%20Aniversário.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -413,34 +594,32 @@
           </article>
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="lembrancinhas">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=203" alt="Saquinho Surpresa Personalizado" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas%20(1).webp" alt="Saquinho Surpresa Personalizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas%20(2).webp" alt="Saquinho Surpresa Personalizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas%20(3).webp" alt="Saquinho Surpresa Personalizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas%20(4).webp" alt="Saquinho Surpresa Personalizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas%20(5).webp" alt="Saquinho Surpresa Personalizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Lembrancinhas</span>
               <h3 class="font-display text-xl text-marinho mb-2">Saquinho Surpresa Personalizado</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 3,20</strong></p>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 2,99</strong> <span class="block text-xs text-cinza-texto/90 mt-1">(quantidade mínima de 10 unidades)</span></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Saquinho%20Surpresa%20Personalizado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="lembrancinhas">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=204" alt="Marcador de Página Encantador" class="w-full h-full object-cover" loading="lazy"/>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Lembrancinhas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Marcador de Página Encantador</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 2,50</strong></p>
-              <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Marcador%20de%20P%C3%A1gina%20Encantador.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Saquinho%20Surpresa%20Personalizado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -464,15 +643,33 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="topo-de-bolo">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=301" alt="Topo de Bolo Nome Personalizado" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/topos/topodebolo/1ttd_datasespeciais%20(1).webp" alt="Topo de Bolo Datas Especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1ttd_datasespeciais%20(2).webp" alt="Topo de Bolo Datas Especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1ttd_datasespeciais%20(3).webp" alt="Topo de Bolo Datas Especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1ttd_datasespeciais%20(4).webp" alt="Topo de Bolo Datas Especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1ttd_datasespeciais%20(5).webp" alt="Topo de Bolo Datas Especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1ttd_datasespeciais%20(7).webp" alt="Topo de Bolo Datas Especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Topo de Bolo</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Nome Personalizado</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 25,00</strong></p>
+              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Datas Especiais</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 24,99</strong></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Nome%20Personalizado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Datas%20Especiais.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -483,15 +680,40 @@
           </article>
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="topo-de-bolo">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=302" alt="Topo de Bolo Idade Dourado" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/topos/topodebolo/1tti_tematicos%20(1).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1tta_tematicos%20(1).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1tta_tematicos%20(2).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1tti_tematicos%20(2).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/2tti_meninarato%20(1).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1tta_tematicos%20(4).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1tta_tematicos%20(5).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1tti_tematicos%20(3).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1tti_tematicos%20(5).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/2tti_meninarato%20(4).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/4tti_tematicos%20(2).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/5tti_herois%20(1).webp" alt="Topo de Bolo Temático — Heróis" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/5tti_herois%20(4).webp" alt="Topo de Bolo Temático — Heróis" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Topo de Bolo</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Idade Dourado</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 22,00</strong></p>
+              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Temáticos</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 24,99</strong></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Idade%20Dourado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Tem%C3%A1ticos.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -502,15 +724,37 @@
           </article>
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="topo-de-bolo">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=303" alt="Topo de Bolo Aniversário" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/topos/topodebolo/2tta_adultos%20(6).webp" alt="Topo de Bolo Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/2tta_adultos%20(2).webp" alt="Topo de Bolo Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/2tta_adultos%20(3).webp" alt="Topo de Bolo Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/3tta_futebol%20(3).webp" alt="Topo de Bolo Aniversário — Futebol" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/2tta_adultos%20(4).webp" alt="Topo de Bolo Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/3tta_futebol%20(2).webp" alt="Topo de Bolo Aniversário — Futebol" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/2tta_adultos%20(5).webp" alt="Topo de Bolo Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/2tta_adultos%20(7).webp" alt="Topo de Bolo Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/3tti_jardim%20(2).webp" alt="Topo de Bolo Aniversário — Jardim" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/3tta_futebol%20(1).webp" alt="Topo de Bolo Aniversário — Futebol" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Topo de Bolo</span>
               <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Aniversário</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 38,00</strong></p>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 24,99</strong></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Aniversário.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Aniversário.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -521,15 +765,32 @@
           </article>
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="topo-de-bolo">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=304" alt="Topo de Bolo Tema Floral" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/topos/topodebolo/1tti_tematicos%20(6).webp" alt="Topo de Bolo 3D em Camadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1tti_tematicos%20(9).webp" alt="Topo de Bolo 3D em Camadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1ttt_3d%20(1).webp" alt="Topo de Bolo 3D em Camadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1ttt_3d%20(2).webp" alt="Topo de Bolo 3D em Camadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/topodebolo/1ttt_3d%20(3).webp" alt="Topo de Bolo 3D em Camadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Topo de Bolo</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Tema Floral</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 28,00</strong></p>
+              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo 3D em Camadas</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 34,99</strong></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Tema%20Floral.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%203D%20em%20Camadas.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -553,15 +814,31 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="itens-para-festas">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=401" alt="Plaquinha para Doces" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/topos/doces/1ttd_topodoce%20(1).webp" alt="Topper de docinhos" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/doces/1ttd_topodoce%20(2).webp" alt="Topper de docinhos" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/doces/1ttd_topodoce%20(3).webp" alt="Topper de docinhos" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/topos/doces/1ttd_topodoce%20(4).webp" alt="Topper de docinhos" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Itens para Festas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Plaquinha para Doces</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 4,90</strong></p>
+              <h3 class="font-display text-xl text-marinho mb-2">Topper de docinhos</h3>
+              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 0,20</strong> <span class="block text-xs text-cinza-texto/90 mt-1">(quantidade mínima de 50 unidades)</span></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Plaquinha%20para%20Doces.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topper%20de%20docinhos.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -572,15 +849,32 @@
           </article>
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="itens-para-festas">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=402" alt="Topper para Cupcake" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/lembrancinhas/mesa/1lm_centrodemesa%20(1).webp" alt="Centro de Mesa" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/mesa/1lm_centrodemesa%20(2).webp" alt="Centro de Mesa" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/mesa/1lm_centrodemesa%20(3).webp" alt="Centro de Mesa" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/mesa/1lm_centrodemesa%20(4).webp" alt="Centro de Mesa" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/mesa/1lm_centrodemesa%20(5).webp" alt="Centro de Mesa" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Itens para Festas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Topper para Cupcake</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 1,50</strong></p>
+              <h3 class="font-display text-xl text-marinho mb-2">Centro de Mesa</h3>
+              <p class="text-cinza-texto text-sm mb-4"><strong class="text-marinho text-base">Quantidade e valor sob consulta</strong></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topper%20para%20Cupcake.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Centro%20de%20Mesa.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -591,15 +885,33 @@
           </article>
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="itens-para-festas">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=403" alt="Faixa de Parabéns Personalizada" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/lembrancinhas/tematicos/4lt_sereias%20(2).webp" alt="Kits de Festas — Sereias" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/lembrancinhas/4ll_modeloquadrado.webp" alt="Kits de Festas — Modelo quadrado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/tematicos/3lt_princesinhas%20(3).webp" alt="Kits de Festas — Princesinhas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/lembrancinhas/5ll_modelotorre.webp" alt="Kits de Festas — Modelo torre" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/tematicos/2lt_arraia%20(3).webp" alt="Kits de Festas — Arraiá" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/tematicos/1lt_casamagicagabi%20(3).webp" alt="Kits de Festas — Casa Mágica" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Itens para Festas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Faixa de Parabéns Personalizada</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 18,00</strong></p>
+              <h3 class="font-display text-xl text-marinho mb-2">Kits de Festas</h3>
+              <p class="text-cinza-texto text-sm mb-4"><strong class="text-marinho text-base">Quantidade e valor sob consulta</strong></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Faixa%20de%20Parab%C3%A9ns%20Personalizada.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Kits%20de%20Festas.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -610,104 +922,33 @@
           </article>
 
           <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="itens-para-festas">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=404" alt="Caixinha Porta-Bem-Casado" class="w-full h-full object-cover" loading="lazy"/>
+            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+              <div class="carousel-track w-full h-full">
+                <img src="imagens/lembrancinhas/especiais/1le_canetas%20(1).webp" alt="Brindes — Canetas personalizadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/especiais/1le_canetas%20(2).webp" alt="Brindes — Canetas personalizadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/especiais/1le_canetas%20(3).webp" alt="Brindes — Canetas personalizadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/especiais/1le_canetas%20(4).webp" alt="Brindes — Canetas personalizadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/especiais/2le_capacaderno.webp" alt="Brindes — Capa de caderno" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+                <img src="imagens/lembrancinhas/especiais/3le_dataespeciais.webp" alt="Brindes — Datas especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
+              </div>
+              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+              <div class="carousel-dots"></div>
             </div>
             <div class="p-6">
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Itens para Festas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Caixinha Porta-Bem-Casado</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 3,50</strong></p>
+              <h3 class="font-display text-xl text-marinho mb-2">Brindes, datas comemorativas e Escolar</h3>
+              <p class="text-cinza-texto text-sm mb-4"><strong class="text-marinho text-base">Quantidade e valor sob consulta</strong></p>
               <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Caixinha%20Porta-Bem-Casado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-        </div>
-      </div>
-
-      <!-- ===== KITS PERSONALIZADOS ===== -->
-      <div id="kits" class="mb-12 categoria-bloco" data-categoria="kits">
-        <div class="flex items-center gap-3 mb-8 reveal">
-          <i data-lucide="package" class="w-6 h-6 text-rosa"></i>
-          <h2 class="font-display text-2xl md:text-3xl font-semibold text-marinho">Kits Personalizados</h2>
-          <span class="flex-1 h-px bg-rosa-claro ml-4"></span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="kits">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=501" alt="Kit Festa Aniversário Completo" class="w-full h-full object-cover" loading="lazy"/>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Kits</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Kit Festa Aniversário Completo</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 120,00</strong></p>
-              <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Kit%20Festa%20Anivers%C3%A1rio%20Completo.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="kits">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=502" alt="Kit Aniversário Coordenado" class="w-full h-full object-cover" loading="lazy"/>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Kits</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Kit Aniversário Coordenado</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 280,00</strong></p>
-              <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Kit%20Aniversário%20Coordenado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="kits">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=503" alt="Kit Chá de Bebê Encantador" class="w-full h-full object-cover" loading="lazy"/>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Kits</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Kit Chá de Bebê Encantador</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 95,00</strong></p>
-              <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Kit%20Ch%C3%A1%20de%20Beb%C3%AA%20Encantador.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="kits">
-            <div class="aspect-[4/3] overflow-hidden">
-              <img src="https://picsum.photos/600/450?random=504" alt="Kit Festa Infantil Premium" class="w-full h-full object-cover" loading="lazy"/>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Kits</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Kit Festa Infantil Premium</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 150,00</strong></p>
-              <a
-                href="https://wa.me/5548996065926?text=Olá!%20Tenho%20interesse%20no%20produto:%20Kit%20Festa%20Infantil%20Premium.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
+                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Brindes,%20datas%20comemorativas%20e%20Escolar.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
                 class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
@@ -735,7 +976,7 @@
           Trabalhamos sob medida! Conta sua ideia para a gente e criamos algo único e especial para o seu evento.
         </p>
         <a
-          href="https://wa.me/5548996065926?text=Olá!%20Gostaria%20de%20um%20projeto%20personalizado%20fora%20do%20catálogo."
+          href="https://wa.me/5548991218191?text=Olá!%20Gostaria%20de%20um%20projeto%20personalizado%20fora%20do%20catálogo."
           target="_blank"
           rel="noopener"
           class="inline-flex items-center gap-2 bg-rosa hover:bg-pink-500 text-white font-semibold px-8 py-4 rounded-full shadow-lg shadow-rosa/30 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
@@ -789,7 +1030,19 @@
           <ul class="space-y-3 text-sm text-white/70">
             <li class="flex items-center gap-2">
               <i data-lucide="phone" class="w-4 h-4 text-rosa"></i>
-              <a href="https://wa.me/5548996065926" target="_blank" rel="noopener" class="hover:text-rosa transition-colors">(48) 99606-5926</a>
+              <a href="https://wa.me/5548991218191" target="_blank" rel="noopener" class="hover:text-rosa transition-colors">(48) 99121-8191</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="mail" class="w-4 h-4 text-rosa"></i>
+              <a href="mailto:contato@coisasdeclarice.com.br" class="hover:text-rosa transition-colors break-all">contato@coisasdeclarice.com.br</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-rosa shrink-0">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+              </svg>
+              <a href="https://www.instagram.com/coisasde_clarice" target="_blank" rel="noopener" class="hover:text-rosa transition-colors">@coisasde_clarice</a>
             </li>
             <li class="flex items-center gap-2">
               <i data-lucide="map-pin" class="w-4 h-4 text-rosa"></i>
@@ -797,30 +1050,48 @@
             </li>
           </ul>
           <div class="flex gap-3 mt-5">
-            <!-- TROCAR: link real do Instagram -->
-            <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
-              <i data-lucide="instagram" class="w-4 h-4"></i>
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/coisasde_clarice" target="_blank" rel="noopener" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+              </svg>
             </a>
-            <!-- TROCAR: link real do TikTok -->
-            <a href="#" aria-label="TikTok" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
-              <i data-lucide="music-2" class="w-4 h-4"></i>
-            </a>
-            <a href="https://wa.me/5548996065926" target="_blank" rel="noopener" aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
+            <a href="https://wa.me/5548991218191" target="_blank" rel="noopener" aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
               <i data-lucide="message-circle" class="w-4 h-4"></i>
             </a>
           </div>
         </div>
       </div>
 
-      <div class="border-t border-white/10 pt-6 text-center text-sm text-white/60">
-        © 2026 Coisas de Clarice. Feito com 💕
+      <div class="border-t border-white/10 pt-6 space-y-4">
+        <p class="text-xs text-white/60 leading-relaxed text-justify max-w-5xl mx-auto">
+          Todas as imagens, fotografias e designs apresentados neste site são de autoria e propriedade exclusiva da Coisas de Clarice — Papelaria Personalizada. A reprodução, cópia, distribuição ou uso comercial não autorizado é vedado pela Lei de Direitos Autorais (Lei 9.610/98). Os personagens, marcas e temas eventualmente referenciados pertencem aos seus respectivos detentores de direitos; trabalhamos com produção artesanal personalizada sob encomenda, sem vínculo oficial com tais marcas.
+        </p>
+        <p class="text-center text-sm text-white/60">
+          © 2026 Coisas de Clarice. Feito com 💕
+        </p>
       </div>
     </div>
   </footer>
 
+  <!-- =========================================================
+       LIGHTBOX
+       ========================================================= -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Visualização ampliada">
+    <button type="button" class="lightbox-close" aria-label="Fechar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <img id="lightboxImg" class="lightbox-img" src="" alt=""/>
+  </div>
+
   <!-- BOTÃO FLUTUANTE WHATSAPP -->
   <a
-    href="https://wa.me/5548996065926?text=Olá!%20Vim%20pelo%20site"
+    href="https://wa.me/5548991218191?text=Olá!%20Vim%20pelo%20site"
     target="_blank"
     rel="noopener"
     aria-label="Falar no WhatsApp"
@@ -888,9 +1159,9 @@
       btn.addEventListener('click', () => aplicarFiltro(btn.dataset.filtro));
     });
 
-    // ==== Filtragem inicial via hash da URL (#convites, #kits, etc.) ====
+    // ==== Filtragem inicial via hash da URL (#convites, #lembrancinhas, etc.) ====
     const hashInicial = window.location.hash.replace('#', '');
-    const filtrosValidos = ['convites','lembrancinhas','topo-de-bolo','itens-para-festas','kits'];
+    const filtrosValidos = ['convites','lembrancinhas','topo-de-bolo','itens-para-festas'];
     if (filtrosValidos.includes(hashInicial)) {
       aplicarFiltro(hashInicial);
       // Pequeno delay para garantir o scroll após renderização
@@ -899,6 +1170,102 @@
         if (alvo) alvo.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     }
+
+    // ==== Carrossel dos cards de produto ====
+    document.querySelectorAll('.carousel').forEach(carousel => {
+      const imgs = carousel.querySelectorAll('.carousel-img');
+      const prev = carousel.querySelector('.carousel-prev');
+      const next = carousel.querySelector('.carousel-next');
+      const dotsWrap = carousel.querySelector('.carousel-dots');
+      let idx = 0;
+      let autoplayTimer = null;
+
+      // Marca primeira imagem como ativa
+      imgs[0].classList.add('active');
+
+      // Cria os pontos (dots) — um por imagem
+      imgs.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `Ir para imagem ${i + 1}`);
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', (e) => {
+          e.stopPropagation();
+          goTo(i);
+          restartAutoplay();
+        });
+        dotsWrap.appendChild(dot);
+      });
+      const dots = dotsWrap.querySelectorAll('button');
+
+      function goTo(newIdx) {
+        imgs[idx].classList.remove('active');
+        dots[idx].classList.remove('active');
+        idx = (newIdx + imgs.length) % imgs.length;
+        imgs[idx].classList.add('active');
+        dots[idx].classList.add('active');
+      }
+
+      function startAutoplay() {
+        if (carousel.dataset.autoplay !== 'true' || imgs.length <= 1) return;
+        autoplayTimer = setInterval(() => goTo(idx + 1), 4000);
+      }
+      function stopAutoplay() {
+        if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
+      }
+      function restartAutoplay() {
+        stopAutoplay();
+        startAutoplay();
+      }
+
+      // Setas — stopPropagation para não abrir o lightbox ao clicar nelas
+      if (prev) prev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goTo(idx - 1);
+        restartAutoplay();
+      });
+      if (next) next.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goTo(idx + 1);
+        restartAutoplay();
+      });
+
+      // Pausa autoplay ao passar o mouse
+      carousel.addEventListener('mouseenter', stopAutoplay);
+      carousel.addEventListener('mouseleave', startAutoplay);
+
+      // Click na imagem (qualquer área que NÃO seja seta/dot) → abre lightbox
+      carousel.addEventListener('click', (e) => {
+        if (e.target.closest('.carousel-btn') || e.target.closest('.carousel-dots')) return;
+        openLightbox(imgs[idx].src, imgs[idx].alt);
+      });
+
+      startAutoplay();
+    });
+
+    // ==== Lightbox ====
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const btnLightboxClose = lightbox.querySelector('.lightbox-close');
+
+    function openLightbox(src, alt) {
+      lightboxImg.src = src;
+      lightboxImg.alt = alt || '';
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    btnLightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.classList.contains('open') && e.key === 'Escape') closeLightbox();
+    });
 
     // ==== Animação fade-in ====
     const observer = new IntersectionObserver((entries) => {
