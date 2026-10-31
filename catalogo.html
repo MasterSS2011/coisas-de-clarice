@@ -246,6 +246,9 @@
       background: #F472B6;
       transform: scale(1.08);
     }
+
+    /* === CMS: utilitário para esconder elementos quando campo está vazio no painel === */
+    .cms-hidden { display: none !important; }
   </style>
 </head>
 
@@ -289,7 +292,9 @@
         <li><a href="catalogo.html" class="text-rosa text-sm font-semibold border-b-2 border-rosa">Catálogo Completo</a></li>
       </ul>
 
+      <!-- CTA WhatsApp desktop (CMS: href dinâmico — mensagem padrão do painel) -->
       <a
+        data-cms-href="wa-link"
         href="https://wa.me/5548991218191?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
         target="_blank"
         rel="noopener"
@@ -315,7 +320,9 @@
         <li><a href="index.html#contato" class="block py-3 text-marinho font-medium border-b border-rosa-claro/60">Contato</a></li>
         <li><a href="catalogo.html" class="block py-3 text-rosa font-semibold border-b border-rosa-claro/60">Catálogo Completo</a></li>
         <li class="pt-3">
+          <!-- CTA WhatsApp mobile (CMS: href dinâmico — mensagem padrão) -->
           <a
+            data-cms-href="wa-link"
             href="https://wa.me/5548991218191?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações."
             target="_blank"
             rel="noopener"
@@ -443,7 +450,9 @@
               <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Convites</span>
               <h3 class="font-display text-xl text-marinho mb-2">Convite Datas Especiais</h3>
               <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 14,99</strong></p>
+              <!-- CMS: data-cms-wa-number preserva a mensagem personalizada do produto -->
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Datas%20Especiais.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -479,6 +488,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Convite Aniversário</h3>
               <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 9,99</strong></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Aniversário.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -515,6 +525,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Convite Infantil Temático</h3>
               <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 14,99</strong></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Infantil%20Tem%C3%A1tico.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -561,6 +572,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Tubetes Personalizados</h3>
               <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 2,99</strong> <span class="block text-xs text-cinza-texto/90 mt-1">(quantidade mínima de 10 unidades)</span></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Tubetes%20Personalizados.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -597,6 +609,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Caixa Lembrancinha Aniversário</h3>
               <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 2,99</strong> <span class="block text-xs text-cinza-texto/90 mt-1">(quantidade mínima de 10 unidades)</span></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Caixa%20Lembrancinha%20Aniversário.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -633,6 +646,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Saquinho Surpresa Personalizado</h3>
               <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 2,99</strong> <span class="block text-xs text-cinza-texto/90 mt-1">(quantidade mínima de 10 unidades)</span></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Saquinho%20Surpresa%20Personalizado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -683,6 +697,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Datas Especiais</h3>
               <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 24,99</strong></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Datas%20Especiais.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -727,6 +742,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Temáticos</h3>
               <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 24,99</strong></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Tem%C3%A1ticos.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -768,6 +784,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Aniversário</h3>
               <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 24,99</strong></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Aniversário.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -804,6 +821,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo 3D em Camadas</h3>
               <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 34,99</strong></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%203D%20em%20Camadas.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -852,6 +870,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Topper de docinhos</h3>
               <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 0,20</strong> <span class="block text-xs text-cinza-texto/90 mt-1">(quantidade mínima de 50 unidades)</span></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topper%20de%20docinhos.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -888,6 +907,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Centro de Mesa</h3>
               <p class="text-cinza-texto text-sm mb-4"><strong class="text-marinho text-base">Quantidade e valor sob consulta</strong></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Centro%20de%20Mesa.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -925,6 +945,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Kits de Festas</h3>
               <p class="text-cinza-texto text-sm mb-4"><strong class="text-marinho text-base">Quantidade e valor sob consulta</strong></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Kits%20de%20Festas.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -962,6 +983,7 @@
               <h3 class="font-display text-xl text-marinho mb-2">Brindes, datas comemorativas e Escolar</h3>
               <p class="text-cinza-texto text-sm mb-4"><strong class="text-marinho text-base">Quantidade e valor sob consulta</strong></p>
               <a
+                data-cms-wa-number
                 href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Brindes,%20datas%20comemorativas%20e%20Escolar.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
                 target="_blank"
                 rel="noopener"
@@ -981,7 +1003,7 @@
         <p class="font-display text-xl text-marinho">Nenhum produto encontrado nesta categoria.</p>
       </div>
 
-      <!-- CTA final -->
+      <!-- CTA final (CMS: wa-number preserva mensagem personalizada) -->
       <div class="mt-20 bg-gradient-to-r from-rosa-claro to-white rounded-3xl p-8 md:p-12 text-center reveal">
         <h3 class="font-display text-2xl md:text-3xl text-marinho mb-4">
           Não encontrou o que procurava?
@@ -990,6 +1012,7 @@
           Trabalhamos sob medida! Conta sua ideia para a gente e criamos algo único e especial para o seu evento.
         </p>
         <a
+          data-cms-wa-number
           href="https://wa.me/5548991218191?text=Olá!%20Gostaria%20de%20um%20projeto%20personalizado%20fora%20do%20catálogo."
           target="_blank"
           rel="noopener"
@@ -1044,11 +1067,17 @@
           <ul class="space-y-3 text-sm text-white/70">
             <li class="flex items-center gap-2">
               <i data-lucide="phone" class="w-4 h-4 text-rosa"></i>
-              <a href="https://wa.me/5548991218191" target="_blank" rel="noopener" class="hover:text-rosa transition-colors">(48) 99121-8191</a>
+              <!-- WhatsApp link + telefone (CMS: ambos dinâmicos) -->
+              <a data-cms-href="wa-link" href="https://wa.me/5548991218191" target="_blank" rel="noopener" class="hover:text-rosa transition-colors">
+                <span data-cms-text="wa-phone">(48) 99121-8191</span>
+              </a>
             </li>
             <li class="flex items-center gap-2">
               <i data-lucide="mail" class="w-4 h-4 text-rosa"></i>
-              <a href="mailto:contato@coisasdeclarice.com.br" class="hover:text-rosa transition-colors break-all">contato@coisasdeclarice.com.br</a>
+              <!-- Email (CMS: mailto + texto dinâmicos) -->
+              <a data-cms-href="email-mailto" href="mailto:contato@coisasdeclarice.com.br" class="hover:text-rosa transition-colors break-all">
+                <span data-cms-text="email">contato@coisasdeclarice.com.br</span>
+              </a>
             </li>
             <li class="flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-rosa shrink-0">
@@ -1056,7 +1085,8 @@
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
                 <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
               </svg>
-              <a href="https://www.instagram.com/coisasde_clarice" target="_blank" rel="noopener" class="hover:text-rosa transition-colors">@coisasde_clarice</a>
+              <!-- Instagram handle (CMS: href dinâmico, handle visual fica fixo) -->
+              <a data-cms-href="instagram" href="https://www.instagram.com/coisasde_clarice" target="_blank" rel="noopener" class="hover:text-rosa transition-colors">@coisasde_clarice</a>
             </li>
             <li class="flex items-center gap-2">
               <i data-lucide="map-pin" class="w-4 h-4 text-rosa"></i>
@@ -1064,15 +1094,16 @@
             </li>
           </ul>
           <div class="flex gap-3 mt-5">
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/coisasde_clarice" target="_blank" rel="noopener" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
+            <!-- Instagram (CMS: href dinâmico) -->
+            <a data-cms-href="instagram" href="https://www.instagram.com/coisasde_clarice" target="_blank" rel="noopener" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
                 <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
               </svg>
             </a>
-            <a href="https://wa.me/5548991218191" target="_blank" rel="noopener" aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
+            <!-- WhatsApp (CMS: href dinâmico) -->
+            <a data-cms-href="wa-link" href="https://wa.me/5548991218191" target="_blank" rel="noopener" aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/10 hover:bg-rosa flex items-center justify-center transition-colors">
               <i data-lucide="message-circle" class="w-4 h-4"></i>
             </a>
           </div>
@@ -1103,8 +1134,9 @@
     <img id="lightboxImg" class="lightbox-img" src="" alt=""/>
   </div>
 
-  <!-- BOTÃO FLUTUANTE WHATSAPP -->
+  <!-- BOTÃO FLUTUANTE WHATSAPP (CMS: href dinâmico) -->
   <a
+    data-cms-href="wa-link"
     href="https://wa.me/5548991218191?text=Olá!%20Vim%20pelo%20site"
     target="_blank"
     rel="noopener"
@@ -1292,6 +1324,100 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+  <!-- =========================================================
+       CMS LOADER — Carrega configurações do painel administrativo
+       Lê /conteudo/configuracoes.json e injeta nos elementos com data-cms-*
+       Suporta: data-cms-href, data-cms-text e data-cms-wa-number
+       ========================================================= -->
+  <script>
+    (async function cmsConfigLoader() {
+      // Valores padrão (fallback caso o JSON não carregue — número CORRETO)
+      const DEFAULTS = {
+        whatsapp: '5548991218191',
+        email: 'contato@coisasdeclarice.com.br',
+        instagram: 'https://www.instagram.com/coisasde_clarice',
+        mensagem_whatsapp: 'Olá! Vim pelo site e gostaria de mais informações.'
+      };
+
+      let config = { ...DEFAULTS };
+
+      // Tenta buscar o arquivo gerado pelo painel
+      try {
+        const resp = await fetch('/conteudo/configuracoes.json', { cache: 'no-cache' });
+        if (resp.ok) {
+          const data = await resp.json();
+          config = { ...DEFAULTS, ...data };
+          console.log('[CMS] Configurações carregadas do painel.');
+        } else {
+          console.warn('[CMS] configuracoes.json não encontrado — usando valores padrão.');
+        }
+      } catch (e) {
+        console.warn('[CMS] Erro ao carregar configuracoes.json — usando valores padrão.', e.message);
+      }
+
+      // Formata número: 5548991218191 → (48) 99121-8191
+      function formatarTelefone(num) {
+        const limpo = (num || '').replace(/\D/g, '');
+        if (limpo.length === 13 && limpo.startsWith('55')) {
+          return `(${limpo.substr(2,2)}) ${limpo.substr(4,5)}-${limpo.substr(9,4)}`;
+        }
+        if (limpo.length === 11) {
+          return `(${limpo.substr(0,2)}) ${limpo.substr(2,5)}-${limpo.substr(7,4)}`;
+        }
+        return num;
+      }
+
+      // Monta valores processados
+      const waNumber = (config.whatsapp || DEFAULTS.whatsapp).replace(/\D/g, '');
+      const waMsgEncoded = encodeURIComponent(config.mensagem_whatsapp || DEFAULTS.mensagem_whatsapp);
+      const waLinkCompleto = `https://wa.me/${waNumber}?text=${waMsgEncoded}`;
+      const waPhoneDisplay = formatarTelefone(waNumber);
+      const emailValor = (config.email || '').trim();
+      const emailMailto = emailValor ? `mailto:${emailValor}` : '';
+
+      // Mapa único de chaves → valores
+      const valores = {
+        'wa-link': waLinkCompleto,
+        'wa-phone': waPhoneDisplay,
+        'instagram': (config.instagram || '').trim(),
+        'email': emailValor,
+        'email-mailto': emailMailto
+      };
+
+      // Aplica a elementos com data-cms-href (substitui href do link)
+      document.querySelectorAll('[data-cms-href]').forEach(el => {
+        const chave = el.getAttribute('data-cms-href');
+        const valor = valores[chave];
+        if (valor) {
+          el.href = valor;
+          el.classList.remove('cms-hidden');
+        } else {
+          // Se não houver valor, oculta o elemento
+          el.classList.add('cms-hidden');
+        }
+      });
+
+      // Aplica a elementos com data-cms-text (substitui texto exibido)
+      document.querySelectorAll('[data-cms-text]').forEach(el => {
+        const chave = el.getAttribute('data-cms-text');
+        const valor = valores[chave];
+        if (valor !== undefined && valor !== '') {
+          el.textContent = valor;
+        }
+      });
+
+      // Aplica a elementos com data-cms-wa-number (substitui APENAS o número do WhatsApp,
+      // preservando a mensagem personalizada ?text=... — usado em botões Pedir Orçamento)
+      document.querySelectorAll('[data-cms-wa-number]').forEach(el => {
+        const hrefAtual = el.getAttribute('href') || '';
+        const match = hrefAtual.match(/^(https:\/\/wa\.me\/)(\d+)(.*)$/);
+        if (match) {
+          el.href = `${match[1]}${waNumber}${match[3]}`;
+        }
+      });
+    })();
   </script>
 </body>
 </html>
