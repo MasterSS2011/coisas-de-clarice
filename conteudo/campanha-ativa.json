@@ -2,6 +2,14 @@
   "ativa": true,
   "imagem_hero": "/imagens/painel/campanha_natal.jpg",
   "banner_texto": "Corra e garanta sua Personalização!!!",
+  "destaques": [
+    {
+      "foto": "https://www.instagram.com/p/De7xdggxKfM/",
+      "nome": "Kit Bolinhas de Natal Personalizadas",
+      "descricao": "Personalize com fotos, marca da sua empresa ou até mesmo com mensagens personalizadas.",
+      "mensagem_whatsapp": "Olá, gostei das bolinhas, gostaria de orçar com você."
+    }
+  ],
   "data_fim": "2026-12-21",
   "imagem_banner": "",
   "nome": "Natal 2026",
