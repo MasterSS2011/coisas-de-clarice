@@ -226,25 +226,50 @@
       from { opacity: 0; transform: scale(0.92); }
       to   { opacity: 1; transform: scale(1); }
     }
-    .lightbox-close {
+    .lightbox-btn {
       position: absolute;
-      top: 1.25rem;
-      right: 1.25rem;
-      width: 48px;
-      height: 48px;
-      border-radius: 9999px;
       background: rgba(255,255,255,0.12);
       border: 1px solid rgba(255,255,255,0.2);
       color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: background 200ms ease, transform 200ms ease;
     }
-    .lightbox-close:hover {
+    .lightbox-btn:hover {
       background: #F472B6;
       transform: scale(1.08);
+    }
+    .lightbox-close { top: 1.25rem; right: 1.25rem; }
+    .lightbox-prev  { left: 1.25rem;  top: 50%; transform: translateY(-50%); }
+    .lightbox-next  { right: 1.25rem; top: 50%; transform: translateY(-50%); }
+    .lightbox-prev:hover { transform: translateY(-50%) scale(1.08); }
+    .lightbox-next:hover { transform: translateY(-50%) scale(1.08); }
+    .lightbox-counter {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      background: rgba(0,0,0,0.35);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+    /* Esconde prev/next e counter quando só há 1 imagem */
+    .lightbox.single-image .lightbox-prev,
+    .lightbox.single-image .lightbox-next,
+    .lightbox.single-image .lightbox-counter { display: none; }
+    @media (max-width: 640px) {
+      .lightbox-prev { left: 0.5rem; }
+      .lightbox-next { right: 0.5rem; }
+      .lightbox-btn { width: 42px; height: 42px; }
     }
 
     /* === CMS: utilitário para esconder elementos quando campo está vazio no painel === */
@@ -654,13 +679,24 @@
        LIGHTBOX
        ========================================================= -->
   <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Visualização ampliada">
-    <button type="button" class="lightbox-close" aria-label="Fechar">
+    <button type="button" class="lightbox-btn lightbox-close" aria-label="Fechar">
       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"/>
         <line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
     </button>
+    <button type="button" class="lightbox-btn lightbox-prev" aria-label="Imagem anterior">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <button type="button" class="lightbox-btn lightbox-next" aria-label="Próxima imagem">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+    </button>
     <img id="lightboxImg" class="lightbox-img" src="" alt=""/>
+    <span id="lightboxCounter" class="lightbox-counter"></span>
   </div>
 
   <!-- BOTÃO FLUTUANTE WHATSAPP (CMS: href dinâmico) -->
@@ -966,7 +1002,10 @@
 
         carousel.addEventListener('click', (e) => {
           if (e.target.closest('.carousel-btn') || e.target.closest('.carousel-dots')) return;
-          openLightbox(imgs[idx].src, imgs[idx].alt);
+          // Passa a lista COMPLETA das fotos do produto para a lightbox,
+          // começando pela foto atualmente visível no carrossel
+          const listaFotos = imgs.map(img => ({ src: img.src, alt: img.alt || '' }));
+          openLightbox(listaFotos, idx);
         });
 
         startAutoplay();
@@ -1033,14 +1072,43 @@
       });
     }
 
-    // ==== Lightbox ====
+    // ==== Lightbox (com navegação prev/next quando múltiplas imagens) ====
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCounter = document.getElementById('lightboxCounter');
     const btnLightboxClose = lightbox.querySelector('.lightbox-close');
+    const btnLightboxPrev  = lightbox.querySelector('.lightbox-prev');
+    const btnLightboxNext  = lightbox.querySelector('.lightbox-next');
 
-    function openLightbox(src, alt) {
-      lightboxImg.src = src;
-      lightboxImg.alt = alt || '';
+    // Estado: lista de imagens e índice atual
+    let lightboxImages = [];
+    let lightboxIndex = 0;
+
+    function renderLightboxImage() {
+      const item = lightboxImages[lightboxIndex];
+      if (!item) return;
+      lightboxImg.src = item.src;
+      lightboxImg.alt = item.alt || '';
+      lightboxCounter.textContent = `${lightboxIndex + 1} / ${lightboxImages.length}`;
+    }
+
+    /**
+     * Abre lightbox.
+     * - Chamada antiga: openLightbox(src, alt)  → compatibilidade (1 imagem só)
+     * - Chamada nova:   openLightbox(imagensArray, index) → com navegação
+     *   onde imagensArray = [{src, alt}, {src, alt}, ...]
+     */
+    function openLightbox(srcOrList, altOrIndex) {
+      if (Array.isArray(srcOrList)) {
+        lightboxImages = srcOrList.filter(i => i && i.src);
+        lightboxIndex = Math.max(0, Math.min(altOrIndex || 0, lightboxImages.length - 1));
+      } else {
+        // Modo compatível: 1 só imagem
+        lightboxImages = [{ src: srcOrList, alt: altOrIndex || '' }];
+        lightboxIndex = 0;
+      }
+      lightbox.classList.toggle('single-image', lightboxImages.length <= 1);
+      renderLightboxImage();
       lightbox.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -1048,13 +1116,23 @@
       lightbox.classList.remove('open');
       document.body.style.overflow = '';
     }
+    function navegarLightbox(dir) {
+      if (lightboxImages.length <= 1) return;
+      lightboxIndex = (lightboxIndex + dir + lightboxImages.length) % lightboxImages.length;
+      renderLightboxImage();
+    }
 
     btnLightboxClose.addEventListener('click', closeLightbox);
+    btnLightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); navegarLightbox(-1); });
+    btnLightboxNext.addEventListener('click', (e) => { e.stopPropagation(); navegarLightbox(1); });
     lightbox.addEventListener('click', (e) => {
       if (e.target === lightbox) closeLightbox();
     });
     document.addEventListener('keydown', (e) => {
-      if (lightbox.classList.contains('open') && e.key === 'Escape') closeLightbox();
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navegarLightbox(-1);
+      if (e.key === 'ArrowRight') navegarLightbox(1);
     });
 
     // ==== Animação fade-in ====
