@@ -1,8 +1,11 @@
 {
-  "ativa": false,
-  "nome": "",
-  "banner_texto": "",
-  "data_fim": null,
+  "ativa": true,
+  "imagem_hero": "/imagens/painel/campanha_natal.jpg",
+  "banner_texto": "Corra e garanta sua Personalização!!!",
+  "data_fim": "2026-12-21",
   "imagem_banner": "",
-  "cor_destaque": "#F472B6"
+  "nome": "Natal 2026",
+  "data_inicio": "2026-10-31",
+  "cor_destaque": "#F472B6",
+  "video_hero": "/imagens/painel/campanha_natal.mp4"
 }
