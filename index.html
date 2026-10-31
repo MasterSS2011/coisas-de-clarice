@@ -275,7 +275,11 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       animation: slideDownBanner 400ms ease-out;
       overflow: hidden;
+      cursor: default;  /* padrão; vira pointer via JS quando destaques existirem */
+      transition: filter 200ms ease;
     }
+    #campanha-banner.clicavel { cursor: pointer; }
+    #campanha-banner.clicavel:hover { filter: brightness(1.08); }
     #campanha-banner.visivel { display: flex; }
     @keyframes slideDownBanner {
       from { transform: translateY(-100%); opacity: 0; }
@@ -395,31 +399,47 @@
       transform: scale(1.1);
     }
 
-    /* Badge com nome da campanha (abaixo da imagem) */
-    #hero-campanha-info {
-      position: absolute;
-      bottom: -4rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 11;
-      text-align: center;
-      width: max-content;
-      max-width: 90%;
+    /* Wrapper principal da campanha: flex column centralizado
+       Ordem: nome | imagem | fita — gap controla o respiro vertical */
+    #hero-campanha-wrap {
+      gap: 1.1rem;
     }
-    /* Entrada do info: aparece suave depois da imagem */
-    #hero-campanha-info:not(.cms-hidden) {
-      animation: campanhaInfoEnter 900ms cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
+    @media (min-width: 768px) {
+      #hero-campanha-wrap { gap: 1.4rem; }
+    }
+
+    /* Nome da campanha ACIMA — wrapper com animação de entrada */
+    #hero-campanha-nome-wrap:not(.cms-hidden) {
+      animation: campanhaInfoEnter 900ms cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+      text-align: center;
     }
     @keyframes campanhaInfoEnter {
       from {
         opacity: 0;
-        transform: translateX(-50%) translateY(30px) scale(0.85);
+        transform: translateY(-20px) scale(0.85);
       }
       to {
         opacity: 1;
-        transform: translateX(-50%) translateY(0) scale(1);
+        transform: translateY(0) scale(1);
       }
     }
+
+    /* Fita promocional ABAIXO — wrapper com animação de entrada */
+    #hero-campanha-chamada-wrap:not(.cms-hidden) {
+      animation: chamadaWrapEnter 900ms cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both;
+      text-align: center;
+    }
+    @keyframes chamadaWrapEnter {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.85);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
     #hero-campanha-nome {
       display: inline-block;
       background: #ffffff;
@@ -469,10 +489,10 @@
       50%  { transform: translateX(100%); }
       100% { transform: translateX(100%); }
     }
-    /* FITA PROMOCIONAL - visual chamativo tipo "selo de oferta" */
+    /* FITA PROMOCIONAL - visual chamativo tipo "selo de oferta" (clicável)
+       A entrada é feita no wrapper; aqui só o pulse contínuo */
     #hero-campanha-chamada {
       display: inline-block;
-      margin-top: 1.25rem;
       padding: 0.65rem 2rem;
       position: relative;
       font-family: 'Inter', sans-serif;
@@ -489,11 +509,14 @@
         inset 0 -3px 0 rgba(0, 0, 0, 0.12);
       max-width: 20rem;
       text-align: center;
-      /* Pulso elegante contínuo */
-      animation:
-        chamadaEntrada 800ms ease-out 1s both,
-        fitaPulse 2.2s ease-in-out infinite 2s;
+      cursor: default;  /* padrão; vira pointer via JS quando destaques existirem */
+      transition: filter 200ms ease;
+      /* Pulso elegante contínuo (entra depois da animação do wrapper) */
+      animation: fitaPulse 2.2s ease-in-out infinite 1.5s;
     }
+    #hero-campanha-chamada.clicavel { cursor: pointer; }
+    #hero-campanha-chamada.clicavel:hover { filter: brightness(1.1); }
+    #hero-campanha-chamada.clicavel:active { transform: scale(0.97); }
     /* Pontas em "V" tipo fita de banner */
     #hero-campanha-chamada::before,
     #hero-campanha-chamada::after {
@@ -533,16 +556,6 @@
       );
       animation: fitaShimmer 3.5s ease-in-out infinite 2.5s;
     }
-    @keyframes chamadaEntrada {
-      from {
-        opacity: 0;
-        transform: translateY(15px) scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
     @keyframes fitaPulse {
       0%, 100% {
         transform: scale(1);
@@ -573,7 +586,8 @@
       #campanha-banner-texto,
       #hero-campanha-nome,
       #hero-campanha-nome::after,
-      #hero-campanha-info:not(.cms-hidden),
+      #hero-campanha-nome-wrap:not(.cms-hidden),
+      #hero-campanha-chamada-wrap:not(.cms-hidden),
       #hero-campanha-chamada,
       #hero-campanha-chamada > span.shimmer-overlay::after {
         animation: none !important;
@@ -633,7 +647,13 @@
     }
 
     /* Seção de destaques da campanha */
-    #destaques-campanha { padding: 6rem 0; background: #ffffff; position: relative; overflow: hidden; }
+    #destaques-campanha {
+      padding: 6rem 0;
+      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+      scroll-margin-top: calc(5rem + var(--banner-height));  /* evita ficar atrás do header + banner */
+    }
     #destaques-campanha-blob {
       position: absolute;
       top: 2rem; right: -3rem;
@@ -893,23 +913,32 @@
           <i data-lucide="sparkles" class="w-6 h-6 text-rosa"></i>
         </div>
 
-        <!-- Hero adaptado para campanha (IMAGEM REDONDA, ativada via JS) -->
-        <div id="hero-campanha" class="cms-hidden" aria-label="Imagem da campanha">
-          <img id="hero-campanha-img" src="" alt="" loading="lazy">
-          <div id="hero-campanha-play" class="cms-hidden">
-            <div class="play-circle">
-              <!-- Ícone play SVG inline (independe do Lucide) -->
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="color: var(--campanha-cor); margin-left: 3px;">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
+        <!-- WRAPPER DA CAMPANHA: nome ACIMA, imagem no meio, fita ABAIXO
+             Flex column centralizado — ativado via JS quando houver imagem no painel -->
+        <div id="hero-campanha-wrap" class="cms-hidden relative z-10 flex flex-col items-center">
+
+          <!-- Nome da campanha ACIMA da imagem -->
+          <div id="hero-campanha-nome-wrap" class="cms-hidden">
+            <span id="hero-campanha-nome"></span>
+          </div>
+
+          <!-- Hero adaptado para campanha (IMAGEM REDONDA) -->
+          <div id="hero-campanha" aria-label="Imagem da campanha">
+            <img id="hero-campanha-img" src="" alt="" loading="lazy">
+            <div id="hero-campanha-play" class="cms-hidden">
+              <div class="play-circle">
+                <!-- Ícone play SVG inline (independe do Lucide) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="color: var(--campanha-cor); margin-left: 3px;">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Badge com nome + chamada da campanha (abaixo da imagem redonda) -->
-        <div id="hero-campanha-info" class="cms-hidden">
-          <span id="hero-campanha-nome"></span>
-          <span id="hero-campanha-chamada" class="cms-hidden"></span>
+          <!-- Fita promocional ABAIXO da imagem (opcional, aparece se "chamada_hero" preenchida) -->
+          <div id="hero-campanha-chamada-wrap" class="cms-hidden">
+            <span id="hero-campanha-chamada"></span>
+          </div>
         </div>
       </div>
 
@@ -1687,6 +1716,17 @@
         : '#F472B6';
       document.documentElement.style.setProperty('--campanha-cor', cor);
 
+      // ===== Função auxiliar: rola suave até os destaques =====
+      // Retorna true se conseguiu rolar, false se destaques não estão visíveis
+      function rolarAteDestaques() {
+        const destaques = document.getElementById('destaques-campanha');
+        if (!destaques || destaques.classList.contains('cms-hidden')) {
+          return false;  // sem destaques configurados = não faz nada
+        }
+        destaques.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return true;
+      }
+
       // ===== 1. BANNER NO TOPO =====
       if (campanha.banner_texto && campanha.banner_texto.trim() !== '') {
         const slug = (campanha.nome || 'campanha').toLowerCase()
@@ -1716,23 +1756,45 @@
             hero.classList.add('hero-com-banner');
           });
 
-          btnFechar.addEventListener('click', () => {
+          // X fecha o banner (preserva comportamento original)
+          btnFechar.addEventListener('click', (e) => {
+            e.stopPropagation();  // impede que o click borbulhe para o banner
             banner.style.display = 'none';
             document.documentElement.style.setProperty('--banner-height', '0px');
             header.classList.remove('header-com-banner');
             hero.classList.remove('hero-com-banner');
             try { localStorage.setItem(chaveDispensa, '1'); } catch (e) {}
           });
+
+          // Click no banner (não no X) → rola até destaques
+          banner.addEventListener('click', (e) => {
+            // Se clicou no X ou dentro dele, ignora (X faz seu trabalho)
+            if (e.target.closest('.fechar-banner')) return;
+            rolarAteDestaques();
+          });
+
+          // Acessibilidade por teclado
+          banner.setAttribute('tabindex', '0');
+          banner.setAttribute('role', 'button');
+          banner.setAttribute('aria-label', 'Ir para destaques da campanha');
+          banner.addEventListener('keydown', (e) => {
+            if ((e.key === 'Enter' || e.key === ' ') && !e.target.closest('.fechar-banner')) {
+              e.preventDefault();
+              rolarAteDestaques();
+            }
+          });
         }
       }
 
-      // ===== 2. HERO ADAPTADO (imagem redonda + badge + opcional vídeo) =====
+      // ===== 2. HERO ADAPTADO (nome em cima | imagem redonda | fita embaixo | opcional vídeo) =====
       if (campanha.imagem_hero) {
+        const heroCampanhaWrap = document.getElementById('hero-campanha-wrap');
         const heroCampanha = document.getElementById('hero-campanha');
         const heroCampanhaImg = document.getElementById('hero-campanha-img');
         const heroCampanhaPlay = document.getElementById('hero-campanha-play');
-        const heroCampanhaInfo = document.getElementById('hero-campanha-info');
+        const heroCampanhaNomeWrap = document.getElementById('hero-campanha-nome-wrap');
         const heroCampanhaNome = document.getElementById('hero-campanha-nome');
+        const heroCampanhaChamadaWrap = document.getElementById('hero-campanha-chamada-wrap');
         const heroCampanhaChamada = document.getElementById('hero-campanha-chamada');
         const logoPrincipal = document.querySelector('.logo-principal');
 
@@ -1742,25 +1804,26 @@
         // Carrega e exibe imagem da campanha (REDONDA)
         heroCampanhaImg.src = campanha.imagem_hero;
         heroCampanhaImg.alt = campanha.nome ? `Campanha ${campanha.nome}` : 'Campanha';
-        heroCampanha.classList.remove('cms-hidden');
 
-        // Preenche o badge com nome da campanha
+        // Exibe o wrapper (que contém nome + imagem + fita em flex column)
+        heroCampanhaWrap.classList.remove('cms-hidden');
+
+        // Preenche nome ACIMA da imagem (se preenchido no painel)
         if (campanha.nome && campanha.nome.trim() !== '') {
           heroCampanhaNome.textContent = campanha.nome;
-          heroCampanhaInfo.classList.remove('cms-hidden');
+          heroCampanhaNomeWrap.classList.remove('cms-hidden');
         }
 
-        // Preenche chamada (campo opcional novo) - formato de FITA PROMOCIONAL
+        // Preenche fita ABAIXO da imagem (campo opcional "chamada_hero")
         if (campanha.chamada_hero && campanha.chamada_hero.trim() !== '') {
-          // Monta estrutura com shimmer overlay interno (sem usar textContent para preservar <span>)
+          // Monta estrutura com shimmer overlay interno
           heroCampanhaChamada.innerHTML = '';
           const textoNode = document.createTextNode(campanha.chamada_hero);
           const shimmerSpan = document.createElement('span');
           shimmerSpan.className = 'shimmer-overlay';
           heroCampanhaChamada.appendChild(textoNode);
           heroCampanhaChamada.appendChild(shimmerSpan);
-          heroCampanhaChamada.classList.remove('cms-hidden');
-          heroCampanhaInfo.classList.remove('cms-hidden');
+          heroCampanhaChamadaWrap.classList.remove('cms-hidden');
         }
 
         // Se tem vídeo: mostra botão play + ativa modal
@@ -1812,6 +1875,29 @@
         const grid = document.getElementById('destaques-grid');
         const nomeSpan = document.getElementById('destaques-campanha-nome');
 
+        // Agora que há destaques, torna banner e fita clicáveis (visual + handler da fita)
+        const bannerClicavel = document.getElementById('campanha-banner');
+        const fitaWrap = document.getElementById('hero-campanha-chamada-wrap');
+        const fitaClicavel = document.getElementById('hero-campanha-chamada');
+
+        if (bannerClicavel && bannerClicavel.classList.contains('visivel')) {
+          bannerClicavel.classList.add('clicavel');
+        }
+        // Fita só é clicável se o WRAPPER está visível (foi preenchido chamada_hero no painel)
+        if (fitaClicavel && fitaWrap && !fitaWrap.classList.contains('cms-hidden')) {
+          fitaClicavel.classList.add('clicavel');
+          fitaClicavel.setAttribute('role', 'button');
+          fitaClicavel.setAttribute('tabindex', '0');
+          fitaClicavel.setAttribute('aria-label', 'Ir para destaques da campanha');
+          fitaClicavel.addEventListener('click', rolarAteDestaques);
+          fitaClicavel.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              rolarAteDestaques();
+            }
+          });
+        }
+
         if (campanha.nome) nomeSpan.textContent = campanha.nome;
 
         // Número de WhatsApp: usa o exposto pelo CMS Loader; fallback hard-coded
@@ -1852,6 +1938,12 @@
         // Re-renderiza ícones Lucide (ícones do CTA "Ver catálogo completo")
         if (window.lucide) {
           try { lucide.createIcons(); } catch (e) {}
+        }
+
+        // Se chegou aqui vindo do catálogo via #destaques-campanha, rola suave até a seção
+        if (window.location.hash === '#destaques-campanha') {
+          // Aguarda a UI assentar antes de rolar (DOM atualizado)
+          setTimeout(() => rolarAteDestaques(), 300);
         }
       }
     })();
