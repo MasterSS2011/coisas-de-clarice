@@ -469,23 +469,98 @@
       50%  { transform: translateX(100%); }
       100% { transform: translateX(100%); }
     }
+    /* FITA PROMOCIONAL - visual chamativo tipo "selo de oferta" */
     #hero-campanha-chamada {
-      display: block;
-      margin-top: 0.75rem;
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 0.95rem;
-      color: #374151;
+      display: inline-block;
+      margin-top: 1.25rem;
+      padding: 0.65rem 2rem;
+      position: relative;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: #ffffff;
+      background: var(--campanha-cor);
+      border-radius: 6px;
+      letter-spacing: 0.03em;
+      line-height: 1.3;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+      box-shadow:
+        0 10px 25px -5px rgba(0, 0, 0, 0.3),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.12);
       max-width: 20rem;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.4;
-      /* Fade in suave depois do nome */
-      animation: chamadaFade 1s ease-out 1s both;
+      text-align: center;
+      /* Pulso elegante contínuo */
+      animation:
+        chamadaEntrada 800ms ease-out 1s both,
+        fitaPulse 2.2s ease-in-out infinite 2s;
     }
-    @keyframes chamadaFade {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* Pontas em "V" tipo fita de banner */
+    #hero-campanha-chamada::before,
+    #hero-campanha-chamada::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 14px;
+      background: var(--campanha-cor);
+      filter: brightness(0.78);
+    }
+    #hero-campanha-chamada::before {
+      left: -14px;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 100% 50%);
+    }
+    #hero-campanha-chamada::after {
+      right: -14px;
+      clip-path: polygon(0 0, 100% 0, 0 50%, 100% 100%, 0 100%);
+    }
+    /* Brilho interno que atravessa a fita */
+    #hero-campanha-chamada > span.shimmer-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 6px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    #hero-campanha-chamada > span.shimmer-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        110deg,
+        transparent 25%,
+        rgba(255,255,255,0.4) 50%,
+        transparent 75%
+      );
+      animation: fitaShimmer 3.5s ease-in-out infinite 2.5s;
+    }
+    @keyframes chamadaEntrada {
+      from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    @keyframes fitaPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow:
+          0 10px 25px -5px rgba(0, 0, 0, 0.3),
+          inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+      }
+      50% {
+        transform: scale(1.04);
+        box-shadow:
+          0 15px 30px -5px rgba(0, 0, 0, 0.4),
+          inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+      }
+    }
+    @keyframes fitaShimmer {
+      0%   { transform: translateX(-100%); }
+      60%  { transform: translateX(100%); }
+      100% { transform: translateX(100%); }
     }
     @media (min-width: 768px) {
       #hero-campanha-nome { font-size: 1.125rem; }
@@ -499,7 +574,8 @@
       #hero-campanha-nome,
       #hero-campanha-nome::after,
       #hero-campanha-info:not(.cms-hidden),
-      #hero-campanha-chamada {
+      #hero-campanha-chamada,
+      #hero-campanha-chamada > span.shimmer-overlay::after {
         animation: none !important;
       }
     }
@@ -1674,9 +1750,15 @@
           heroCampanhaInfo.classList.remove('cms-hidden');
         }
 
-        // Preenche chamada (campo opcional novo)
+        // Preenche chamada (campo opcional novo) - formato de FITA PROMOCIONAL
         if (campanha.chamada_hero && campanha.chamada_hero.trim() !== '') {
-          heroCampanhaChamada.textContent = campanha.chamada_hero;
+          // Monta estrutura com shimmer overlay interno (sem usar textContent para preservar <span>)
+          heroCampanhaChamada.innerHTML = '';
+          const textoNode = document.createTextNode(campanha.chamada_hero);
+          const shimmerSpan = document.createElement('span');
+          shimmerSpan.className = 'shimmer-overlay';
+          heroCampanhaChamada.appendChild(textoNode);
+          heroCampanhaChamada.appendChild(shimmerSpan);
           heroCampanhaChamada.classList.remove('cms-hidden');
           heroCampanhaInfo.classList.remove('cms-hidden');
         }
