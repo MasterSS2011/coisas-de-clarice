@@ -249,10 +249,80 @@
 
     /* === CMS: utilitário para esconder elementos quando campo está vazio no painel === */
     .cms-hidden { display: none !important; }
+
+    /* =========================================================
+       BANNER DA CAMPANHA SAZONAL (Fase E) — versão catálogo
+       Mesma estética do banner da home, para consistência visual
+       ========================================================= */
+    :root {
+      --banner-height: 0px;
+      --campanha-cor: #F472B6;
+    }
+    header.header-com-banner { top: var(--banner-height); }
+    section.hero-com-banner { padding-top: calc(8rem + var(--banner-height)) !important; }
+    @media (min-width: 768px) {
+      section.hero-com-banner { padding-top: calc(10rem + var(--banner-height)) !important; }
+    }
+
+    #campanha-banner {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 60;
+      background: var(--campanha-cor);
+      color: #ffffff;
+      padding: 10px 56px 10px 20px;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.4;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      animation: slideDownBanner 400ms ease-out;
+    }
+    #campanha-banner.visivel { display: flex; }
+    @keyframes slideDownBanner {
+      from { transform: translateY(-100%); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    #campanha-banner .fechar-banner {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.2);
+      border: 0;
+      color: #fff;
+      width: 30px; height: 30px;
+      border-radius: 9999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 200ms ease, transform 200ms ease;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 1;
+      padding: 0;
+    }
+    #campanha-banner .fechar-banner:hover {
+      background: rgba(255,255,255,0.4);
+      transform: translateY(-50%) scale(1.1);
+    }
   </style>
 </head>
 
 <body class="bg-white">
+
+  <!-- =========================================================
+       BANNER DA CAMPANHA SAZONAL (dinâmico, dispensível)
+       Mesmo banner global que aparece em index.html
+       ========================================================= -->
+  <div id="campanha-banner" role="status" aria-label="Banner de campanha">
+    <span id="campanha-banner-texto"></span>
+    <button type="button" class="fechar-banner" id="campanha-banner-fechar" aria-label="Fechar banner">×</button>
+  </div>
 
   <!-- =========================================================
        MENU FIXO (igual à home)
@@ -338,7 +408,7 @@
   <!-- =========================================================
        HERO COMPACTO DO CATÁLOGO
        ========================================================= -->
-  <section class="pt-32 pb-12 md:pt-40 md:pb-16 bg-gradient-to-br from-rosa-claro via-white to-white relative overflow-hidden">
+  <section id="catalogo-hero" class="pt-32 pb-12 md:pt-40 md:pb-16 bg-gradient-to-br from-rosa-claro via-white to-white relative overflow-hidden">
     <div class="absolute top-10 right-10 w-64 h-64 bg-rosa/10 rounded-full blur-3xl"></div>
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center relative z-10 reveal">
@@ -1417,6 +1487,82 @@
           el.href = `${match[1]}${waNumber}${match[3]}`;
         }
       });
+    })();
+  </script>
+
+  <!-- =========================================================
+       CMS CAMPANHA LOADER (versão catálogo — só banner global)
+       Hero adaptado e Destaques são exclusivos da home
+       ========================================================= -->
+  <script>
+    (async function cmsCampanhaBannerCatalogo() {
+      let campanha = null;
+      try {
+        const resp = await fetch('/conteudo/campanha-ativa.json', { cache: 'no-cache' });
+        if (!resp.ok) return;
+        campanha = await resp.json();
+      } catch (e) { return; }
+
+      if (!campanha || campanha.ativa !== true) return;
+
+      // Validar datas (comparação por dia)
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
+
+      if (campanha.data_inicio) {
+        const inicio = new Date(campanha.data_inicio);
+        inicio.setHours(0, 0, 0, 0);
+        if (hoje < inicio) return;
+      }
+      if (campanha.data_fim) {
+        const fim = new Date(campanha.data_fim);
+        fim.setHours(23, 59, 59, 999);
+        if (hoje > fim) return;
+      }
+
+      // Aplicar cor (variável CSS global)
+      const cor = (campanha.cor_destaque && /^#[0-9A-Fa-f]{6}$/.test(campanha.cor_destaque))
+        ? campanha.cor_destaque
+        : '#F472B6';
+      document.documentElement.style.setProperty('--campanha-cor', cor);
+
+      // Mostrar banner (se tiver texto e não foi dispensado)
+      if (campanha.banner_texto && campanha.banner_texto.trim() !== '') {
+        const slug = (campanha.nome || 'campanha').toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        const chaveDispensa = `banner-dispensado-${slug}`;
+        const foiDispensado = (() => {
+          try { return localStorage.getItem(chaveDispensa) === '1'; }
+          catch (e) { return false; }
+        })();
+
+        if (!foiDispensado) {
+          const banner = document.getElementById('campanha-banner');
+          const texto = document.getElementById('campanha-banner-texto');
+          const btnFechar = document.getElementById('campanha-banner-fechar');
+          const header = document.querySelector('header');
+          const hero = document.getElementById('catalogo-hero');
+
+          texto.textContent = campanha.banner_texto;
+          banner.style.backgroundColor = cor;
+          banner.classList.add('visivel');
+
+          requestAnimationFrame(() => {
+            const altura = banner.offsetHeight;
+            document.documentElement.style.setProperty('--banner-height', altura + 'px');
+            header.classList.add('header-com-banner');
+            if (hero) hero.classList.add('hero-com-banner');
+          });
+
+          btnFechar.addEventListener('click', () => {
+            banner.style.display = 'none';
+            document.documentElement.style.setProperty('--banner-height', '0px');
+            header.classList.remove('header-com-banner');
+            if (hero) hero.classList.remove('hero-com-banner');
+            try { localStorage.setItem(chaveDispensa, '1'); } catch (e) {}
+          });
+        }
+      }
     })();
   </script>
 </body>

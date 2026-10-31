@@ -239,10 +239,256 @@
 
     /* === CMS: utilitário para esconder elementos quando campo está vazio no painel === */
     .cms-hidden { display: none !important; }
+
+    /* =========================================================
+       CAMPANHA SAZONAL (Fase E)
+       - Variáveis CSS para cor dinâmica e altura do banner
+       - Banner no topo (dispensível)
+       - Hero adaptado com imagem/vídeo da campanha
+       - Modal de vídeo em formato 9:16
+       - Grid de destaques
+       ========================================================= */
+    :root {
+      --banner-height: 0px;
+      --campanha-cor: #F472B6;
+    }
+    /* Quando banner está ativo, header desce */
+    header.header-com-banner { top: var(--banner-height); }
+    /* E hero compensa o padding-top */
+    #hero.hero-com-banner { padding-top: calc(5rem + var(--banner-height)); }
+
+    /* Banner no topo */
+    #campanha-banner {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 60;
+      background: var(--campanha-cor);
+      color: #ffffff;
+      padding: 10px 56px 10px 20px;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.4;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      animation: slideDownBanner 400ms ease-out;
+    }
+    #campanha-banner.visivel { display: flex; }
+    @keyframes slideDownBanner {
+      from { transform: translateY(-100%); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    #campanha-banner .fechar-banner {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.2);
+      border: 0;
+      color: #fff;
+      width: 30px; height: 30px;
+      border-radius: 9999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 200ms ease, transform 200ms ease;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 1;
+      padding: 0;
+    }
+    #campanha-banner .fechar-banner:hover {
+      background: rgba(255,255,255,0.4);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    /* Hero adaptado - card 9:16 com imagem/vídeo da campanha */
+    #hero-campanha {
+      position: relative;
+      z-index: 10;
+      width: 18rem;        /* 288px */
+      max-width: 90%;
+      aspect-ratio: 9 / 16;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(59, 63, 140, 0.35);
+      transition: transform 300ms ease, box-shadow 300ms ease;
+      background: #f3f4f6;
+    }
+    @media (min-width: 768px) {
+      #hero-campanha { width: 20rem; }  /* 320px no desktop */
+    }
+    #hero-campanha.com-video { cursor: pointer; }
+    #hero-campanha.com-video:hover {
+      transform: scale(1.03);
+      box-shadow: 0 30px 60px -12px rgba(59, 63, 140, 0.45);
+    }
+    #hero-campanha img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #hero-campanha-play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.12);
+      transition: background 300ms ease;
+    }
+    #hero-campanha:hover #hero-campanha-play {
+      background: rgba(0, 0, 0, 0.28);
+    }
+    #hero-campanha-play .play-circle {
+      width: 72px; height: 72px;
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      transition: transform 300ms ease;
+    }
+    #hero-campanha:hover #hero-campanha-play .play-circle {
+      transform: scale(1.1);
+    }
+
+    /* Modal de vídeo (formato 9:16) */
+    #video-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 110;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    #video-modal.open {
+      display: flex;
+      animation: fadeInModal 300ms ease;
+    }
+    @keyframes fadeInModal {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    #video-modal-player {
+      max-height: 90vh;
+      max-width: 90vw;
+      aspect-ratio: 9 / 16;
+      height: 90vh;
+      width: auto;
+      border-radius: 16px;
+      background: #000;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      animation: zoomIn 350ms ease;
+    }
+    .fechar-video {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 48px; height: 48px;
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 200ms ease, transform 200ms ease;
+    }
+    .fechar-video:hover {
+      background: var(--campanha-cor);
+      transform: scale(1.08);
+    }
+
+    /* Seção de destaques da campanha */
+    #destaques-campanha { padding: 6rem 0; background: #ffffff; position: relative; overflow: hidden; }
+    #destaques-campanha-blob {
+      position: absolute;
+      top: 2rem; right: -3rem;
+      width: 20rem; height: 20rem;
+      border-radius: 9999px;
+      background: var(--campanha-cor);
+      opacity: 0.08;
+      filter: blur(60px);
+      pointer-events: none;
+    }
+    .destaque-card {
+      background: #fff;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      border: 2px solid #FDE8F0;
+      transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+    }
+    .destaque-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      border-color: var(--campanha-cor);
+    }
+    .destaque-card .foto { aspect-ratio: 1 / 1; overflow: hidden; background: #f3f4f6; }
+    .destaque-card .foto img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 500ms ease;
+    }
+    .destaque-card:hover .foto img { transform: scale(1.06); }
+    .destaque-card .btn-pedir {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.875rem;
+      padding: 0.625rem 1rem;
+      border-radius: 9999px;
+      background: var(--campanha-cor);
+      transition: filter 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+    }
+    .destaque-card .btn-pedir:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px -4px rgba(0,0,0,0.25);
+    }
+    .btn-catalogo-campanha {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #fff;
+      font-weight: 600;
+      padding: 1rem 2rem;
+      border-radius: 9999px;
+      background: var(--campanha-cor);
+      box-shadow: 0 10px 25px -8px rgba(0,0,0,0.25);
+      transition: filter 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+    }
+    .btn-catalogo-campanha:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -8px rgba(0,0,0,0.3);
+    }
   </style>
 </head>
 
 <body class="bg-white">
+
+  <!-- =========================================================
+       BANNER DA CAMPANHA SAZONAL (dinâmico, dispensível)
+       Controlado pelo script cmsCampanhaLoader abaixo
+       ========================================================= -->
+  <div id="campanha-banner" role="status" aria-label="Banner de campanha">
+    <span id="campanha-banner-texto"></span>
+    <button type="button" class="fechar-banner" id="campanha-banner-fechar" aria-label="Fechar banner">×</button>
+  </div>
 
   <!-- =========================================================
        MENU FIXO (Sticky com blur)
@@ -378,10 +624,12 @@
         </div>
       </div>
 
-      <!-- Coluna ilustração: borboleta grande + composição -->
+      <!-- Coluna ilustração: borboleta grande + composição
+           Quando campanha ativa com imagem, os elementos .hero-logo-el ficam ocultos
+           e aparece o #hero-campanha no lugar -->
       <div class="relative reveal flex items-center justify-center">
-        <!-- Círculo decorativo -->
-        <div class="absolute inset-0 flex items-center justify-center">
+        <!-- Círculo decorativo (padrão) -->
+        <div class="hero-logo-el absolute inset-0 flex items-center justify-center">
           <div class="w-80 h-80 md:w-96 md:h-96 rounded-full bg-gradient-to-br from-rosa-claro to-white shadow-inner"></div>
         </div>
 
@@ -409,17 +657,30 @@
           <circle cx="225" cy="58" r="3" fill="#F472B6"/>
         </svg> -->
 
-        <!-- Logo principal -->
+        <!-- Logo principal (padrão) -->
         <img src="imagens/logocec.png" 
              alt="Coisas de Clarice — Papelaria Personalizada" 
-             class="relative z-10 w-72 md:w-96 animate-float drop-shadow-md">
+             class="hero-logo-el relative z-10 w-72 md:w-96 animate-float drop-shadow-md">
 
-        <!-- Detalhes flutuantes -->
-        <div class="absolute top-8 right-4 bg-white shadow-xl rounded-2xl p-3 animate-float" style="animation-delay: 1s;">
+        <!-- Detalhes flutuantes (padrão) -->
+        <div class="hero-logo-el absolute top-8 right-4 bg-white shadow-xl rounded-2xl p-3 animate-float" style="animation-delay: 1s;">
           <i data-lucide="heart" class="w-6 h-6 text-rosa fill-rosa"></i>
         </div>
-        <div class="absolute bottom-12 left-2 bg-white shadow-xl rounded-2xl p-3 animate-float" style="animation-delay: 2s;">
+        <div class="hero-logo-el absolute bottom-12 left-2 bg-white shadow-xl rounded-2xl p-3 animate-float" style="animation-delay: 2s;">
           <i data-lucide="sparkles" class="w-6 h-6 text-rosa"></i>
+        </div>
+
+        <!-- Hero adaptado para campanha (ativado via JS quando houver imagem no painel) -->
+        <div id="hero-campanha" class="cms-hidden" aria-label="Imagem da campanha">
+          <img id="hero-campanha-img" src="" alt="" loading="lazy">
+          <div id="hero-campanha-play" class="cms-hidden">
+            <div class="play-circle">
+              <!-- Ícone play SVG inline (independe do Lucide) -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" style="color: var(--campanha-cor); margin-left: 3px;">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -590,6 +851,42 @@
           href="catalogo.html"
           class="inline-flex items-center gap-2 bg-marinho hover:bg-marinho/90 text-white font-semibold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
         >
+          Ver catálogo completo
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SEÇÃO 3.5 — DESTAQUES DA CAMPANHA (dinâmico)
+       Preenchido via cmsCampanhaLoader quando há destaques no painel
+       ========================================================= -->
+  <section id="destaques-campanha" class="cms-hidden">
+    <div id="destaques-campanha-blob"></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+
+      <div class="text-center mb-14 reveal">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold tracking-[0.25em] uppercase mb-4" style="color: var(--campanha-cor);">
+          <span class="w-8 h-px" style="background-color: var(--campanha-cor);"></span>
+          <span id="destaques-campanha-nome">Especial</span>
+          <span class="w-8 h-px" style="background-color: var(--campanha-cor);"></span>
+        </span>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-marinho leading-tight">
+          Destaques da <em class="italic" style="color: var(--campanha-cor);">Campanha</em>
+        </h2>
+        <p class="text-cinza-texto text-base md:text-lg mt-5 max-w-2xl mx-auto">
+          Produtos especialmente selecionados pra celebrar esse momento.
+        </p>
+      </div>
+
+      <!-- Grid dinâmico (preenchido via JS) -->
+      <div id="destaques-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 reveal">
+        <!-- cards inseridos dinamicamente -->
+      </div>
+
+      <div class="text-center mt-14 reveal">
+        <a href="catalogo.html" class="btn-catalogo-campanha">
           Ver catálogo completo
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
@@ -889,6 +1186,20 @@
   </div>
 
   <!-- =========================================================
+       MODAL DE VÍDEO DA CAMPANHA (formato 9:16)
+       Ativado ao clicar no #hero-campanha quando houver video_hero
+       ========================================================= -->
+  <div id="video-modal" role="dialog" aria-modal="true" aria-label="Vídeo da campanha">
+    <button type="button" class="fechar-video" id="video-modal-fechar" aria-label="Fechar vídeo">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" x2="6" y1="6" y2="18"/>
+        <line x1="6" x2="18" y1="6" y2="18"/>
+      </svg>
+    </button>
+    <video id="video-modal-player" controls playsinline preload="metadata"></video>
+  </div>
+
+  <!-- =========================================================
        BOTÃO FLUTUANTE WHATSAPP (CMS: href dinâmico)
        ========================================================= -->
   <a
@@ -1085,6 +1396,213 @@
           el.href = `${match[1]}${waNumber}${match[3]}`;
         }
       });
+
+      // Expõe o número de WhatsApp globalmente para o script de campanha reusar
+      window.__CMS_WA_NUMBER__ = waNumber;
+    })();
+  </script>
+
+  <!-- =========================================================
+       CMS CAMPANHA LOADER — Fase E (Campanhas Sazonais)
+       Lê /conteudo/campanha-ativa.json e configura:
+       - Banner no topo (dispensível via localStorage)
+       - Hero adaptado com imagem/vídeo da campanha
+       - Seção de destaques
+       Com validação automática de datas (data_inicio / data_fim)
+       ========================================================= -->
+  <script>
+    (async function cmsCampanhaLoader() {
+      let campanha = null;
+
+      // Tenta carregar o arquivo da campanha
+      try {
+        const resp = await fetch('/conteudo/campanha-ativa.json', { cache: 'no-cache' });
+        if (!resp.ok) return; // Sem campanha configurada
+        campanha = await resp.json();
+      } catch (e) {
+        return; // Sem arquivo = sem campanha ativa (comportamento esperado)
+      }
+
+      // ===== Validações =====
+      if (!campanha || campanha.ativa !== true) {
+        console.log('[Campanha] Inativa.');
+        return;
+      }
+
+      // Validar datas (comparação por dia, não hora)
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
+
+      if (campanha.data_inicio) {
+        const inicio = new Date(campanha.data_inicio);
+        inicio.setHours(0, 0, 0, 0);
+        if (hoje < inicio) {
+          console.log('[Campanha] Agendada para', campanha.data_inicio, '— não exibida ainda.');
+          return;
+        }
+      }
+      if (campanha.data_fim) {
+        const fim = new Date(campanha.data_fim);
+        fim.setHours(23, 59, 59, 999);
+        if (hoje > fim) {
+          console.log('[Campanha] Expirada em', campanha.data_fim, '— ocultada automaticamente.');
+          return;
+        }
+      }
+
+      console.log('[Campanha] Ativa:', campanha.nome || '(sem nome)');
+
+      // ===== Cor da campanha (CSS variable global) =====
+      const cor = (campanha.cor_destaque && /^#[0-9A-Fa-f]{6}$/.test(campanha.cor_destaque))
+        ? campanha.cor_destaque
+        : '#F472B6';
+      document.documentElement.style.setProperty('--campanha-cor', cor);
+
+      // ===== 1. BANNER NO TOPO =====
+      if (campanha.banner_texto && campanha.banner_texto.trim() !== '') {
+        const slug = (campanha.nome || 'campanha').toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        const chaveDispensa = `banner-dispensado-${slug}`;
+        const foiDispensado = (() => {
+          try { return localStorage.getItem(chaveDispensa) === '1'; }
+          catch (e) { return false; }
+        })();
+
+        if (!foiDispensado) {
+          const banner = document.getElementById('campanha-banner');
+          const texto = document.getElementById('campanha-banner-texto');
+          const btnFechar = document.getElementById('campanha-banner-fechar');
+          const header = document.querySelector('header');
+          const hero = document.getElementById('hero');
+
+          texto.textContent = campanha.banner_texto;
+          banner.style.backgroundColor = cor;
+          banner.classList.add('visivel');
+
+          // Após renderizar, mede altura e empurra header + hero
+          requestAnimationFrame(() => {
+            const altura = banner.offsetHeight;
+            document.documentElement.style.setProperty('--banner-height', altura + 'px');
+            header.classList.add('header-com-banner');
+            hero.classList.add('hero-com-banner');
+          });
+
+          btnFechar.addEventListener('click', () => {
+            banner.style.display = 'none';
+            document.documentElement.style.setProperty('--banner-height', '0px');
+            header.classList.remove('header-com-banner');
+            hero.classList.remove('hero-com-banner');
+            try { localStorage.setItem(chaveDispensa, '1'); } catch (e) {}
+          });
+        }
+      }
+
+      // ===== 2. HERO ADAPTADO (imagem + opcional vídeo) =====
+      if (campanha.imagem_hero) {
+        const heroCampanha = document.getElementById('hero-campanha');
+        const heroCampanhaImg = document.getElementById('hero-campanha-img');
+        const heroCampanhaPlay = document.getElementById('hero-campanha-play');
+        const logoEls = document.querySelectorAll('.hero-logo-el');
+
+        // Oculta logo padrão + ícones flutuantes
+        logoEls.forEach(el => el.classList.add('cms-hidden'));
+
+        // Carrega e exibe imagem da campanha
+        heroCampanhaImg.src = campanha.imagem_hero;
+        heroCampanhaImg.alt = campanha.nome ? `Campanha ${campanha.nome}` : 'Campanha';
+        heroCampanha.classList.remove('cms-hidden');
+
+        // Se tem vídeo: mostra botão play + ativa modal
+        if (campanha.video_hero) {
+          heroCampanha.classList.add('com-video');
+          heroCampanha.setAttribute('role', 'button');
+          heroCampanha.setAttribute('tabindex', '0');
+          heroCampanha.setAttribute('aria-label', 'Ver vídeo da campanha');
+          heroCampanhaPlay.classList.remove('cms-hidden');
+
+          const modal = document.getElementById('video-modal');
+          const player = document.getElementById('video-modal-player');
+          const btnFecharVideo = document.getElementById('video-modal-fechar');
+
+          function abrirVideo() {
+            if (!player.src || player.src !== new URL(campanha.video_hero, location.href).href) {
+              player.src = campanha.video_hero;
+            }
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            player.play().catch(() => {
+              // Alguns navegadores bloqueiam autoplay; usuário clica play nos controls
+            });
+          }
+          function fecharVideo() {
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+            player.pause();
+          }
+
+          heroCampanha.addEventListener('click', abrirVideo);
+          heroCampanha.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              abrirVideo();
+            }
+          });
+          btnFecharVideo.addEventListener('click', fecharVideo);
+          modal.addEventListener('click', (e) => { if (e.target === modal) fecharVideo(); });
+          document.addEventListener('keydown', (e) => {
+            if (modal.classList.contains('open') && e.key === 'Escape') fecharVideo();
+          });
+        }
+      }
+
+      // ===== 3. SEÇÃO DE DESTAQUES =====
+      if (campanha.destaques && Array.isArray(campanha.destaques) && campanha.destaques.length > 0) {
+        const secao = document.getElementById('destaques-campanha');
+        const grid = document.getElementById('destaques-grid');
+        const nomeSpan = document.getElementById('destaques-campanha-nome');
+
+        if (campanha.nome) nomeSpan.textContent = campanha.nome;
+
+        // Número de WhatsApp: usa o exposto pelo CMS Loader; fallback hard-coded
+        const waNumber = (window.__CMS_WA_NUMBER__ || '5548991218191').replace(/\D/g, '');
+
+        // Monta cards dos destaques
+        grid.innerHTML = campanha.destaques.map(d => {
+          const nomeSeguro = (d.nome || '').replace(/</g, '&lt;');
+          const descSeguro = (d.descricao || '').replace(/</g, '&lt;');
+          const msgTexto = d.mensagem_whatsapp && d.mensagem_whatsapp.trim() !== ''
+            ? d.mensagem_whatsapp
+            : `Olá! Tenho interesse no produto: ${d.nome || 'destaque da campanha'}. Gostaria de mais informações.`;
+          const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(msgTexto)}`;
+          const fotoSrc = d.foto || '';
+
+          return `
+            <article class="destaque-card group">
+              <div class="foto">
+                <img src="${fotoSrc}" alt="${nomeSeguro}" loading="lazy"
+                     onerror="this.style.opacity=0.3; this.alt='Imagem indisponível'">
+              </div>
+              <div class="p-5">
+                <h3 class="font-display text-lg text-marinho mb-2">${nomeSeguro}</h3>
+                <p class="text-cinza-texto text-sm mb-4 leading-relaxed">${descSeguro}</p>
+                <a href="${waLink}" target="_blank" rel="noopener" class="btn-pedir">
+                  Pedir Orçamento
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/>
+                  </svg>
+                </a>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        secao.classList.remove('cms-hidden');
+
+        // Re-renderiza ícones Lucide (ícones do CTA "Ver catálogo completo")
+        if (window.lucide) {
+          try { lucide.createIcons(); } catch (e) {}
+        }
+      }
     })();
   </script>
 </body>

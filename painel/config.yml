@@ -28,7 +28,7 @@ locale: 'pt'
 # COLEÇÕES = tipos de conteúdo editável
 # ============================================
 collections:
-  
+
   # ---- COLEÇÃO 1: Configurações gerais do site ----
   - name: "configuracoes"
     label: "⚙️ Configurações Gerais"
@@ -40,10 +40,9 @@ collections:
         label: "Dados do Site"
         file: "conteudo/configuracoes.json"
         fields:
-          - { name: "whatsapp", label: "WhatsApp (apenas números com DDD)", widget: "string", default: "5548996065926" }
+          - { name: "whatsapp", label: "WhatsApp (apenas números com DDD)", widget: "string", default: "5548991218191" }
           - { name: "email", label: "E-mail profissional", widget: "string", default: "contato@coisasdeclarice.com.br" }
           - { name: "instagram", label: "Link do Instagram", widget: "string", required: false, default: "" }
-          - { name: "tiktok", label: "Link do TikTok", widget: "string", required: false, default: "" }
           - { name: "mensagem_whatsapp", label: "Mensagem padrão do WhatsApp", widget: "text", default: "Olá! Vim pelo site e gostaria de mais informações." }
 
   # ---- COLEÇÃO 2: Textos da página inicial ----
@@ -62,10 +61,10 @@ collections:
           - { name: "cta_catalogo", label: "Texto do botão Catálogo", widget: "string", default: "Ver Catálogo" }
           - { name: "cta_whatsapp", label: "Texto do botão WhatsApp", widget: "string", default: "Falar no WhatsApp" }
 
-  # ---- COLEÇÃO 3: Campanhas Sazonais ----
+  # ---- COLEÇÃO 3: Campanhas Sazonais (EXPANDIDA — FASE E) ----
   - name: "campanhas"
     label: "🎉 Campanhas Sazonais"
-    description: "Ative campanhas de datas comemorativas"
+    description: "Ative campanhas (Natal, Páscoa, Dia das Mães...) com banner, hero adaptado e produtos em destaque"
     editor:
       preview: false
     files:
@@ -73,12 +72,85 @@ collections:
         label: "Campanha Atual"
         file: "conteudo/campanha-ativa.json"
         fields:
-          - { name: "ativa", label: "Campanha ativa?", widget: "boolean", default: false }
-          - { name: "nome", label: "Nome da campanha", widget: "string", default: "", required: false, hint: "Ex: Páscoa 2026, Dia das Mães" }
-          - { name: "banner_texto", label: "Texto do banner (topo do site)", widget: "string", default: "", required: false, hint: "Ex: 🐣 Páscoa Especial - Encomende até 20/03" }
-          - { name: "data_fim", label: "Data de término", widget: "datetime", required: false, hint: "Após esta data, a campanha desaparece automaticamente" }
-          - { name: "imagem_banner", label: "Imagem da campanha", widget: "image", required: false }
-          - { name: "cor_destaque", label: "Cor de destaque (hex)", widget: "string", default: "#F472B6", required: false, hint: "Padrão rosa #F472B6" }
+
+          # ==== CONFIGURAÇÕES GERAIS ====
+          - name: "ativa"
+            label: "Campanha ativa?"
+            widget: "boolean"
+            default: false
+            hint: "Desmarque para desativar sem precisar apagar nada"
+
+          - name: "nome"
+            label: "Nome da campanha"
+            widget: "string"
+            default: "Natal 2026"
+            hint: "Ex: Natal 2026, Dia das Mães, Páscoa"
+
+          - name: "cor_destaque"
+            label: "Cor de destaque (código HEX)"
+            widget: "string"
+            default: "#0F766E"
+            pattern: ['^#[0-9A-Fa-f]{6}$', "Formato: #RRGGBB (ex: #0F766E)"]
+            hint: "Padrão rosa: #F472B6. Verde Natal: #0F766E. Vermelho: #DC2626. Dourado: #CA8A04"
+
+          - name: "data_inicio"
+            label: "Data de início (opcional)"
+            widget: "datetime"
+            required: false
+            format: "YYYY-MM-DD"
+            date_format: "DD/MM/YYYY"
+            time_format: false
+            picker_utc: false
+            hint: "Deixe vazio para começar imediatamente. Permite agendar lançamentos futuros."
+
+          - name: "data_fim"
+            label: "Data de término (opcional)"
+            widget: "datetime"
+            required: false
+            format: "YYYY-MM-DD"
+            date_format: "DD/MM/YYYY"
+            time_format: false
+            picker_utc: false
+            hint: "Após esta data, a campanha some sozinha. Deixe vazio para não expirar."
+
+          # ==== BANNER NO TOPO ====
+          - name: "banner_texto"
+            label: "📢 Texto do banner (topo do site)"
+            widget: "string"
+            required: false
+            default: ""
+            hint: "Ex: 🎄 Peça até 20/12 e garanta a entrega até o Natal! Deixe vazio para NÃO exibir banner."
+
+          # ==== HERO ADAPTADO ====
+          - name: "imagem_hero"
+            label: "🖼️ Imagem da campanha (formato vertical 9:16)"
+            widget: "image"
+            required: false
+            hint: "Imagem vertical estilo Reels/Story. Substitui o logo flutuante do Hero quando preenchida. Ideal: 720x1280px, até 2MB."
+
+          - name: "video_hero"
+            label: "🎥 Vídeo da campanha (opcional, até 15s / 5MB)"
+            widget: "file"
+            required: false
+            media_library:
+              config:
+                multiple: false
+            hint: "MP4 vertical 9:16. Abre em popup ao clicar na imagem acima. Comprima vídeos longos antes de subir (apps: InShot, CapCut)."
+
+          # ==== DESTAQUES ====
+          - name: "destaques"
+            label: "🎁 Produtos em destaque (até 6)"
+            widget: "list"
+            required: false
+            max: 6
+            min: 0
+            summary: "{{fields.nome}}"
+            hint: "Produtos especiais da campanha. Aparecem numa seção dedicada entre Categorias e Galeria. Deixe vazio para não mostrar a seção."
+            fields:
+              - { name: "foto", label: "Foto do produto", widget: "image" }
+              - { name: "nome", label: "Nome do produto", widget: "string" }
+              - { name: "descricao", label: "Descrição curta", widget: "text", hint: "Até 2-3 linhas" }
+              - { name: "mensagem_whatsapp", label: "Mensagem personalizada do WhatsApp", widget: "text", hint: "Ex: Olá! Tenho interesse na Caixa Especial de Natal!" }
 
   # ---- COLEÇÃO 4: Produtos do Catálogo ----
   - name: "produtos"
