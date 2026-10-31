@@ -1,0 +1,99 @@
+# ============================================
+# Decap CMS - Configuração
+# Painel Administrativo - Coisas de Clarice
+# ============================================
+
+# Backend: onde os dados são salvos
+# OAuth gerenciado pelo Cloudflare Worker próprio
+backend:
+  name: github
+  repo: MasterSS2011/coisas-de-clarice
+  branch: main
+  base_url: https://decap-oauth-coisasdeclarice.mastercompany2011.workers.dev
+  auth_endpoint: /auth
+
+# Nome exibido no painel
+site_url: https://coisasdeclarice.com.br
+display_url: https://coisasdeclarice.com.br
+logo_url: https://coisasdeclarice.com.br/imagens/logocec.png
+
+# Pasta onde imagens enviadas pelo painel serão salvas
+media_folder: "imagens/painel"
+public_folder: "/imagens/painel"
+
+# Idioma do painel (parcial em português)
+locale: 'pt'
+
+# ============================================
+# COLEÇÕES = tipos de conteúdo editável
+# ============================================
+collections:
+  
+  # ---- COLEÇÃO 1: Configurações gerais do site ----
+  - name: "configuracoes"
+    label: "⚙️ Configurações Gerais"
+    description: "Dados principais do site: WhatsApp, redes sociais, textos"
+    editor:
+      preview: false
+    files:
+      - name: "site"
+        label: "Dados do Site"
+        file: "conteudo/configuracoes.json"
+        fields:
+          - { name: "whatsapp", label: "WhatsApp (apenas números com DDD)", widget: "string", default: "5548996065926" }
+          - { name: "email", label: "E-mail profissional", widget: "string", default: "contato@coisasdeclarice.com.br" }
+          - { name: "instagram", label: "Link do Instagram", widget: "string", required: false, default: "" }
+          - { name: "tiktok", label: "Link do TikTok", widget: "string", required: false, default: "" }
+          - { name: "mensagem_whatsapp", label: "Mensagem padrão do WhatsApp", widget: "text", default: "Olá! Vim pelo site e gostaria de mais informações." }
+
+  # ---- COLEÇÃO 2: Textos da página inicial ----
+  - name: "home"
+    label: "🏠 Textos da Página Inicial"
+    description: "Edite os textos principais da home"
+    editor:
+      preview: false
+    files:
+      - name: "hero"
+        label: "Seção Principal (Hero)"
+        file: "conteudo/home-hero.json"
+        fields:
+          - { name: "titulo", label: "Título principal", widget: "string", default: "Papelaria que conta a sua história" }
+          - { name: "subtitulo", label: "Subtítulo", widget: "text", default: "Convites, lembrancinhas e detalhes feitos com amor — enviamos para todo o Brasil." }
+          - { name: "cta_catalogo", label: "Texto do botão Catálogo", widget: "string", default: "Ver Catálogo" }
+          - { name: "cta_whatsapp", label: "Texto do botão WhatsApp", widget: "string", default: "Falar no WhatsApp" }
+
+  # ---- COLEÇÃO 3: Campanhas Sazonais ----
+  - name: "campanhas"
+    label: "🎉 Campanhas Sazonais"
+    description: "Ative campanhas de datas comemorativas"
+    editor:
+      preview: false
+    files:
+      - name: "campanha_ativa"
+        label: "Campanha Atual"
+        file: "conteudo/campanha-ativa.json"
+        fields:
+          - { name: "ativa", label: "Campanha ativa?", widget: "boolean", default: false }
+          - { name: "nome", label: "Nome da campanha", widget: "string", default: "", required: false, hint: "Ex: Páscoa 2026, Dia das Mães" }
+          - { name: "banner_texto", label: "Texto do banner (topo do site)", widget: "string", default: "", required: false, hint: "Ex: 🐣 Páscoa Especial - Encomende até 20/03" }
+          - { name: "data_fim", label: "Data de término", widget: "datetime", required: false, hint: "Após esta data, a campanha desaparece automaticamente" }
+          - { name: "imagem_banner", label: "Imagem da campanha", widget: "image", required: false }
+          - { name: "cor_destaque", label: "Cor de destaque (hex)", widget: "string", default: "#F472B6", required: false, hint: "Padrão rosa #F472B6" }
+
+  # ---- COLEÇÃO 4: Produtos do Catálogo ----
+  - name: "produtos"
+    label: "📦 Produtos do Catálogo"
+    description: "Gerencie os produtos exibidos no catálogo"
+    folder: "conteudo/produtos"
+    create: true
+    slug: "{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - { name: "nome", label: "Nome do produto", widget: "string" }
+      - { name: "categoria", label: "Categoria", widget: "select", options: ["Convites", "Lembrancinhas", "Topo de Bolo", "Itens para Festas", "Kits"] }
+      - { name: "preco", label: "Preço a partir de (ex: 25,00)", widget: "string" }
+      - { name: "descricao", label: "Descrição curta", widget: "text" }
+      - { name: "imagem", label: "Foto do produto", widget: "image" }
+      - { name: "destaque", label: "Produto em destaque?", widget: "boolean", default: false }
+      - { name: "ativo", label: "Produto ativo (visível no site)?", widget: "boolean", default: true }
