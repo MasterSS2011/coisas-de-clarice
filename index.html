@@ -274,11 +274,42 @@
       justify-content: center;
       box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       animation: slideDownBanner 400ms ease-out;
+      overflow: hidden;
     }
     #campanha-banner.visivel { display: flex; }
     @keyframes slideDownBanner {
       from { transform: translateY(-100%); opacity: 0; }
       to   { transform: translateY(0); opacity: 1; }
+    }
+    /* Shimmer: brilho sutil passando pelo banner a cada 3.5s */
+    #campanha-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        110deg,
+        transparent 25%,
+        rgba(255, 255, 255, 0.25) 50%,
+        transparent 75%
+      );
+      animation: bannerShimmer 3.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes bannerShimmer {
+      0%   { transform: translateX(-100%); }
+      60%  { transform: translateX(100%); }
+      100% { transform: translateX(100%); }
+    }
+    /* Texto do banner com leve pulso de peso/opacidade */
+    #campanha-banner-texto {
+      position: relative;
+      z-index: 1;
+      animation: bannerTextPulse 2.5s ease-in-out infinite;
+      display: inline-block;
+    }
+    @keyframes bannerTextPulse {
+      0%, 100% { opacity: 1; letter-spacing: 0.01em; }
+      50%      { opacity: 0.92; letter-spacing: 0.03em; }
     }
     #campanha-banner .fechar-banner {
       position: absolute;
@@ -305,21 +336,28 @@
       transform: translateY(-50%) scale(1.1);
     }
 
-    /* Hero adaptado - card 9:16 com imagem/vídeo da campanha */
+    /* Hero adaptado - MOLDURA REDONDA com imagem completa (Opção B)
+       Vídeo abre em popup 9:16 ao clicar
+       object-fit: contain preserva TODO o conteúdo da imagem */
     #hero-campanha {
       position: relative;
       z-index: 10;
-      width: 18rem;        /* 288px */
-      max-width: 90%;
-      aspect-ratio: 9 / 16;
-      border-radius: 1.5rem;
+      width: 18rem;        /* w-72 (288px) — igual à logo original */
+      height: 18rem;
+      border-radius: 9999px;  /* moldura circular */
       overflow: hidden;
       box-shadow: 0 25px 50px -12px rgba(59, 63, 140, 0.35);
       transition: transform 300ms ease, box-shadow 300ms ease;
-      background: #f3f4f6;
+      background: #ffffff;    /* fundo branco limpo (espaço vazio ao lado da imagem) */
+      padding: 0.75rem;       /* respiro entre imagem e borda do círculo */
+      animation: float 6s ease-in-out infinite;
     }
     @media (min-width: 768px) {
-      #hero-campanha { width: 20rem; }  /* 320px no desktop */
+      #hero-campanha {        /* md:w-96 (384px) — igual à logo md */
+        width: 24rem;
+        height: 24rem;
+        padding: 1rem;
+      }
     }
     #hero-campanha.com-video { cursor: pointer; }
     #hero-campanha.com-video:hover {
@@ -328,7 +366,7 @@
     }
     #hero-campanha img {
       width: 100%; height: 100%;
-      object-fit: cover;
+      object-fit: contain;    /* mostra imagem INTEIRA (nada é cortado) */
       display: block;
     }
     #hero-campanha-play {
@@ -337,14 +375,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(0, 0, 0, 0.12);
+      background: rgba(0, 0, 0, 0.15);
       transition: background 300ms ease;
     }
     #hero-campanha:hover #hero-campanha-play {
-      background: rgba(0, 0, 0, 0.28);
+      background: rgba(0, 0, 0, 0.32);
     }
     #hero-campanha-play .play-circle {
-      width: 72px; height: 72px;
+      width: 80px; height: 80px;
       border-radius: 9999px;
       background: rgba(255,255,255,0.95);
       display: flex;
@@ -355,6 +393,115 @@
     }
     #hero-campanha:hover #hero-campanha-play .play-circle {
       transform: scale(1.1);
+    }
+
+    /* Badge com nome da campanha (abaixo da imagem) */
+    #hero-campanha-info {
+      position: absolute;
+      bottom: -4rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 11;
+      text-align: center;
+      width: max-content;
+      max-width: 90%;
+    }
+    /* Entrada do info: aparece suave depois da imagem */
+    #hero-campanha-info:not(.cms-hidden) {
+      animation: campanhaInfoEnter 900ms cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
+    }
+    @keyframes campanhaInfoEnter {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(30px) scale(0.85);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+      }
+    }
+    #hero-campanha-nome {
+      display: inline-block;
+      background: #ffffff;
+      color: var(--campanha-cor);
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.5rem;
+      border-radius: 9999px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
+      white-space: nowrap;
+      border: 2px solid var(--campanha-cor);
+      /* Pulse contínuo sutil (chama atenção sem incomodar) */
+      animation: nomeCampanhaPulse 2.8s ease-in-out infinite 1.3s;
+      position: relative;
+    }
+    @keyframes nomeCampanhaPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
+      }
+      50% {
+        transform: scale(1.06);
+        box-shadow: 0 15px 35px -5px rgba(0,0,0,0.3);
+      }
+    }
+    /* Brilho sutil que passa pelo badge a cada ~4s */
+    #hero-campanha-nome::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      background: linear-gradient(
+        110deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.6) 50%,
+        transparent 70%
+      );
+      animation: nomeShimmer 4s ease-in-out infinite 2s;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    @keyframes nomeShimmer {
+      0%   { transform: translateX(-100%); }
+      50%  { transform: translateX(100%); }
+      100% { transform: translateX(100%); }
+    }
+    #hero-campanha-chamada {
+      display: block;
+      margin-top: 0.75rem;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #374151;
+      max-width: 20rem;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.4;
+      /* Fade in suave depois do nome */
+      animation: chamadaFade 1s ease-out 1s both;
+    }
+    @keyframes chamadaFade {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @media (min-width: 768px) {
+      #hero-campanha-nome { font-size: 1.125rem; }
+      #hero-campanha-chamada { font-size: 1.05rem; }
+    }
+
+    /* Respeita quem prefere movimento reduzido (acessibilidade) */
+    @media (prefers-reduced-motion: reduce) {
+      #campanha-banner::before,
+      #campanha-banner-texto,
+      #hero-campanha-nome,
+      #hero-campanha-nome::after,
+      #hero-campanha-info:not(.cms-hidden),
+      #hero-campanha-chamada {
+        animation: none !important;
+      }
     }
 
     /* Modal de vídeo (formato 9:16) */
@@ -660,27 +807,33 @@
         <!-- Logo principal (padrão) -->
         <img src="imagens/logocec.png" 
              alt="Coisas de Clarice — Papelaria Personalizada" 
-             class="hero-logo-el relative z-10 w-72 md:w-96 animate-float drop-shadow-md">
+             class="hero-logo-el logo-principal relative z-10 w-72 md:w-96 animate-float drop-shadow-md">
 
-        <!-- Detalhes flutuantes (padrão) -->
-        <div class="hero-logo-el absolute top-8 right-4 bg-white shadow-xl rounded-2xl p-3 animate-float" style="animation-delay: 1s;">
+        <!-- Detalhes flutuantes (padrão - MANTIDOS quando campanha ativa também) -->
+        <div class="absolute top-8 right-4 bg-white shadow-xl rounded-2xl p-3 animate-float z-20" style="animation-delay: 1s;">
           <i data-lucide="heart" class="w-6 h-6 text-rosa fill-rosa"></i>
         </div>
-        <div class="hero-logo-el absolute bottom-12 left-2 bg-white shadow-xl rounded-2xl p-3 animate-float" style="animation-delay: 2s;">
+        <div class="absolute bottom-12 left-2 bg-white shadow-xl rounded-2xl p-3 animate-float z-20" style="animation-delay: 2s;">
           <i data-lucide="sparkles" class="w-6 h-6 text-rosa"></i>
         </div>
 
-        <!-- Hero adaptado para campanha (ativado via JS quando houver imagem no painel) -->
+        <!-- Hero adaptado para campanha (IMAGEM REDONDA, ativada via JS) -->
         <div id="hero-campanha" class="cms-hidden" aria-label="Imagem da campanha">
           <img id="hero-campanha-img" src="" alt="" loading="lazy">
           <div id="hero-campanha-play" class="cms-hidden">
             <div class="play-circle">
               <!-- Ícone play SVG inline (independe do Lucide) -->
-              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" style="color: var(--campanha-cor); margin-left: 3px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="color: var(--campanha-cor); margin-left: 3px;">
                 <path d="M8 5v14l11-7z"/>
               </svg>
             </div>
           </div>
+        </div>
+
+        <!-- Badge com nome + chamada da campanha (abaixo da imagem redonda) -->
+        <div id="hero-campanha-info" class="cms-hidden">
+          <span id="hero-campanha-nome"></span>
+          <span id="hero-campanha-chamada" class="cms-hidden"></span>
         </div>
       </div>
 
@@ -1497,20 +1650,36 @@
         }
       }
 
-      // ===== 2. HERO ADAPTADO (imagem + opcional vídeo) =====
+      // ===== 2. HERO ADAPTADO (imagem redonda + badge + opcional vídeo) =====
       if (campanha.imagem_hero) {
         const heroCampanha = document.getElementById('hero-campanha');
         const heroCampanhaImg = document.getElementById('hero-campanha-img');
         const heroCampanhaPlay = document.getElementById('hero-campanha-play');
-        const logoEls = document.querySelectorAll('.hero-logo-el');
+        const heroCampanhaInfo = document.getElementById('hero-campanha-info');
+        const heroCampanhaNome = document.getElementById('hero-campanha-nome');
+        const heroCampanhaChamada = document.getElementById('hero-campanha-chamada');
+        const logoPrincipal = document.querySelector('.logo-principal');
 
-        // Oculta logo padrão + ícones flutuantes
-        logoEls.forEach(el => el.classList.add('cms-hidden'));
+        // Oculta APENAS o logo principal (mantém ícones flutuantes decorativos)
+        if (logoPrincipal) logoPrincipal.classList.add('cms-hidden');
 
-        // Carrega e exibe imagem da campanha
+        // Carrega e exibe imagem da campanha (REDONDA)
         heroCampanhaImg.src = campanha.imagem_hero;
         heroCampanhaImg.alt = campanha.nome ? `Campanha ${campanha.nome}` : 'Campanha';
         heroCampanha.classList.remove('cms-hidden');
+
+        // Preenche o badge com nome da campanha
+        if (campanha.nome && campanha.nome.trim() !== '') {
+          heroCampanhaNome.textContent = campanha.nome;
+          heroCampanhaInfo.classList.remove('cms-hidden');
+        }
+
+        // Preenche chamada (campo opcional novo)
+        if (campanha.chamada_hero && campanha.chamada_hero.trim() !== '') {
+          heroCampanhaChamada.textContent = campanha.chamada_hero;
+          heroCampanhaChamada.classList.remove('cms-hidden');
+          heroCampanhaInfo.classList.remove('cms-hidden');
+        }
 
         // Se tem vídeo: mostra botão play + ativa modal
         if (campanha.video_hero) {
