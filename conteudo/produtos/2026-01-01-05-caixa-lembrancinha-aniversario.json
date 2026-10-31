@@ -1,0 +1,17 @@
+{
+  "nome": "Caixa Lembrancinha Aniversário",
+  "categoria": "Lembrancinhas",
+  "preco": "2,99",
+  "preco_display": "A partir de R$ 2,99",
+  "descricao": "",
+  "fotos": [
+    "/imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas (6).webp",
+    "/imagens/lembrancinhas/lembrancinhas/2ll_caixinhas (1).webp",
+    "/imagens/lembrancinhas/lembrancinhas/2ll_caixinhas (3).webp",
+    "/imagens/lembrancinhas/lembrancinhas/2ll_caixinhas (2).webp",
+    "/imagens/lembrancinhas/lembrancinhas/2ll_caixinhas (4).webp"
+  ],
+  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Caixa Lembrancinha Aniversário. Gostaria de mais informações sobre personalização e prazo.",
+  "destaque": false,
+  "ativo": true
+}

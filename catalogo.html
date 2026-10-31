@@ -250,6 +250,41 @@
     /* === CMS: utilitário para esconder elementos quando campo está vazio no painel === */
     .cms-hidden { display: none !important; }
 
+    /* ===== Catálogo dinâmico — Fase F ===== */
+    /* Loading state com spinner suave */
+    .catalogo-loading-spin {
+      animation: catalogoSpin 1s linear infinite;
+    }
+    @keyframes catalogoSpin {
+      to { transform: rotate(360deg); }
+    }
+    /* Badge "DESTAQUE" nos produtos em destaque */
+    .produto-badge-destaque {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 10;
+      background: #F472B6;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      box-shadow: 0 4px 12px rgba(244, 114, 182, 0.4);
+      text-transform: uppercase;
+      pointer-events: none;
+      animation: destaquePulse 2.5s ease-in-out infinite;
+    }
+    @keyframes destaquePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .produto-badge-destaque { animation: none !important; }
+      .catalogo-loading-spin { animation: none !important; }
+    }
+
     /* =========================================================
        BANNER DA CAMPANHA SAZONAL (Fase E) — versão catálogo
        Mesma estética do banner da home, para consistência visual
@@ -280,7 +315,10 @@
       justify-content: center;
       box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       animation: slideDownBanner 400ms ease-out;
+      cursor: pointer;  /* no catálogo sempre vai pra home nos destaques */
+      transition: filter 200ms ease;
     }
+    #campanha-banner:hover { filter: brightness(1.08); }
     #campanha-banner.visivel { display: flex; }
     @keyframes slideDownBanner {
       from { transform: translateY(-100%); opacity: 0; }
@@ -330,23 +368,7 @@
   <header class="fixed top-0 left-0 right-0 z-50 menu-blur bg-white/75 border-b border-rosa-claro">
     <nav class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
 
-<!-- Logo cabecalho antiga -->
-
-<!--       <a href="index.html" class="flex items-center gap-2 group" aria-label="Coisas de Clarice — Início">
-        <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="transition-transform group-hover:rotate-6">
-          <path d="M32 32 C 22 18, 8 16, 8 28 C 8 38, 18 42, 32 32 Z" fill="#F472B6" opacity="0.9"/>
-          <path d="M32 32 C 42 18, 56 16, 56 28 C 56 38, 46 42, 32 32 Z" fill="#F472B6" opacity="0.9"/>
-          <path d="M32 32 C 24 38, 14 44, 14 50 C 14 56, 24 54, 32 44 Z" fill="#FDE8F0"/>
-          <path d="M32 32 C 40 38, 50 44, 50 50 C 50 56, 40 54, 32 44 Z" fill="#FDE8F0"/>
-          <line x1="32" y1="14" x2="32" y2="48" stroke="#3B3F8C" stroke-width="1.5" class="dotted-line"/>
-        </svg>
-        <span class="font-display text-2xl font-bold text-marinho leading-none">
-          Coisas de <span class="italic text-rosa">Clarice</span>
-        </span>
-      </a> -->
-
-<!--     Logo cabecalho png -->
-
+      <!-- Logo -->
       <a href="index.html" class="flex items-center group" aria-label="Coisas de Clarice — Início">
         <img src="imagens/logocec.png" 
              alt="Coisas de Clarice — Papelaria Personalizada" 
@@ -433,25 +455,14 @@
   </section>
 
   <!-- =========================================================
-       FILTROS DE CATEGORIA
+       FILTROS DE CATEGORIA (dinâmicos — gerados via JS a partir do painel)
        ========================================================= -->
   <section class="py-8 bg-white sticky top-20 z-30 border-b border-rosa-claro/60 menu-blur bg-white/85">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="flex flex-wrap items-center justify-center gap-2 md:gap-3" role="tablist" aria-label="Filtros de categoria">
+      <div id="filtros-container" class="flex flex-wrap items-center justify-center gap-2 md:gap-3" role="tablist" aria-label="Filtros de categoria">
+        <!-- Botão "Todos" sempre fixo; outros botões adicionados dinamicamente -->
         <button data-filtro="todos" class="filtro-btn active px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
           Todos
-        </button>
-        <button data-filtro="convites" class="filtro-btn px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
-          Convites
-        </button>
-        <button data-filtro="lembrancinhas" class="filtro-btn px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
-          Lembrancinhas
-        </button>
-        <button data-filtro="topo-de-bolo" class="filtro-btn px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
-          Topo de Bolo
-        </button>
-        <button data-filtro="itens-para-festas" class="filtro-btn px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300">
-          Itens para Festas
         </button>
       </div>
     </div>
@@ -477,594 +488,42 @@
   </style>
 
   <!-- =========================================================
-       GRID DE PRODUTOS
+       GRID DE PRODUTOS (dinâmico — Fase F)
+       Estrutura montada via JS lendo /conteudo/categorias e /conteudo/produtos
        ========================================================= -->
   <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
-      <!-- ===== CONVITES ===== -->
-      <div id="convites" class="mb-20 categoria-bloco" data-categoria="convites">
-        <div class="flex items-center gap-3 mb-8 reveal">
-          <i data-lucide="mail" class="w-6 h-6 text-rosa"></i>
-          <h2 class="font-display text-2xl md:text-3xl font-semibold text-marinho">Convites</h2>
-          <span class="flex-1 h-px bg-rosa-claro ml-4"></span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-
-          <!-- Card produto -->
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="convites">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/convites/datasespeciais/1cd_charevelacao%20(1).webp" alt="Convite Datas Especiais — Chá Revelação" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/datasespeciais/1cd_charevelacao%20(2).webp" alt="Convite Datas Especiais — Chá Revelação" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/datasespeciais/2cd_batizado%20(1).webp" alt="Convite Datas Especiais — Batizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/datasespeciais/2cd_batizado%20(2).webp" alt="Convite Datas Especiais — Batizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/datasespeciais/3cd_crisma%20(1).webp" alt="Convite Datas Especiais — Crisma" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/datasespeciais/3cd_crisma%20(2).webp" alt="Convite Datas Especiais — Crisma" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/datasespeciais/3cd_crisma%20(3).webp" alt="Convite Datas Especiais — Crisma" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Convites</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Convite Datas Especiais</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 14,99</strong></p>
-              <!-- CMS: data-cms-wa-number preserva a mensagem personalizada do produto -->
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Datas%20Especiais.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="convites">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/convites/aniversario/2ca_adulto%20(1).webp" alt="Convite Aniversário Adulto" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/aniversario/2ca_adulto%20(2).webp" alt="Convite Aniversário Adulto" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/aniversario/2ca_adulto%20(4).webp" alt="Convite Aniversário Adulto" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/aniversario/2ca_adulto%20(5).webp" alt="Convite Aniversário Adulto" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Convites</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Convite Aniversário</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 9,99</strong></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Aniversário.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="convites">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/convites/aniversario/1ca_infantil%20(1).webp" alt="Convite Infantil Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/aniversario/1ca_infantil%20(2).webp" alt="Convite Infantil Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/aniversario/1ca_infantil%20(3).webp" alt="Convite Infantil Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/aniversario/1ca_infantil%20(4).webp" alt="Convite Infantil Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/convites/aniversario/1ca_infantil%20(5).webp" alt="Convite Infantil Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Convites</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Convite Infantil Temático</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 14,99</strong></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Convite%20Infantil%20Tem%C3%A1tico.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-        </div>
+      <!-- Estado: carregando -->
+      <div id="catalogo-loading" class="text-center py-20">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-rosa mx-auto mb-4 catalogo-loading-spin">
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+        </svg>
+        <p class="font-display text-xl text-marinho">Carregando catálogo...</p>
       </div>
 
-      <!-- ===== LEMBRANCINHAS ===== -->
-      <div id="lembrancinhas" class="mb-20 categoria-bloco" data-categoria="lembrancinhas">
-        <div class="flex items-center gap-3 mb-8 reveal">
-          <i data-lucide="gift" class="w-6 h-6 text-rosa"></i>
-          <h2 class="font-display text-2xl md:text-3xl font-semibold text-marinho">Lembrancinhas</h2>
-          <span class="flex-1 h-px bg-rosa-claro ml-4"></span>
-        </div>
+      <!-- Container onde os blocos de categoria/produtos serão inseridos dinamicamente -->
+      <div id="catalogo-container" class="hidden"></div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="lembrancinhas">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/lembrancinhas/lembrancinhas/3ll_tubinhos%20(1).webp" alt="Tubetes Personalizados" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/lembrancinhas/3ll_tubinhos%20(2).webp" alt="Tubetes Personalizados" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/lembrancinhas/3ll_tubinhos%20(3).webp" alt="Tubetes Personalizados" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Lembrancinhas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Tubetes Personalizados</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 2,99</strong> <span class="block text-xs text-cinza-texto/90 mt-1">(quantidade mínima de 10 unidades)</span></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Tubetes%20Personalizados.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="lembrancinhas">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas%20(6).webp" alt="Caixa Lembrancinha Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/lembrancinhas/2ll_caixinhas%20(1).webp" alt="Caixa Lembrancinha Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/lembrancinhas/2ll_caixinhas%20(3).webp" alt="Caixa Lembrancinha Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/lembrancinhas/2ll_caixinhas%20(2).webp" alt="Caixa Lembrancinha Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/lembrancinhas/2ll_caixinhas%20(4).webp" alt="Caixa Lembrancinha Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Lembrancinhas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Caixa Lembrancinha Aniversário</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 2,99</strong> <span class="block text-xs text-cinza-texto/90 mt-1">(quantidade mínima de 10 unidades)</span></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Caixa%20Lembrancinha%20Aniversário.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="lembrancinhas">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas%20(1).webp" alt="Saquinho Surpresa Personalizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas%20(2).webp" alt="Saquinho Surpresa Personalizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas%20(3).webp" alt="Saquinho Surpresa Personalizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas%20(4).webp" alt="Saquinho Surpresa Personalizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas%20(5).webp" alt="Saquinho Surpresa Personalizado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Lembrancinhas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Saquinho Surpresa Personalizado</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 2,99</strong> <span class="block text-xs text-cinza-texto/90 mt-1">(quantidade mínima de 10 unidades)</span></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Saquinho%20Surpresa%20Personalizado.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-        </div>
-      </div>
-
-      <!-- ===== TOPO DE BOLO ===== -->
-      <div id="topo-de-bolo" class="mb-20 categoria-bloco" data-categoria="topo-de-bolo">
-        <div class="flex items-center gap-3 mb-8 reveal">
-          <i data-lucide="cake" class="w-6 h-6 text-rosa"></i>
-          <h2 class="font-display text-2xl md:text-3xl font-semibold text-marinho">Topo de Bolo</h2>
-          <span class="flex-1 h-px bg-rosa-claro ml-4"></span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="topo-de-bolo">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/topos/topodebolo/1ttd_datasespeciais%20(1).webp" alt="Topo de Bolo Datas Especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1ttd_datasespeciais%20(2).webp" alt="Topo de Bolo Datas Especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1ttd_datasespeciais%20(3).webp" alt="Topo de Bolo Datas Especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1ttd_datasespeciais%20(4).webp" alt="Topo de Bolo Datas Especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1ttd_datasespeciais%20(5).webp" alt="Topo de Bolo Datas Especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1ttd_datasespeciais%20(7).webp" alt="Topo de Bolo Datas Especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Topo de Bolo</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Datas Especiais</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 24,99</strong></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Datas%20Especiais.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="topo-de-bolo">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/topos/topodebolo/1tti_tematicos%20(1).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1tta_tematicos%20(1).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1tta_tematicos%20(2).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1tti_tematicos%20(2).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/2tti_meninarato%20(1).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1tta_tematicos%20(4).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1tta_tematicos%20(5).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1tti_tematicos%20(3).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1tti_tematicos%20(5).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/2tti_meninarato%20(4).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/4tti_tematicos%20(2).webp" alt="Topo de Bolo Temático" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/5tti_herois%20(1).webp" alt="Topo de Bolo Temático — Heróis" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/5tti_herois%20(4).webp" alt="Topo de Bolo Temático — Heróis" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Topo de Bolo</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Temáticos</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 24,99</strong></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Tem%C3%A1ticos.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="topo-de-bolo">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/topos/topodebolo/2tta_adultos%20(6).webp" alt="Topo de Bolo Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/2tta_adultos%20(2).webp" alt="Topo de Bolo Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/2tta_adultos%20(3).webp" alt="Topo de Bolo Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/3tta_futebol%20(3).webp" alt="Topo de Bolo Aniversário — Futebol" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/2tta_adultos%20(4).webp" alt="Topo de Bolo Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/3tta_futebol%20(2).webp" alt="Topo de Bolo Aniversário — Futebol" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/2tta_adultos%20(5).webp" alt="Topo de Bolo Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/2tta_adultos%20(7).webp" alt="Topo de Bolo Aniversário" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/3tti_jardim%20(2).webp" alt="Topo de Bolo Aniversário — Jardim" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/3tta_futebol%20(1).webp" alt="Topo de Bolo Aniversário — Futebol" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Topo de Bolo</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo Aniversário</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 24,99</strong></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%20Aniversário.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="topo-de-bolo">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/topos/topodebolo/1tti_tematicos%20(6).webp" alt="Topo de Bolo 3D em Camadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1tti_tematicos%20(9).webp" alt="Topo de Bolo 3D em Camadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1ttt_3d%20(1).webp" alt="Topo de Bolo 3D em Camadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1ttt_3d%20(2).webp" alt="Topo de Bolo 3D em Camadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/topodebolo/1ttt_3d%20(3).webp" alt="Topo de Bolo 3D em Camadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Topo de Bolo</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Topo de Bolo 3D em Camadas</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 34,99</strong></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topo%20de%20Bolo%203D%20em%20Camadas.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-        </div>
-      </div>
-
-      <!-- ===== ITENS PARA FESTAS ===== -->
-      <div id="itens-para-festas" class="mb-20 categoria-bloco" data-categoria="itens-para-festas">
-        <div class="flex items-center gap-3 mb-8 reveal">
-          <i data-lucide="party-popper" class="w-6 h-6 text-rosa"></i>
-          <h2 class="font-display text-2xl md:text-3xl font-semibold text-marinho">Itens para Festas</h2>
-          <span class="flex-1 h-px bg-rosa-claro ml-4"></span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="itens-para-festas">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/topos/doces/1ttd_topodoce%20(1).webp" alt="Topper de docinhos" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/doces/1ttd_topodoce%20(2).webp" alt="Topper de docinhos" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/doces/1ttd_topodoce%20(3).webp" alt="Topper de docinhos" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/topos/doces/1ttd_topodoce%20(4).webp" alt="Topper de docinhos" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Itens para Festas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Topper de docinhos</h3>
-              <p class="text-cinza-texto text-sm mb-4">A partir de <strong class="text-marinho text-base">R$ 0,20</strong> <span class="block text-xs text-cinza-texto/90 mt-1">(quantidade mínima de 50 unidades)</span></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Topper%20de%20docinhos.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="itens-para-festas">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/lembrancinhas/mesa/1lm_centrodemesa%20(1).webp" alt="Centro de Mesa" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/mesa/1lm_centrodemesa%20(2).webp" alt="Centro de Mesa" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/mesa/1lm_centrodemesa%20(3).webp" alt="Centro de Mesa" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/mesa/1lm_centrodemesa%20(4).webp" alt="Centro de Mesa" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/mesa/1lm_centrodemesa%20(5).webp" alt="Centro de Mesa" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Itens para Festas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Centro de Mesa</h3>
-              <p class="text-cinza-texto text-sm mb-4"><strong class="text-marinho text-base">Quantidade e valor sob consulta</strong></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Centro%20de%20Mesa.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="itens-para-festas">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/lembrancinhas/tematicos/4lt_sereias%20(2).webp" alt="Kits de Festas — Sereias" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/lembrancinhas/4ll_modeloquadrado.webp" alt="Kits de Festas — Modelo quadrado" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/tematicos/3lt_princesinhas%20(3).webp" alt="Kits de Festas — Princesinhas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/lembrancinhas/5ll_modelotorre.webp" alt="Kits de Festas — Modelo torre" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/tematicos/2lt_arraia%20(3).webp" alt="Kits de Festas — Arraiá" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/tematicos/1lt_casamagicagabi%20(3).webp" alt="Kits de Festas — Casa Mágica" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Itens para Festas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Kits de Festas</h3>
-              <p class="text-cinza-texto text-sm mb-4"><strong class="text-marinho text-base">Quantidade e valor sob consulta</strong></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Kits%20de%20Festas.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-          <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal" data-cat="itens-para-festas">
-            <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
-              <div class="carousel-track w-full h-full">
-                <img src="imagens/lembrancinhas/especiais/1le_canetas%20(1).webp" alt="Brindes — Canetas personalizadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/especiais/1le_canetas%20(2).webp" alt="Brindes — Canetas personalizadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/especiais/1le_canetas%20(3).webp" alt="Brindes — Canetas personalizadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/especiais/1le_canetas%20(4).webp" alt="Brindes — Canetas personalizadas" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/especiais/2le_capacaderno.webp" alt="Brindes — Capa de caderno" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-                <img src="imagens/lembrancinhas/especiais/3le_dataespeciais.webp" alt="Brindes — Datas especiais" class="carousel-img w-full h-full object-cover" loading="lazy"/>
-              </div>
-              <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="15 18 9 12 15 6"/>
-                </svg>
-              </button>
-              <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"/>
-                </svg>
-              </button>
-              <div class="carousel-dots"></div>
-            </div>
-            <div class="p-6">
-              <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">Itens para Festas</span>
-              <h3 class="font-display text-xl text-marinho mb-2">Brindes, datas comemorativas e Escolar</h3>
-              <p class="text-cinza-texto text-sm mb-4"><strong class="text-marinho text-base">Quantidade e valor sob consulta</strong></p>
-              <a
-                data-cms-wa-number
-                href="https://wa.me/5548991218191?text=Olá!%20Tenho%20interesse%20no%20produto:%20Brindes,%20datas%20comemorativas%20e%20Escolar.%20Gostaria%20de%20mais%20informações%20sobre%20personalização%20e%20prazo."
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-              >
-                Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
-              </a>
-            </div>
-          </article>
-
-        </div>
+      <!-- Estado: erro ao carregar -->
+      <div id="catalogo-erro" class="hidden text-center py-20">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-rosa mx-auto mb-4">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+          <path d="M12 9v4"/>
+          <path d="M12 17h.01"/>
+        </svg>
+        <p class="font-display text-xl text-marinho mb-2">Catálogo em atualização</p>
+        <p class="text-cinza-texto mb-6">Tente novamente em instantes ou entre em contato pelo WhatsApp.</p>
+        <a data-cms-wa-number
+           href="https://wa.me/5548991218191?text=Ol%C3%A1!%20N%C3%A3o%20consegui%20carregar%20o%20cat%C3%A1logo%20no%20site.%20Pode%20me%20ajudar?"
+           target="_blank"
+           rel="noopener"
+           class="inline-flex items-center gap-2 bg-rosa hover:bg-pink-500 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition-all duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+          </svg>
+          Falar no WhatsApp
+        </a>
       </div>
 
       <!-- Mensagem quando filtro não retorna nada (oculto por padrão) -->
@@ -1237,127 +696,342 @@
       });
     });
 
-    // ==== Filtros de categoria ====
-    const filtroBtns = document.querySelectorAll('.filtro-btn');
-    const produtos = document.querySelectorAll('.produto');
-    const blocosCategoria = document.querySelectorAll('.categoria-bloco');
-    const semResultados = document.getElementById('semResultados');
+    // ===================================================================
+    // CATÁLOGO DINÂMICO (Fase F) - carrega categorias e produtos do painel
+    // ===================================================================
+    // Função auxiliar: converte texto em slug URL-friendly (ex: "Topo de Bolo" → "topo-de-bolo")
+    function slugify(text) {
+      return (text || '')
+        .toString()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/[\s-]+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
 
-    function aplicarFiltro(filtro) {
-      // Atualiza estado dos botões
-      filtroBtns.forEach(b => {
-        b.classList.toggle('active', b.dataset.filtro === filtro);
-      });
+    // Função auxiliar: escape HTML seguro
+    function escHtml(s) {
+      return (s || '').toString()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
 
-      let totalVisivel = 0;
+    // Função auxiliar: monta HTML de um card de produto
+    function montarCardProduto(p, catSlug, waNumber) {
+      const fotos = Array.isArray(p.fotos) ? p.fotos.filter(f => f && f.trim() !== '') : [];
+      if (fotos.length === 0) return ''; // skip produtos sem foto
 
-      if (filtro === 'todos') {
-        // Mostra todos os produtos e todos os blocos
-        produtos.forEach(p => p.classList.remove('escondido'));
-        blocosCategoria.forEach(b => b.style.display = '');
-        totalVisivel = produtos.length;
+      const mensagem = (p.mensagem_whatsapp && p.mensagem_whatsapp.trim())
+        ? p.mensagem_whatsapp
+        : `Olá! Tenho interesse no produto: ${p.nome || 'produto'}. Gostaria de mais informações.`;
+      const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(mensagem)}`;
+
+      // Preço: aceita qualquer formato de preco_display, remove "R$ " do fim se tiver
+      let precoHTML;
+      if (p.preco && p.preco.trim()) {
+        const prefix = (p.preco_display || 'A partir de R$ ').replace(/R\$\s*$/, '').trim();
+        const prefixStr = prefix ? `${escHtml(prefix)} ` : '';
+        precoHTML = `<p class="text-cinza-texto text-sm mb-4">${prefixStr}<strong class="text-marinho text-base">R$ ${escHtml(p.preco)}</strong></p>`;
       } else {
-        // Mostra apenas o bloco da categoria selecionada
-        blocosCategoria.forEach(b => {
-          b.style.display = b.dataset.categoria === filtro ? '' : 'none';
-        });
-        produtos.forEach(p => {
-          const visivel = p.dataset.cat === filtro;
-          p.classList.toggle('escondido', !visivel);
-          if (visivel) totalVisivel++;
-        });
+        precoHTML = `<p class="text-cinza-texto text-sm mb-4"><strong class="text-marinho text-base">Sob consulta</strong></p>`;
       }
 
-      semResultados.classList.toggle('hidden', totalVisivel > 0);
+      const descricaoHTML = (p.descricao && p.descricao.trim())
+        ? `<p class="text-cinza-texto text-sm mb-4 leading-relaxed">${escHtml(p.descricao)}</p>`
+        : '';
+
+      const badgeHTML = p.destaque
+        ? `<span class="produto-badge-destaque">⭐ Destaque</span>`
+        : '';
+
+      const fotosHTML = fotos.map(foto =>
+        `<img src="${escHtml(foto)}" alt="${escHtml(p.nome)}" class="carousel-img w-full h-full object-cover" loading="lazy"/>`
+      ).join('');
+
+      return `
+        <article class="produto card-produto bg-white rounded-3xl overflow-hidden border border-rosa-claro/80 hover:border-rosa hover:shadow-2xl transition-all duration-300 group reveal relative" data-cat="${escHtml(catSlug)}">
+          ${badgeHTML}
+          <div class="carousel aspect-[4/3] overflow-hidden relative" data-autoplay="true">
+            <div class="carousel-track w-full h-full">
+              ${fotosHTML}
+            </div>
+            <button type="button" class="carousel-btn carousel-prev" aria-label="Imagem anterior">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button type="button" class="carousel-btn carousel-next" aria-label="Próxima imagem">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <div class="carousel-dots"></div>
+          </div>
+          <div class="p-6">
+            <span class="inline-block bg-rosa-claro text-rosa text-xs font-semibold px-3 py-1 rounded-full mb-3">${escHtml(p.categoria)}</span>
+            <h3 class="font-display text-xl text-marinho mb-2">${escHtml(p.nome)}</h3>
+            ${precoHTML}
+            ${descricaoHTML}
+            <a data-cms-wa-number
+               href="${waLink}"
+               target="_blank"
+               rel="noopener"
+               class="inline-flex items-center gap-2 w-full justify-center bg-rosa hover:bg-pink-500 text-white font-semibold px-5 py-3 rounded-full transition-all duration-300 hover:shadow-lg">
+              Pedir Orçamento <i data-lucide="message-circle" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </article>
+      `;
     }
 
-    filtroBtns.forEach(btn => {
-      btn.addEventListener('click', () => aplicarFiltro(btn.dataset.filtro));
-    });
+    // Loader principal (IIFE assíncrona)
+    (async function catalogoLoader() {
+      const loadingEl = document.getElementById('catalogo-loading');
+      const containerEl = document.getElementById('catalogo-container');
+      const erroEl = document.getElementById('catalogo-erro');
+      const filtrosContainer = document.getElementById('filtros-container');
+      const semResultados = document.getElementById('semResultados');
 
-    // ==== Filtragem inicial via hash da URL (#convites, #lembrancinhas, etc.) ====
-    const hashInicial = window.location.hash.replace('#', '');
-    const filtrosValidos = ['convites','lembrancinhas','topo-de-bolo','itens-para-festas'];
-    if (filtrosValidos.includes(hashInicial)) {
-      aplicarFiltro(hashInicial);
-      // Pequeno delay para garantir o scroll após renderização
-      setTimeout(() => {
-        const alvo = document.getElementById(hashInicial);
-        if (alvo) alvo.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
-    }
+      const REPO = 'MasterSS2011/coisas-de-clarice';
+      const BRANCH = 'main';
 
-    // ==== Carrossel dos cards de produto ====
-    document.querySelectorAll('.carousel').forEach(carousel => {
-      const imgs = carousel.querySelectorAll('.carousel-img');
-      const prev = carousel.querySelector('.carousel-prev');
-      const next = carousel.querySelector('.carousel-next');
-      const dotsWrap = carousel.querySelector('.carousel-dots');
-      let idx = 0;
-      let autoplayTimer = null;
+      function mostrarErro() {
+        loadingEl.classList.add('hidden');
+        containerEl.classList.add('hidden');
+        erroEl.classList.remove('hidden');
+        if (window.lucide) try { lucide.createIcons(); } catch (e) {}
+      }
 
-      // Marca primeira imagem como ativa
-      imgs[0].classList.add('active');
+      try {
+        // 1. Buscar categorias (via GitHub API para listar + site para conteúdo)
+        const catsListResp = await fetch(
+          `https://api.github.com/repos/${REPO}/contents/conteudo/categorias?ref=${BRANCH}`,
+          { cache: 'default' }
+        );
+        if (!catsListResp.ok) throw new Error(`GitHub API falhou (${catsListResp.status})`);
+        const catsList = await catsListResp.json();
 
-      // Cria os pontos (dots) — um por imagem
-      imgs.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.type = 'button';
-        dot.setAttribute('aria-label', `Ir para imagem ${i + 1}`);
-        if (i === 0) dot.classList.add('active');
-        dot.addEventListener('click', (e) => {
-          e.stopPropagation();
-          goTo(i);
-          restartAutoplay();
+        const catsPromises = catsList
+          .filter(f => f.name && f.name.endsWith('.json'))
+          .map(f => fetch('/conteudo/categorias/' + f.name, { cache: 'default' }).then(r => r.json()));
+        let categorias = await Promise.all(catsPromises);
+        // Ordenar por campo "ordem" (menor primeiro); fallback alfabético
+        categorias.sort((a, b) => {
+          const oa = typeof a.ordem === 'number' ? a.ordem : 99;
+          const ob = typeof b.ordem === 'number' ? b.ordem : 99;
+          if (oa !== ob) return oa - ob;
+          return (a.nome || '').localeCompare(b.nome || '');
         });
-        dotsWrap.appendChild(dot);
-      });
-      const dots = dotsWrap.querySelectorAll('button');
 
-      function goTo(newIdx) {
-        imgs[idx].classList.remove('active');
-        dots[idx].classList.remove('active');
-        idx = (newIdx + imgs.length) % imgs.length;
-        imgs[idx].classList.add('active');
-        dots[idx].classList.add('active');
-      }
+        // 2. Buscar produtos
+        const prodsListResp = await fetch(
+          `https://api.github.com/repos/${REPO}/contents/conteudo/produtos?ref=${BRANCH}`,
+          { cache: 'default' }
+        );
+        if (!prodsListResp.ok) throw new Error(`GitHub API falhou (${prodsListResp.status})`);
+        const prodsList = await prodsListResp.json();
 
-      function startAutoplay() {
-        if (carousel.dataset.autoplay !== 'true' || imgs.length <= 1) return;
-        autoplayTimer = setInterval(() => goTo(idx + 1), 4000);
+        const prodsPromises = prodsList
+          .filter(f => f.name && f.name.endsWith('.json'))
+          .map(f => fetch('/conteudo/produtos/' + f.name, { cache: 'default' })
+            .then(r => r.json())
+            .then(p => ({ ...p, _filename: f.name })));
+        let produtos = await Promise.all(prodsPromises);
+
+        // Filtrar apenas ativos (ativo !== false)
+        produtos = produtos.filter(p => p.ativo !== false);
+
+        // Ordenar: nome do arquivo começa com data → mais novos primeiro (descrescente)
+        produtos.sort((a, b) => (b._filename || '').localeCompare(a._filename || ''));
+
+        console.log(`[Catálogo] ${categorias.length} categorias, ${produtos.length} produtos ativos`);
+
+        // 3. Montar filtros dinamicamente (após o botão "Todos" que já existe)
+        for (const cat of categorias) {
+          const slug = slugify(cat.nome);
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.dataset.filtro = slug;
+          btn.className = 'filtro-btn px-5 py-2.5 rounded-full text-sm font-semibold border-2 transition-all duration-300';
+          btn.textContent = cat.nome;
+          filtrosContainer.appendChild(btn);
+        }
+
+        // 4. Montar blocos de categoria com produtos
+        for (const cat of categorias) {
+          const slug = slugify(cat.nome);
+          const produtosDaCat = produtos.filter(p => p.categoria === cat.nome);
+          if (produtosDaCat.length === 0) continue; // skip categorias vazias
+
+          const bloco = document.createElement('div');
+          bloco.id = slug;
+          bloco.className = 'mb-20 categoria-bloco';
+          bloco.dataset.categoria = slug;
+          bloco.innerHTML = `
+            <div class="flex items-center gap-3 mb-8 reveal">
+              <i data-lucide="${escHtml(cat.icone || 'tag')}" class="w-6 h-6 text-rosa"></i>
+              <h2 class="font-display text-2xl md:text-3xl font-semibold text-marinho">${escHtml(cat.nome)}</h2>
+              <span class="flex-1 h-px bg-rosa-claro ml-4"></span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              ${produtosDaCat.map(p => montarCardProduto(p, slug, window.__CMS_WA_NUMBER__ || '5548991218191')).join('')}
+            </div>
+          `;
+          containerEl.appendChild(bloco);
+        }
+
+        // 5. Alternar estados
+        loadingEl.classList.add('hidden');
+        containerEl.classList.remove('hidden');
+
+        // 6. Reinicializar ícones Lucide (para os novos ícones)
+        if (window.lucide) try { lucide.createIcons(); } catch (e) {}
+
+        // 7. Inicializar carousel para TODOS os produtos recém-criados
+        inicializarCarousels();
+
+        // 8. Inicializar filtros
+        inicializarFiltros();
+
+        // 9. Aplicar atributo data-cms-wa-number nos novos links (CMS Loader já rodou)
+        aplicarWhatsAppLoader();
+
+        // 10. Observar fade-in nos elementos novos
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 11. Aplicar hash inicial (#convites, #lembrancinhas, etc.)
+        aplicarHashInicial(categorias);
+
+      } catch (err) {
+        console.error('[Catálogo] Erro:', err);
+        mostrarErro();
       }
-      function stopAutoplay() {
-        if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
-      }
-      function restartAutoplay() {
-        stopAutoplay();
+    })();
+
+    // ==== Carrossel dos cards de produto (inicializa após catálogo carregar) ====
+    function inicializarCarousels() {
+      document.querySelectorAll('.carousel:not(.inicializado)').forEach(carousel => {
+        carousel.classList.add('inicializado');
+        const imgs = carousel.querySelectorAll('.carousel-img');
+        if (imgs.length === 0) return;
+        const prev = carousel.querySelector('.carousel-prev');
+        const next = carousel.querySelector('.carousel-next');
+        const dotsWrap = carousel.querySelector('.carousel-dots');
+        let idx = 0;
+        let autoplayTimer = null;
+
+        imgs[0].classList.add('active');
+
+        // Esconde setas e dots se tiver só 1 imagem
+        if (imgs.length === 1) {
+          if (prev) prev.style.display = 'none';
+          if (next) next.style.display = 'none';
+          return; // não precisa de dots nem autoplay
+        }
+
+        imgs.forEach((_, i) => {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.setAttribute('aria-label', `Ir para imagem ${i + 1}`);
+          if (i === 0) dot.classList.add('active');
+          dot.addEventListener('click', (e) => {
+            e.stopPropagation();
+            goTo(i);
+            restartAutoplay();
+          });
+          dotsWrap.appendChild(dot);
+        });
+        const dots = dotsWrap.querySelectorAll('button');
+
+        function goTo(newIdx) {
+          imgs[idx].classList.remove('active');
+          dots[idx].classList.remove('active');
+          idx = (newIdx + imgs.length) % imgs.length;
+          imgs[idx].classList.add('active');
+          dots[idx].classList.add('active');
+        }
+        function startAutoplay() {
+          if (carousel.dataset.autoplay !== 'true' || imgs.length <= 1) return;
+          autoplayTimer = setInterval(() => goTo(idx + 1), 4000);
+        }
+        function stopAutoplay() {
+          if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
+        }
+        function restartAutoplay() { stopAutoplay(); startAutoplay(); }
+
+        if (prev) prev.addEventListener('click', (e) => { e.stopPropagation(); goTo(idx - 1); restartAutoplay(); });
+        if (next) next.addEventListener('click', (e) => { e.stopPropagation(); goTo(idx + 1); restartAutoplay(); });
+
+        carousel.addEventListener('mouseenter', stopAutoplay);
+        carousel.addEventListener('mouseleave', startAutoplay);
+
+        carousel.addEventListener('click', (e) => {
+          if (e.target.closest('.carousel-btn') || e.target.closest('.carousel-dots')) return;
+          openLightbox(imgs[idx].src, imgs[idx].alt);
+        });
+
         startAutoplay();
+      });
+    }
+
+    // ==== Filtros (inicializa após catálogo carregar) ====
+    function inicializarFiltros() {
+      const filtroBtns = document.querySelectorAll('.filtro-btn');
+      const produtos = document.querySelectorAll('.produto');
+      const blocosCategoria = document.querySelectorAll('.categoria-bloco');
+      const semResultados = document.getElementById('semResultados');
+
+      function aplicarFiltro(filtro) {
+        filtroBtns.forEach(b => b.classList.toggle('active', b.dataset.filtro === filtro));
+        let totalVisivel = 0;
+        if (filtro === 'todos') {
+          produtos.forEach(p => p.classList.remove('escondido'));
+          blocosCategoria.forEach(b => b.style.display = '');
+          totalVisivel = produtos.length;
+        } else {
+          blocosCategoria.forEach(b => {
+            b.style.display = b.dataset.categoria === filtro ? '' : 'none';
+          });
+          produtos.forEach(p => {
+            const visivel = p.dataset.cat === filtro;
+            p.classList.toggle('escondido', !visivel);
+            if (visivel) totalVisivel++;
+          });
+        }
+        if (semResultados) semResultados.classList.toggle('hidden', totalVisivel > 0);
       }
 
-      // Setas — stopPropagation para não abrir o lightbox ao clicar nelas
-      if (prev) prev.addEventListener('click', (e) => {
-        e.stopPropagation();
-        goTo(idx - 1);
-        restartAutoplay();
-      });
-      if (next) next.addEventListener('click', (e) => {
-        e.stopPropagation();
-        goTo(idx + 1);
-        restartAutoplay();
+      filtroBtns.forEach(btn => {
+        btn.addEventListener('click', () => aplicarFiltro(btn.dataset.filtro));
       });
 
-      // Pausa autoplay ao passar o mouse
-      carousel.addEventListener('mouseenter', stopAutoplay);
-      carousel.addEventListener('mouseleave', startAutoplay);
+      // Expõe a função globalmente para o hash inicial poder usar
+      window.__aplicarFiltro__ = aplicarFiltro;
+    }
 
-      // Click na imagem (qualquer área que NÃO seja seta/dot) → abre lightbox
-      carousel.addEventListener('click', (e) => {
-        if (e.target.closest('.carousel-btn') || e.target.closest('.carousel-dots')) return;
-        openLightbox(imgs[idx].src, imgs[idx].alt);
+    // ==== Hash inicial da URL (#convites, #lembrancinhas, etc.) ====
+    function aplicarHashInicial(categorias) {
+      const hashInicial = window.location.hash.replace('#', '');
+      if (!hashInicial) return;
+      const slugsValidos = categorias.map(c => slugify(c.nome));
+      if (slugsValidos.includes(hashInicial) && window.__aplicarFiltro__) {
+        window.__aplicarFiltro__(hashInicial);
+        setTimeout(() => {
+          const alvo = document.getElementById(hashInicial);
+          if (alvo) alvo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+
+    // ==== Aplicar CMS WhatsApp Loader nos novos links data-cms-wa-number ====
+    // (CMS Loader já rodou antes; precisamos aplicar manualmente nos cards novos)
+    function aplicarWhatsAppLoader() {
+      const waNumber = (window.__CMS_WA_NUMBER__ || '5548991218191').replace(/\D/g, '');
+      document.querySelectorAll('[data-cms-wa-number]').forEach(el => {
+        const hrefAtual = el.getAttribute('href') || '';
+        const match = hrefAtual.match(/^(https:\/\/wa\.me\/)(\d+)(.*)$/);
+        if (match) el.href = `${match[1]}${waNumber}${match[3]}`;
       });
-
-      startAutoplay();
-    });
+    }
 
     // ==== Lightbox ====
     const lightbox = document.getElementById('lightbox');
@@ -1554,12 +1228,31 @@
             if (hero) hero.classList.add('hero-com-banner');
           });
 
-          btnFechar.addEventListener('click', () => {
+          // X fecha o banner
+          btnFechar.addEventListener('click', (e) => {
+            e.stopPropagation();  // impede que o click borbulhe para o banner
             banner.style.display = 'none';
             document.documentElement.style.setProperty('--banner-height', '0px');
             header.classList.remove('header-com-banner');
             if (hero) hero.classList.remove('hero-com-banner');
             try { localStorage.setItem(chaveDispensa, '1'); } catch (e) {}
+          });
+
+          // Click no banner (não no X) → navega para home nos destaques
+          banner.addEventListener('click', (e) => {
+            if (e.target.closest('.fechar-banner')) return;
+            window.location.href = 'index.html#destaques-campanha';
+          });
+
+          // Acessibilidade
+          banner.setAttribute('tabindex', '0');
+          banner.setAttribute('role', 'button');
+          banner.setAttribute('aria-label', 'Ir para destaques da campanha');
+          banner.addEventListener('keydown', (e) => {
+            if ((e.key === 'Enter' || e.key === ' ') && !e.target.closest('.fechar-banner')) {
+              e.preventDefault();
+              window.location.href = 'index.html#destaques-campanha';
+            }
           });
         }
       }

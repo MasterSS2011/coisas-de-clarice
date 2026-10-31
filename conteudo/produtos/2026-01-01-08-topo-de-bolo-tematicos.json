@@ -1,0 +1,25 @@
+{
+  "nome": "Topo de Bolo Temáticos",
+  "categoria": "Topo de Bolo",
+  "preco": "24,99",
+  "preco_display": "A partir de R$ 24,99",
+  "descricao": "",
+  "fotos": [
+    "/imagens/topos/topodebolo/1tti_tematicos (1).webp",
+    "/imagens/topos/topodebolo/1tta_tematicos (1).webp",
+    "/imagens/topos/topodebolo/1tta_tematicos (2).webp",
+    "/imagens/topos/topodebolo/1tti_tematicos (2).webp",
+    "/imagens/topos/topodebolo/2tti_meninarato (1).webp",
+    "/imagens/topos/topodebolo/1tta_tematicos (4).webp",
+    "/imagens/topos/topodebolo/1tta_tematicos (5).webp",
+    "/imagens/topos/topodebolo/1tti_tematicos (3).webp",
+    "/imagens/topos/topodebolo/1tti_tematicos (5).webp",
+    "/imagens/topos/topodebolo/2tti_meninarato (4).webp",
+    "/imagens/topos/topodebolo/4tti_tematicos (2).webp",
+    "/imagens/topos/topodebolo/5tti_herois (1).webp",
+    "/imagens/topos/topodebolo/5tti_herois (4).webp"
+  ],
+  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Topo de Bolo Temáticos. Gostaria de mais informações sobre personalização e prazo.",
+  "destaque": false,
+  "ativo": true
+}

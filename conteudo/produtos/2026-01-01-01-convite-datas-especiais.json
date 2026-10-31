@@ -1,0 +1,19 @@
+{
+  "nome": "Convite Datas Especiais",
+  "categoria": "Convites",
+  "preco": "14,99",
+  "preco_display": "A partir de R$ 14,99",
+  "descricao": "",
+  "fotos": [
+    "/imagens/convites/datasespeciais/1cd_charevelacao (1).webp",
+    "/imagens/convites/datasespeciais/1cd_charevelacao (2).webp",
+    "/imagens/convites/datasespeciais/2cd_batizado (1).webp",
+    "/imagens/convites/datasespeciais/2cd_batizado (2).webp",
+    "/imagens/convites/datasespeciais/3cd_crisma (1).webp",
+    "/imagens/convites/datasespeciais/3cd_crisma (2).webp",
+    "/imagens/convites/datasespeciais/3cd_crisma (3).webp"
+  ],
+  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Convite Datas Especiais. Gostaria de mais informações sobre personalização e prazo.",
+  "destaque": false,
+  "ativo": true
+}

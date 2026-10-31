@@ -1,0 +1,17 @@
+{
+  "nome": "Convite Infantil Temático",
+  "categoria": "Convites",
+  "preco": "14,99",
+  "preco_display": "A partir de R$ 14,99",
+  "descricao": "",
+  "fotos": [
+    "/imagens/convites/aniversario/1ca_infantil (1).webp",
+    "/imagens/convites/aniversario/1ca_infantil (2).webp",
+    "/imagens/convites/aniversario/1ca_infantil (3).webp",
+    "/imagens/convites/aniversario/1ca_infantil (4).webp",
+    "/imagens/convites/aniversario/1ca_infantil (5).webp"
+  ],
+  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Convite Infantil Temático. Gostaria de mais informações sobre personalização e prazo.",
+  "destaque": false,
+  "ativo": true
+}

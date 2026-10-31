@@ -1,0 +1,16 @@
+{
+  "nome": "Convite Aniversário",
+  "categoria": "Convites",
+  "preco": "9,99",
+  "preco_display": "A partir de R$ 9,99",
+  "descricao": "",
+  "fotos": [
+    "/imagens/convites/aniversario/2ca_adulto (1).webp",
+    "/imagens/convites/aniversario/2ca_adulto (2).webp",
+    "/imagens/convites/aniversario/2ca_adulto (4).webp",
+    "/imagens/convites/aniversario/2ca_adulto (5).webp"
+  ],
+  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Convite Aniversário. Gostaria de mais informações sobre personalização e prazo.",
+  "destaque": false,
+  "ativo": true
+}

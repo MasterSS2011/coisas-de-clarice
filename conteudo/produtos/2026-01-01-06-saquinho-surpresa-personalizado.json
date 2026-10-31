@@ -1,0 +1,17 @@
+{
+  "nome": "Saquinho Surpresa Personalizado",
+  "categoria": "Lembrancinhas",
+  "preco": "2,99",
+  "preco_display": "A partir de R$ 2,99",
+  "descricao": "",
+  "fotos": [
+    "/imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas (1).webp",
+    "/imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas (2).webp",
+    "/imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas (3).webp",
+    "/imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas (4).webp",
+    "/imagens/lembrancinhas/lembrancinhas/1ll_sacolinhas (5).webp"
+  ],
+  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Saquinho Surpresa Personalizado. Gostaria de mais informações sobre personalização e prazo.",
+  "destaque": false,
+  "ativo": true
+}

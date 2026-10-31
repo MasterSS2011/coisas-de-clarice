@@ -1,0 +1,22 @@
+{
+  "nome": "Topo de Bolo Aniversário",
+  "categoria": "Topo de Bolo",
+  "preco": "24,99",
+  "preco_display": "A partir de R$ 24,99",
+  "descricao": "",
+  "fotos": [
+    "/imagens/topos/topodebolo/2tta_adultos (6).webp",
+    "/imagens/topos/topodebolo/2tta_adultos (2).webp",
+    "/imagens/topos/topodebolo/2tta_adultos (3).webp",
+    "/imagens/topos/topodebolo/3tta_futebol (3).webp",
+    "/imagens/topos/topodebolo/2tta_adultos (4).webp",
+    "/imagens/topos/topodebolo/3tta_futebol (2).webp",
+    "/imagens/topos/topodebolo/2tta_adultos (5).webp",
+    "/imagens/topos/topodebolo/2tta_adultos (7).webp",
+    "/imagens/topos/topodebolo/3tti_jardim (2).webp",
+    "/imagens/topos/topodebolo/3tta_futebol (1).webp"
+  ],
+  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Topo de Bolo Aniversário. Gostaria de mais informações sobre personalização e prazo.",
+  "destaque": false,
+  "ativo": true
+}

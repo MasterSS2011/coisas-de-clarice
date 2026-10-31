@@ -1,0 +1,16 @@
+{
+  "nome": "Topper de docinhos",
+  "categoria": "Itens para Festas",
+  "preco": "0,20",
+  "preco_display": "A partir de R$ 0,20",
+  "descricao": "",
+  "fotos": [
+    "/imagens/topos/doces/1ttd_topodoce (1).webp",
+    "/imagens/topos/doces/1ttd_topodoce (2).webp",
+    "/imagens/topos/doces/1ttd_topodoce (3).webp",
+    "/imagens/topos/doces/1ttd_topodoce (4).webp"
+  ],
+  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Topper de docinhos. Gostaria de mais informações sobre personalização e prazo.",
+  "destaque": false,
+  "ativo": true
+}

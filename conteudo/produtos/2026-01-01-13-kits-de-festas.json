@@ -1,0 +1,18 @@
+{
+  "nome": "Kits de Festas",
+  "categoria": "Itens para Festas",
+  "preco": "",
+  "preco_display": "Sob consulta",
+  "descricao": "",
+  "fotos": [
+    "/imagens/lembrancinhas/tematicos/4lt_sereias (2).webp",
+    "/imagens/lembrancinhas/lembrancinhas/4ll_modeloquadrado.webp",
+    "/imagens/lembrancinhas/tematicos/3lt_princesinhas (3).webp",
+    "/imagens/lembrancinhas/lembrancinhas/5ll_modelotorre.webp",
+    "/imagens/lembrancinhas/tematicos/2lt_arraia (3).webp",
+    "/imagens/lembrancinhas/tematicos/1lt_casamagicagabi (3).webp"
+  ],
+  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Kits de Festas. Gostaria de mais informações sobre personalização e prazo.",
+  "destaque": false,
+  "ativo": true
+}

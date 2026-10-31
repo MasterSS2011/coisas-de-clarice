@@ -1,0 +1,15 @@
+{
+  "nome": "Tubetes Personalizados",
+  "categoria": "Lembrancinhas",
+  "preco": "2,99",
+  "preco_display": "A partir de R$ 2,99",
+  "descricao": "",
+  "fotos": [
+    "/imagens/lembrancinhas/lembrancinhas/3ll_tubinhos (1).webp",
+    "/imagens/lembrancinhas/lembrancinhas/3ll_tubinhos (2).webp",
+    "/imagens/lembrancinhas/lembrancinhas/3ll_tubinhos (3).webp"
+  ],
+  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Tubetes Personalizados. Gostaria de mais informações sobre personalização e prazo.",
+  "destaque": false,
+  "ativo": true
+}

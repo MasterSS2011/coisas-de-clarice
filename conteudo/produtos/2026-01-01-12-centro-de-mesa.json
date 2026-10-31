@@ -1,0 +1,17 @@
+{
+  "nome": "Centro de Mesa",
+  "categoria": "Itens para Festas",
+  "preco": "",
+  "preco_display": "Sob consulta",
+  "descricao": "",
+  "fotos": [
+    "/imagens/lembrancinhas/mesa/1lm_centrodemesa (1).webp",
+    "/imagens/lembrancinhas/mesa/1lm_centrodemesa (2).webp",
+    "/imagens/lembrancinhas/mesa/1lm_centrodemesa (3).webp",
+    "/imagens/lembrancinhas/mesa/1lm_centrodemesa (4).webp",
+    "/imagens/lembrancinhas/mesa/1lm_centrodemesa (5).webp"
+  ],
+  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Centro de Mesa. Gostaria de mais informações sobre personalização e prazo.",
+  "destaque": false,
+  "ativo": true
+}

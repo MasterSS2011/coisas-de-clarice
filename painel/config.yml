@@ -159,20 +159,118 @@ collections:
               - { name: "descricao", label: "Descrição curta", widget: "text", hint: "Até 2-3 linhas" }
               - { name: "mensagem_whatsapp", label: "Mensagem personalizada do WhatsApp", widget: "text", hint: "Ex: Olá! Tenho interesse na Caixa Especial de Natal!" }
 
-  # ---- COLEÇÃO 4: Produtos do Catálogo ----
-  - name: "produtos"
-    label: "📦 Produtos do Catálogo"
-    description: "Gerencie os produtos exibidos no catálogo"
-    folder: "conteudo/produtos"
+  # ---- COLEÇÃO 4: Categorias do Catálogo (Fase F) ----
+  - name: "categorias"
+    label: "📁 Categorias do Catálogo"
+    description: "Gerencie as categorias que organizam os produtos no catálogo. Mudanças aqui refletem nos filtros do site."
+    folder: "conteudo/categorias"
     create: true
     slug: "{{slug}}"
     editor:
       preview: false
+    identifier_field: "nome"
+    summary: "{{nome}} ({{icone}}) — ordem {{ordem}}"
     fields:
-      - { name: "nome", label: "Nome do produto", widget: "string" }
-      - { name: "categoria", label: "Categoria", widget: "select", options: ["Convites", "Lembrancinhas", "Topo de Bolo", "Itens para Festas", "Kits"] }
-      - { name: "preco", label: "Preço a partir de (ex: 25,00)", widget: "string" }
-      - { name: "descricao", label: "Descrição curta", widget: "text" }
-      - { name: "imagem", label: "Foto do produto", widget: "image" }
-      - { name: "destaque", label: "Produto em destaque?", widget: "boolean", default: false }
-      - { name: "ativo", label: "Produto ativo (visível no site)?", widget: "boolean", default: true }
+      - name: "nome"
+        label: "Nome da categoria"
+        widget: "string"
+        hint: "⚠️ Se renomear uma categoria existente, os produtos que a usam ficam SEM categoria. Reatribua produtos depois."
+
+      - name: "icone"
+        label: "Ícone da categoria"
+        widget: "select"
+        default: "tag"
+        options:
+          - { label: "✉️ Envelope (convites)", value: "mail" }
+          - { label: "🎁 Presente (lembrancinhas)", value: "gift" }
+          - { label: "🎂 Bolo (topo de bolo)", value: "cake" }
+          - { label: "🎉 Festa (itens de festa)", value: "party-popper" }
+          - { label: "📦 Caixa (kits)", value: "package" }
+          - { label: "✨ Brilho", value: "sparkles" }
+          - { label: "💝 Coração (datas especiais)", value: "heart" }
+          - { label: "⭐ Estrela (destaques)", value: "star" }
+          - { label: "🏷️ Etiqueta (genérico)", value: "tag" }
+          - { label: "🛍️ Sacola (comercial)", value: "shopping-bag" }
+          - { label: "🌸 Flor", value: "flower" }
+          - { label: "🎀 Fita", value: "ribbon" }
+
+      - name: "ordem"
+        label: "Ordem de exibição (menor aparece primeiro)"
+        widget: "number"
+        default: 99
+        value_type: "int"
+        min: 1
+        hint: "Use 1, 2, 3... Categorias com ordem menor aparecem primeiro nos filtros."
+
+  # ---- COLEÇÃO 5: Produtos do Catálogo (Fase F) ----
+  - name: "produtos"
+    label: "📦 Produtos do Catálogo"
+    description: "Gerencie os produtos exibidos no catálogo. Mais recentes aparecem primeiro no site."
+    folder: "conteudo/produtos"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    editor:
+      preview: false
+    identifier_field: "nome"
+    summary: "{{nome}} — {{categoria}} ({{preco_display}})"
+    sortable_fields: ["nome", "categoria", "ativo"]
+    fields:
+      - name: "nome"
+        label: "Nome do produto"
+        widget: "string"
+
+      - name: "categoria"
+        label: "Categoria"
+        widget: "relation"
+        collection: "categorias"
+        search_fields: ["nome"]
+        value_field: "nome"
+        display_fields: ["nome"]
+        hint: "Escolha de uma lista de categorias existentes. Para adicionar nova, cadastre em 📁 Categorias."
+
+      - name: "preco"
+        label: "Preço (apenas o valor, ex: 25,00)"
+        widget: "string"
+        required: false
+        hint: "Deixe vazio para mostrar como 'Sob consulta'."
+
+      - name: "preco_display"
+        label: "Prefixo do preço (ex: 'A partir de ')"
+        widget: "string"
+        default: "A partir de R$ "
+        required: false
+        hint: "Texto que aparece ANTES do valor. Ex: 'A partir de R$ ' → mostra 'A partir de R$ 25,00'. Deixe só 'R$ ' para mostrar sem prefixo."
+
+      - name: "descricao"
+        label: "Descrição curta (opcional)"
+        widget: "text"
+        required: false
+        hint: "1 a 2 linhas. Deixe vazio para não exibir."
+
+      - name: "fotos"
+        label: "Fotos do produto (até 15)"
+        widget: "list"
+        max: 15
+        min: 1
+        hint: "Ideal entre 3 e 5 fotos. Aparecem em carrossel no site. A primeira foto é a principal."
+        field:
+          name: "imagem"
+          label: "Foto"
+          widget: "image"
+
+      - name: "mensagem_whatsapp"
+        label: "Mensagem personalizada para WhatsApp"
+        widget: "text"
+        hint: "Texto que vai pré-preenchido quando o cliente clicar em 'Pedir Orçamento'. Ex: Olá! Tenho interesse no produto X. Gostaria de mais informações."
+
+      - name: "destaque"
+        label: "⭐ Produto em destaque?"
+        widget: "boolean"
+        default: false
+        hint: "Produtos marcados como destaque recebem um selo visual no card."
+
+      - name: "ativo"
+        label: "✅ Produto ativo (visível no site)?"
+        widget: "boolean"
+        default: true
+        hint: "Desmarque para OCULTAR o produto do site sem precisar apagar."
