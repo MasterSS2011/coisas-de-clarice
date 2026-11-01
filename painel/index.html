@@ -112,52 +112,62 @@
     }
 
     /* ---- Botão "Adição rápida" (canto superior direito) ----
-       Estratégia em 2 camadas:
-       1. FALLBACK (sem !important): se nada pegar, botão fica marinho visível
-       2. ESTILO IDEAL (com !important): sobrescreve com rosa quando o seletor casa
+       NOVA ESTRATÉGIA: em vez de adivinhar o nome exato das classes do Decap,
+       aplicamos um estilo seguro em TODOS os botões do header: fundo branco
+       com borda rosa e texto marinho. Visível em qualquer cenário.
        
-       Isso GARANTE que o botão nunca fica invisível, mesmo se o Decap mudar
-       os nomes das classes CSS em versões futuras. */
+       Se seletores mais específicos (QuickPost/QuickNew) casarem com classes
+       conhecidas, sobrescrevem para rosa. Senão, botão branco+borda é o padrão. */
 
-    /* Camada 1: fallback padrão para QUALQUER botão de ação no header */
-    [class*="AppHeaderActions"] button,
-    [class*="AppHeader"] button[aria-haspopup] {
-      background-color: var(--marca-marinho);
-      color: #ffffff;
-      border: none;
-      font-weight: 600;
-      padding: 8px 16px;
-      border-radius: 8px;
-    }
-
-    /* Camada 2: estilo ideal rosa (sobrescreve o fallback marinho quando pega) */
-    button[class*="QuickPost"],
-    button[class*="QuickNew"],
-    button[class*="QuickInsert"],
-    [class*="QuickPost"] button,
-    [class*="QuickNew"] button,
-    [class*="QuickInsert"] button,
-    [class*="AppHeader"] [class*="Quick"] button {
-      background: var(--marca-rosa) !important;
-      background-color: var(--marca-rosa) !important;
-      border: 1px solid var(--marca-rosa) !important;
-      color: #ffffff !important;
+    /* NÍVEL 1: Força seguro para qualquer botão de ação no header
+       - Pega QUALQUER botão com aria-haspopup (dropdowns), que é o caso do "Adição rápida"
+       - Pega QUALQUER botão dentro de qualquer container com "Header" no nome */
+    header button[aria-haspopup],
+    [class*="Header"] button[aria-haspopup],
+    [class*="header"] button[aria-haspopup],
+    nav button[aria-haspopup] {
+      background: #ffffff !important;
+      background-color: #ffffff !important;
+      border: 1.5px solid var(--marca-rosa) !important;
+      color: var(--marca-marinho) !important;
       font-weight: 600 !important;
       padding: 8px 16px !important;
       border-radius: 8px !important;
-      box-shadow: 0 2px 6px -1px rgba(244, 114, 182, 0.3) !important;
       transition: all 200ms ease !important;
+    }
+
+    header button[aria-haspopup]:hover,
+    [class*="Header"] button[aria-haspopup]:hover,
+    [class*="header"] button[aria-haspopup]:hover,
+    nav button[aria-haspopup]:hover {
+      background: var(--marca-rosa-claro) !important;
+      background-color: var(--marca-rosa-claro) !important;
+      border-color: var(--marca-rosa) !important;
+      color: var(--marca-rosa-escuro) !important;
+    }
+
+    /* NÍVEL 2: Se encontrar classes específicas do "Adição rápida", vai de rosa cheio */
+    button[class*="QuickPost"],
+    button[class*="QuickNew"],
+    button[class*="QuickInsert"],
+    [class*="QuickPost"] > button,
+    [class*="QuickNew"] > button,
+    [class*="QuickInsert"] > button {
+      background: var(--marca-rosa) !important;
+      background-color: var(--marca-rosa) !important;
+      border: 1.5px solid var(--marca-rosa) !important;
+      color: #ffffff !important;
+      box-shadow: 0 2px 6px -1px rgba(244, 114, 182, 0.3) !important;
     }
 
     button[class*="QuickPost"]:hover,
     button[class*="QuickNew"]:hover,
-    [class*="QuickPost"] button:hover,
-    [class*="QuickNew"] button:hover,
-    [class*="AppHeader"] [class*="Quick"] button:hover {
+    [class*="QuickPost"] > button:hover,
+    [class*="QuickNew"] > button:hover {
       background: var(--marca-rosa-escuro) !important;
       background-color: var(--marca-rosa-escuro) !important;
       border-color: var(--marca-rosa-escuro) !important;
-      box-shadow: 0 4px 10px -2px rgba(244, 114, 182, 0.5) !important;
+      color: #ffffff !important;
     }
 
     /* ---- Coleções (menu lateral) ---- */
