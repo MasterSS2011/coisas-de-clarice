@@ -11,73 +11,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- =========================================================
-       CSS CUSTOMIZADO — ABORDAGEM MINIMALISTA
-       
-       Princípio: NÃO mexer no header do Decap, NÃO forçar
-       cores em botões nativos. Só customizar o que é SEGURO
-       (fontes, sidebar, cards, inputs, loading).
-       
-       Lição aprendida: tentar pintar o header do Decap de claro
-       causa texto branco invisível em botões nativos. Deixar o
-       estilo original do header.
-       ========================================================= -->
+  <!-- CSS mínimo. Apenas o que NÃO interfere nos componentes do Decap. -->
   <style>
-    :root {
-      --marca-rosa: #F472B6;
-      --marca-rosa-claro: #FDE8F0;
-      --marca-rosa-claro-fundo: #FDF4F8;
-      --marca-marinho: #3B3F8C;
-      --marca-cinza: #6B7280;
-    }
-
-    /* ---- Tipografia da marca (seguro: não afeta cores) ---- */
+    /* Tipografia da marca */
     body, html {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
       -webkit-font-smoothing: antialiased;
     }
-
     h1, h2, h3 {
       font-family: 'Playfair Display', serif !important;
     }
 
-    /* ---- Sidebar (lateral esquerda com Coleções) ---- */
-    /* Só pintamos o item ATIVO. Não mexemos no fundo da sidebar. */
-    [class*="CollectionLink"][class*="active"],
-    [class*="SidebarNavLink"][class*="active"],
-    [class*="NavLink"][class*="active"] {
-      background: var(--marca-rosa-claro-fundo) !important;
-      color: #DB2777 !important;
-      border-left: 3px solid var(--marca-rosa) !important;
-      font-weight: 600 !important;
-    }
-
-    /* ---- Cards de entradas (lista de produtos/categorias) ---- */
-    /* Hover sutil nos cards. Não mexe no fundo. */
-    [class*="EntryListing"] a:hover,
-    [class*="CardTable"] a:hover,
-    article[class*="Entry"]:hover {
-      border-color: var(--marca-rosa) !important;
-      box-shadow: 0 4px 12px -4px rgba(244, 114, 182, 0.25) !important;
-      transition: all 200ms ease !important;
-    }
-
-    /* ---- Focus rosa nos inputs ---- */
-    [class*="ControlPane"] input[type="text"]:focus,
-    [class*="ControlPane"] textarea:focus,
-    [class*="ControlPane"] [contenteditable="true"]:focus {
-      border-color: var(--marca-rosa) !important;
-      box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.15) !important;
-      outline: none !important;
-    }
-
-    /* ---- Scrollbar rosa ---- */
+    /* Scrollbar rosa (só afeta scrollbars nativas) */
     ::-webkit-scrollbar { width: 10px; height: 10px; }
     ::-webkit-scrollbar-track { background: #FDF4F8; }
     ::-webkit-scrollbar-thumb { background: #F9A8D4; border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: #F472B6; }
 
-    /* ---- Loading inicial (antes do Decap carregar) ---- */
+    /* Loading com borboleta (só aparece quando root está vazio) */
     #nc-root:empty::before {
       content: '🦋';
       position: fixed;
@@ -85,23 +36,15 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 48px;
-      animation: borboletaPulso 1.5s ease-in-out infinite;
+      animation: bp 1.5s ease-in-out infinite;
     }
-    @keyframes borboletaPulso {
+    @keyframes bp {
       0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
       50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
-    }
-
-    /* ---- Preview de imagens com borda rosa ---- */
-    [class*="ImageAsset"] img,
-    [class*="FileAsset"] [class*="Preview"] img {
-      border-radius: 8px !important;
-      border: 1px solid var(--marca-rosa-claro) !important;
     }
   </style>
 </head>
 <body>
-  <!-- Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.5.0/dist/decap-cms.js"></script>
 </body>
 </html>
