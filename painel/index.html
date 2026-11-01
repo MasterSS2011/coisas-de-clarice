@@ -11,24 +11,70 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- CSS mínimo. Apenas o que NÃO interfere nos componentes do Decap. -->
+  <!-- Identidade da marca aplicada APENAS em:
+       - Fontes
+       - Fundo geral (rosa muito claro, só nas margens)
+       - Cor de títulos (marinho)
+       - Borda sutil nos cards (rosa claro)
+       - Focus de inputs (rosa)
+       - Scrollbar e loading
+       
+       NÃO toca em: header, botões, sidebar interno, dropdowns. -->
   <style>
-    /* Tipografia da marca */
+    :root {
+      --rosa: #F472B6;
+      --rosa-claro: #FDE8F0;
+      --rosa-fundo: #FDF4F8;
+      --marinho: #3B3F8C;
+    }
+
+    /* ---- Tipografia ---- */
     body, html {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
       -webkit-font-smoothing: antialiased;
     }
     h1, h2, h3 {
       font-family: 'Playfair Display', serif !important;
+      color: var(--marinho);
     }
 
-    /* Scrollbar rosa (só afeta scrollbars nativas) */
+    /* ---- Fundo rosa muito sutil no painel geral ----
+       Pinta só as "margens" vazias. Sidebar e cards do Decap
+       mantêm seus fundos brancos próprios por cima. */
+    #nc-root {
+      background-color: var(--rosa-fundo);
+      min-height: 100vh;
+    }
+
+    /* ---- Cards de entrada: borda rosa clara (não muda fundo) ---- */
+    article {
+      border-color: var(--rosa-claro) !important;
+      transition: border-color 200ms ease, box-shadow 200ms ease !important;
+    }
+    article:hover {
+      border-color: var(--rosa) !important;
+      box-shadow: 0 4px 12px -4px rgba(244, 114, 182, 0.25) !important;
+    }
+
+    /* ---- Inputs e textareas com focus rosa ---- */
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="url"]:focus,
+    input[type="number"]:focus,
+    textarea:focus,
+    [contenteditable="true"]:focus {
+      border-color: var(--rosa) !important;
+      box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.15) !important;
+      outline: none !important;
+    }
+
+    /* ---- Scrollbar rosa ---- */
     ::-webkit-scrollbar { width: 10px; height: 10px; }
     ::-webkit-scrollbar-track { background: #FDF4F8; }
     ::-webkit-scrollbar-thumb { background: #F9A8D4; border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: #F472B6; }
 
-    /* Loading com borboleta (só aparece quando root está vazio) */
+    /* ---- Loading inicial com borboleta ---- */
     #nc-root:empty::before {
       content: '🦋';
       position: fixed;
