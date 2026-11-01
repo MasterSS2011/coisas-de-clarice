@@ -94,7 +94,7 @@ collections:
             hint: "Padrão rosa: #F472B6. Verde Natal: #0F766E. Vermelho: #DC2626. Dourado: #CA8A04"
 
           - name: "data_inicio"
-            label: "Data de início (opcional)"
+            label: "Data de início"
             widget: "datetime"
             required: false
             format: "YYYY-MM-DD"
@@ -104,7 +104,7 @@ collections:
             hint: "Deixe vazio para começar imediatamente. Permite agendar lançamentos futuros."
 
           - name: "data_fim"
-            label: "Data de término (opcional)"
+            label: "Data de término"
             widget: "datetime"
             required: false
             format: "YYYY-MM-DD"
@@ -138,7 +138,7 @@ collections:
             hint: "MP4 vertical 9:16 (formato de celular). Abre em POPUP ao clicar na imagem acima. Comprima vídeos longos antes de subir (apps: InShot, CapCut)."
 
           - name: "chamada_hero"
-            label: "💬 Chamada abaixo da imagem (opcional)"
+            label: "💬 Chamada abaixo da imagem"
             widget: "string"
             required: false
             default: ""
@@ -162,6 +162,7 @@ collections:
   # ---- COLEÇÃO 4: Categorias do Catálogo (Fase F) ----
   - name: "categorias"
     label: "📁 Categorias do Catálogo"
+    label_singular: "Categoria"
     description: "Gerencie as categorias que organizam os produtos no catálogo. Mudanças aqui refletem nos filtros do site."
     folder: "conteudo/categorias"
     create: true
@@ -207,6 +208,7 @@ collections:
   # ---- COLEÇÃO 5: Produtos do Catálogo (Fase F) ----
   - name: "produtos"
     label: "📦 Produtos do Catálogo"
+    label_singular: "Produto"
     description: "Gerencie os produtos exibidos no catálogo. Mais recentes aparecem primeiro no site."
     folder: "conteudo/produtos"
     create: true
@@ -246,7 +248,7 @@ collections:
         hint: "Texto que aparece ANTES do valor. Ex: 'A partir de R$ ' → mostra 'A partir de R$ 25,00'. Deixe só 'R$ ' para mostrar sem prefixo."
 
       - name: "descricao"
-        label: "Descrição curta (opcional)"
+        label: "Descrição curta"
         widget: "text"
         required: false
         hint: "1 a 2 linhas. Deixe vazio para não exibir."

@@ -2,19 +2,287 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Painel Administrativo — Coisas de Clarice</title>
-  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🦋%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fontes da marca -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- =========================================================
+       CSS CUSTOMIZADO PARA O PAINEL DECAP CMS
+       Identidade visual da marca + ajustes de usabilidade
+       Última revisão: 01/Nov/2026
+       ========================================================= -->
   <style>
-    body { margin: 0; padding: 0; }
-    #nc-root { width: 100vw; height: 100vh; }
+    :root {
+      --marca-rosa: #F472B6;
+      --marca-rosa-escuro: #DB2777;
+      --marca-rosa-claro: #FDE8F0;
+      --marca-rosa-claro-fundo: #FDF4F8;
+      --marca-marinho: #3B3F8C;
+      --marca-marinho-escuro: #2D3072;
+      --marca-cinza: #6B7280;
+      --marca-texto: #374151;
+    }
+
+    /* ---- Base: tipografia global do painel ---- */
+    body, html {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Títulos (nome das coleções, headings) usam Playfair */
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif !important;
+    }
+
+    /* ---- Tela de login (antes de autenticar) ---- */
+    [class*="LoginButtonContainer"] button,
+    button[class*="LoginButton"] {
+      background: var(--marca-rosa) !important;
+      border: none !important;
+      color: #fff !important;
+      font-weight: 600 !important;
+      box-shadow: 0 8px 20px -8px rgba(244, 114, 182, 0.6) !important;
+      transition: all 200ms ease !important;
+    }
+    [class*="LoginButtonContainer"] button:hover,
+    button[class*="LoginButton"]:hover {
+      background: var(--marca-rosa-escuro) !important;
+      transform: translateY(-1px);
+    }
+
+    /* ---- Header (topo do painel) ---- */
+    [class*="AppHeader"] {
+      background: linear-gradient(135deg, #ffffff 0%, var(--marca-rosa-claro-fundo) 100%) !important;
+      border-bottom: 2px solid var(--marca-rosa-claro) !important;
+    }
+
+    /* Links do header (Conteúdos, Mídia) */
+    [class*="AppHeaderNavLink"] {
+      color: var(--marca-marinho) !important;
+      font-weight: 600 !important;
+    }
+    [class*="AppHeaderNavLink"][class*="active"],
+    [class*="AppHeaderNavLink"]:hover {
+      color: var(--marca-rosa-escuro) !important;
+    }
+
+    /* ---- Dropdown "Adição rápida" — fix do corte de texto ---- */
+    /* Container do dropdown precisa ser mais largo para caber "Categorias do Catálogo" */
+    [class*="QuickPostContainer"],
+    [class*="QuickPost"] [class*="DropdownList"] {
+      min-width: 260px !important;
+      max-width: 320px !important;
+    }
+    [class*="QuickPost"] [class*="DropdownItem"],
+    [class*="QuickPost"] button[role="menuitem"] {
+      white-space: nowrap !important;
+      padding-right: 20px !important;
+      font-size: 14px !important;
+    }
+
+    /* ---- Dropdown "Publicar" — fix do "Publicar e criar novo(" cortado ---- */
+    [class*="PublishButton"] [class*="DropdownList"],
+    [class*="PublishButtonMenu"],
+    [class*="EditorToolbar"] [role="menu"] {
+      min-width: 240px !important;
+    }
+    [class*="PublishButton"] [class*="DropdownItem"],
+    [class*="PublishButtonMenu"] button {
+      white-space: nowrap !important;
+    }
+
+    /* ---- Botões primários (azul-petróleo original → rosa da marca) ---- */
+    [class*="PublishButton"] button:not([class*="icon"]),
+    [class*="SaveButton"] button,
+    button[class*="PublishButton"] {
+      background: var(--marca-marinho) !important;
+      border: none !important;
+      color: #fff !important;
+      font-weight: 600 !important;
+      transition: all 200ms ease !important;
+    }
+    [class*="PublishButton"] button:not([class*="icon"]):hover,
+    [class*="SaveButton"] button:hover {
+      background: var(--marca-marinho-escuro) !important;
+    }
+
+    /* "Adição rápida" trigger button */
+    [class*="QuickPost"] > button {
+      background: var(--marca-rosa) !important;
+      border: none !important;
+      color: #fff !important;
+      font-weight: 600 !important;
+      transition: all 200ms ease !important;
+    }
+    [class*="QuickPost"] > button:hover {
+      background: var(--marca-rosa-escuro) !important;
+    }
+
+    /* ---- Coleções (menu lateral) ---- */
+    /* Item selecionado da coleção lateral */
+    [class*="CollectionLink"][class*="active"],
+    [class*="SidebarNavLink"][class*="active"] {
+      background: var(--marca-rosa-claro-fundo) !important;
+      color: var(--marca-rosa-escuro) !important;
+      border-left: 3px solid var(--marca-rosa) !important;
+      font-weight: 600 !important;
+    }
+
+    /* Headers de seção (Coleções, Cards, etc.) */
+    [class*="SidebarHeading"] {
+      color: var(--marca-marinho) !important;
+      font-family: 'Playfair Display', serif !important;
+      font-weight: 700 !important;
+    }
+
+    /* ---- Cards de entradas (lista de produtos, categorias) ---- */
+    [class*="EntryListing"] [class*="Card"],
+    [class*="CardTable"] a,
+    article[class*="Entry"] {
+      border: 1px solid #e5e7eb !important;
+      border-radius: 10px !important;
+      transition: all 200ms ease !important;
+    }
+    [class*="EntryListing"] [class*="Card"]:hover,
+    [class*="CardTable"] a:hover,
+    article[class*="Entry"]:hover {
+      border-color: var(--marca-rosa) !important;
+      box-shadow: 0 4px 12px -4px rgba(244, 114, 182, 0.25) !important;
+      transform: translateY(-1px);
+    }
+
+    /* ---- Botão "Novo(a) ..." ---- */
+    [class*="CollectionTopNewButton"],
+    a[class*="CollectionTop"][class*="button"] {
+      background: var(--marca-marinho) !important;
+      border: none !important;
+      color: #fff !important;
+      font-weight: 600 !important;
+      border-radius: 8px !important;
+      transition: all 200ms ease !important;
+    }
+    [class*="CollectionTopNewButton"]:hover {
+      background: var(--marca-marinho-escuro) !important;
+    }
+
+    /* ---- Labels dos campos (DECIDE / NOME, CATEGORIA, etc.) ---- */
+    [class*="ControlPane"] label,
+    [class*="FieldLabel"],
+    label[class*="Label"] {
+      color: var(--marca-marinho) !important;
+      font-weight: 600 !important;
+      font-size: 11px !important;
+      letter-spacing: 0.04em !important;
+    }
+
+    /* ---- Inputs e textareas ---- */
+    [class*="ControlPane"] input[type="text"],
+    [class*="ControlPane"] textarea,
+    [class*="ControlPane"] [contenteditable="true"] {
+      border: 1px solid #e5e7eb !important;
+      border-radius: 8px !important;
+      transition: border-color 150ms ease, box-shadow 150ms ease !important;
+    }
+    [class*="ControlPane"] input[type="text"]:focus,
+    [class*="ControlPane"] textarea:focus,
+    [class*="ControlPane"] [contenteditable="true"]:focus {
+      border-color: var(--marca-rosa) !important;
+      box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.15) !important;
+      outline: none !important;
+    }
+
+    /* ---- Hints (dicas sob os campos) ---- */
+    [class*="ControlHint"],
+    [class*="FieldHint"],
+    p[class*="hint"] {
+      color: var(--marca-cinza) !important;
+      font-size: 12.5px !important;
+      font-style: normal !important;
+      line-height: 1.5 !important;
+    }
+
+    /* ---- Botão "Excluir entrada" — vermelho suave ---- */
+    [class*="DeleteButton"],
+    button[class*="Delete"] {
+      border: 1.5px solid #FCA5A5 !important;
+      color: #DC2626 !important;
+      background: transparent !important;
+    }
+    [class*="DeleteButton"]:hover {
+      background: #FEE2E2 !important;
+    }
+
+    /* ---- Badge "ALTERAÇÕES NÃO SALVAS" ---- */
+    [class*="Loader"][class*="Unsaved"],
+    [class*="UnsavedChanges"],
+    span[class*="unsaved"] {
+      background: rgba(244, 114, 182, 0.12) !important;
+      color: var(--marca-rosa-escuro) !important;
+      padding: 4px 10px !important;
+      border-radius: 6px !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.05em !important;
+    }
+
+    /* ---- Avisos de erro de validação ---- */
+    [class*="FieldLabel"][class*="error"],
+    [class*="error"] label {
+      color: #DC2626 !important;
+    }
+
+    /* ---- Scrollbar customizada no painel ---- */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #FDF4F8; }
+    ::-webkit-scrollbar-thumb { background: #F9A8D4; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #F472B6; }
+
+    /* ---- Loading inicial (antes do Decap carregar) ---- */
+    #nc-root:empty::before {
+      content: '🦋';
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      animation: borboletaPulso 1.5s ease-in-out infinite;
+    }
+    @keyframes borboletaPulso {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+      50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+    }
+
+    /* ---- Imagens de upload (previews) ---- */
+    [class*="ImageAsset"] img,
+    [class*="FileAsset"] [class*="Preview"] img {
+      border-radius: 8px !important;
+      border: 1px solid var(--marca-rosa-claro) !important;
+    }
+
+    /* ---- Mobile: ajustes para telas pequenas (Clarice usa smartphone) ---- */
+    @media (max-width: 768px) {
+      [class*="QuickPostContainer"],
+      [class*="QuickPost"] [class*="DropdownList"] {
+        min-width: 200px !important;
+        max-width: calc(100vw - 20px) !important;
+      }
+      [class*="QuickPost"] [class*="DropdownItem"] {
+        white-space: normal !important;
+        font-size: 13px !important;
+      }
+      [class*="EntryListing"] [class*="Card"] {
+        margin-bottom: 8px !important;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Elemento onde o Decap CMS 3.x renderiza a interface -->
-  <div id="nc-root"></div>
-  
-  <!-- Decap CMS carregado via CDN oficial -->
-  <script src="https://unpkg.com/decap-cms@3.5.0/dist/decap-cms.js"></script>
+  <!-- Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.5.0/dist/decap-cms.js"></script>
 </body>
 </html>
