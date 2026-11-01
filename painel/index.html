@@ -331,5 +331,102 @@
 <body>
   <!-- Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.5.0/dist/decap-cms.js"></script>
+
+  <!-- =========================================================
+       ESTILOS APLICADOS VIA JAVASCRIPT (INLINE STYLES)
+       Estratégia garantida: detecta botões PELO TEXTO (não pelas
+       classes CSS, que o Decap muda a cada versão) e aplica estilo
+       inline (prioridade máxima). Impossível ficar invisível.
+       ========================================================= -->
+  <script>
+    (function customizarPainel() {
+      'use strict';
+
+      // Botões identificados pelo texto que começa com estes prefixos
+      const estilosPorTexto = [
+        {
+          match: ['adição rápida', 'adicao rapida', 'quick add', 'add new', 'quick post'],
+          estilo: {
+            backgroundColor: '#F472B6',
+            backgroundImage: 'none',
+            color: '#ffffff',
+            border: '1.5px solid #F472B6',
+            borderRadius: '8px',
+            padding: '8px 16px',
+            fontWeight: '600',
+            boxShadow: '0 2px 6px -1px rgba(244, 114, 182, 0.3)',
+            cursor: 'pointer',
+          },
+          estiloHover: {
+            backgroundColor: '#DB2777',
+            borderColor: '#DB2777',
+          },
+        },
+      ];
+
+      function textoNormalizado(el) {
+        return (el.textContent || el.innerText || '')
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, ' ');
+      }
+
+      function aplicarEstilo(elemento, estilo) {
+        Object.entries(estilo).forEach(([prop, valor]) => {
+          elemento.style.setProperty(
+            prop.replace(/[A-Z]/g, m => '-' + m.toLowerCase()),
+            valor,
+            'important' // garante máxima prioridade
+          );
+        });
+      }
+
+      function processarBotoes() {
+        const botoes = document.querySelectorAll('button, [role="button"]');
+        botoes.forEach(btn => {
+          const texto = textoNormalizado(btn);
+          if (!texto) return;
+
+          estilosPorTexto.forEach(({ match, estilo, estiloHover }) => {
+            const casou = match.some(prefixo => texto.startsWith(prefixo));
+            if (!casou) return;
+
+            // Marca para não reaplicar e perder o hover
+            if (btn.dataset.customizado === '1') return;
+            btn.dataset.customizado = '1';
+
+            aplicarEstilo(btn, estilo);
+
+            if (estiloHover) {
+              btn.addEventListener('mouseenter', () => aplicarEstilo(btn, estiloHover));
+              btn.addEventListener('mouseleave', () => aplicarEstilo(btn, estilo));
+            }
+          });
+        });
+      }
+
+      // Executa quando o DOM muda (Decap re-renderiza o React constantemente)
+      const observer = new MutationObserver(() => {
+        // Debounce leve: espera 50ms antes de processar
+        clearTimeout(window.__customizarTimer);
+        window.__customizarTimer = setTimeout(processarBotoes, 50);
+      });
+
+      // Inicia observação quando o body estiver pronto
+      function iniciar() {
+        processarBotoes();
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true,
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', iniciar);
+      } else {
+        iniciar();
+      }
+    })();
+  </script>
 </body>
 </html>
