@@ -1,9 +1,9 @@
 {
-  "nome": "Topo de Bolo Datas Especiais",
-  "categoria": "Topo de Bolo",
-  "preco": "24,99",
-  "preco_display": "A partir de R$ 24,99",
+  "destaque": false,
+  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Topo de Bolo Datas Especiais. Gostaria de mais informações sobre personalização e prazo.",
   "descricao": "",
+  "preco": "24,99",
+  "ativo": true,
   "fotos": [
     "/imagens/topos/topodebolo/1ttd_datasespeciais (1).webp",
     "/imagens/topos/topodebolo/1ttd_datasespeciais (2).webp",
@@ -12,7 +12,7 @@
     "/imagens/topos/topodebolo/1ttd_datasespeciais (5).webp",
     "/imagens/topos/topodebolo/1ttd_datasespeciais (7).webp"
   ],
-  "mensagem_whatsapp": "Olá! Tenho interesse no produto: Topo de Bolo Datas Especiais. Gostaria de mais informações sobre personalização e prazo.",
-  "destaque": false,
-  "ativo": true
+  "preco_display": "A partir de R$ 18,99",
+  "categoria": "Topo de Bolo",
+  "nome": "Topo de Bolo Datas Especiais"
 }
